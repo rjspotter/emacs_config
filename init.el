@@ -11,6 +11,13 @@
 (global-linum-mode 1)
 (setq linum-format " %d ")
 
+(require 'autotest)
+(require 'toggle)
+
+(add-hook 'ruby-mode-hook
+  (define-key ruby-mode-map [(control ?t)] 'toggle-window)
+)
+
 ;;stylin
 (require 'color-theme)
 (defun color-theme-rjspotter ()
