@@ -1,3 +1,14 @@
+(defun toggle-fullscreen ()
+  (interactive)
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+	    		 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+	    		 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+)
+(toggle-fullscreen)
+
+(setq inhibit-startup-message t)        ;no splash screen
+
 (add-to-list 'load-path "~/.emacs.d/modes/")
 (autoload 'company-mode "company" nil t)
 
@@ -13,10 +24,6 @@
 
 (require 'autotest)
 (require 'toggle)
-
-(add-hook 'ruby-mode-hook
-  (define-key ruby-mode-map [(control ?t)] 'toggle-window)
-)
 
 ;;stylin
 (require 'color-theme)
@@ -126,3 +133,9 @@
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
+
+(add-hook 'rinari-minor-mode-hook
+  ;;(lambda () (define-key ruby-mode-map [(control ?t)] 'toggle-window))
+  (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
+  ;;(lambda () (local-set-key "\C-t" 'toggle-window))
+)
