@@ -5,15 +5,26 @@
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
 	    		 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
 )
-(toggle-fullscreen)
+(toggle-fullscreen) 
 
 (setq inhibit-startup-message t)        ;no splash screen
+
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
+
 
 (add-to-list 'load-path "~/.emacs.d/modes/")
 (autoload 'company-mode "company" nil t)
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(load "~/.emacs.d/modes/haskell-mode/haskell-site-file")
+ (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+ (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+    
 
 (require 'sass-mode)
 ;;(require 'smarty-mode)
@@ -27,39 +38,6 @@
 
 ;;stylin
 (require 'color-theme)
-(defun color-theme-rjspotter ()
-  "dark color theme created by rjspotter, Mar, 2010."
-  (interactive)
-  (color-theme-install
-    '(color-theme-rjspotter
-       ((foreground-color . "#bfbfbf")
-         (background-color . "#313634") 
-         (background-mode . dark))
-       (bold ((t (:bold t))))
-       (bold-italic ((t (:italic t :bold t))))
-       (default ((t (nil))))
-       
-       (font-lock-builtin-face ((t (:foreground "#d3d649"))))
-       (font-lock-comment-face ((t (:foreground "#999999"))))
-       (font-lock-comment-delimiter-face ((t (:foreground "#666666"))))
-       (font-lock-constant-face ((t (:foreground "#00bfff"))))
-       (font-lock-doc-string-face ((t (:foreground "#8968cd"))))
-       (font-lock-doc-face ((t (:foreground "#8968cd"))))
-       (font-lock-reference-face ((t (:foreground "#48d1cc"))))
-       (font-lock-function-name-face ((t (:foreground "#9acd32"))))
-       (font-lock-keyword-face ((t (:foreground "#79cdcd"))))
-       (font-lock-preprocessor-face ((t (:foreground "#e3ea94"))))
-       (font-lock-string-face ((t (:foreground "#9f79ee"))))
-       (font-lock-type-face ((t (:foreground "#74adb0"))))
-       (font-lock-variable-name-face ((t (:foreground "#9bcd9b"))))
-       (font-lock-warning-face ((t (:foreground "#b22222"))))
-       (hl-line ((t (:background "#111111"))))
-       (mode-line ((t (:foreground "#ffffff" :background "#111111"))))
-       (region ((t (:foreground nil :background "#555555"))))
-       (show-paren-match-face ((t (:foreground "#7fff00"))))
-    )
-  )
-)
 
 (defun color-theme-rjspotter-green ()
   "dark green theme created by rjspotter, june, 2010."
@@ -123,16 +101,6 @@
   (yank)
 )
 (global-set-key (kbd "C-d") 'duplicate-line)
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
 
 (add-hook 'rinari-minor-mode-hook
   ;;(lambda () (define-key ruby-mode-map [(control ?t)] 'toggle-window))

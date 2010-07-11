@@ -1,10 +1,4 @@
 (1
- (diff-git .
-	   [(0 1 1)
-	    nil "Git integration with diff-mode" single])
- (html-script-src .
-		  [(0 0 2)
-		   nil "Insert <script src=\"..\"> for popular JavaScript libraries" single])
  (rvm .
       [(1 1)
        nil "Emacs integration for rvm" single])
@@ -24,7 +18,7 @@
        [(1 1)
 	nil "M-x interface with Ido-style lazy matching." single])
  (drag-stuff .
-	     [(0 0 3)
+	     [(0 0 2)
 	      nil "Drag stuff (lines, words, region, etc...) around" single])
  (ruby-test-mode .
 		 [(1 0)
@@ -77,12 +71,12 @@
 	[(0 1)
 	 nil "New TERMinal emulator" single])
  (sass-mode .
-	    [(3 0 13)
+	    [(3 0 0)
 	     ((haml-mode
-	       (3 0 13)))
+	       (3 0 0)))
 	     "Major mode for editing Sass files" single])
  (haml-mode .
-	    [(3 0 13)
+	    [(3 0 0)
 	     nil "Major mode for editing Haml files" single])
  (smart-tab .
 	    [(0 3)
@@ -140,8 +134,8 @@
 	       [(1 7 1)
 		nil "Major mode for Clojure code" single])
  (magit .
-	[(0 8 1)
-	 nil "control Git from Emacs." single])
+	[(0 7)
+	 nil "Control Git from Emacs." tar])
  (w3 .
      [(4 0 46)
       nil "A web browser written entirely in Emacs Lisp" tar])
@@ -385,7 +379,7 @@
 	   [(1 0)
 	    nil "Major mode for editing Cascading Style Sheets" single])
  (javascript .
-	     [(2 2 1)
+	     [(1 99 8)
 	      nil "Major mode for editing JavaScript source text" single])
  (light-symbol .
 	       [(0 1)
