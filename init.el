@@ -1,9 +1,12 @@
 (defun toggle-fullscreen ()
   (interactive)
-  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+  (cond ((string= window-system "x")
+    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
 	    		 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
-  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
 	    		 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+    )
+  )
 )
 (toggle-fullscreen) 
 
@@ -45,7 +48,7 @@
   (color-theme-install
     '(color-theme-rjspotter-green
        ((foreground-color . "#799979")
-         (background-color . "#0d170d") 
+         (background-color . "#0d170d")
          (background-mode . dark))
        (bold ((t (:bold t))))
        (bold-italic ((t (:italic t :bold t))))
@@ -74,7 +77,7 @@
 )
 
 
-(color-theme-rjspotter-green)
+(cond ((string= window-system "x")(color-theme-rjspotter-green)))
 
 (cua-mode t)
     (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
