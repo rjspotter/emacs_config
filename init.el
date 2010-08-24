@@ -12,6 +12,7 @@
 
 (setq inhibit-startup-message t) ;no splash screen
 (setq make-backup-files nil)     ;no backup files
+(setq default-directory "~/code/" )
 
 (when
     (load
