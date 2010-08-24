@@ -10,24 +10,32 @@
 )
 (toggle-fullscreen) 
 
-(setq inhibit-startup-message t)        ;no splash screen
+(setq inhibit-startup-message t) ;no splash screen
+(setq make-backup-files nil)     ;no backup files
 
 (when
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
 
+(autoload 'mode-compile "mode-compile"
+      "Command to compile current buffer file based on the major mode" t)
+
+(setq yas/root-directory "~/.emacs.d/snippets")
+(yas/load-directory yas/root-directory)
 
 (add-to-list 'load-path "~/.emacs.d/modes/")
 (autoload 'company-mode "company" nil t)
+
+(add-to-list 'load-path "~/.emacs.d/modes/mustache-mode.el")
+(require 'mustache-mode)
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 (load "~/.emacs.d/modes/haskell-mode/haskell-site-file")
  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
- (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-    
+ (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)    
 
 (require 'sass-mode)
 ;;(require 'smarty-mode)
@@ -85,9 +93,7 @@
     (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
 
 (show-paren-mode 1)
-
 (setq-default c-basic-offset 2)
-
 (setq-default indent-tabs-mode nil)
 
 (require 'ebs)
@@ -106,7 +112,5 @@
 (global-set-key (kbd "C-d") 'duplicate-line)
 
 (add-hook 'rinari-minor-mode-hook
-  ;;(lambda () (define-key ruby-mode-map [(control ?t)] 'toggle-window))
   (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
-  ;;(lambda () (local-set-key "\C-t" 'toggle-window))
 )
