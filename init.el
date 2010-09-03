@@ -19,13 +19,22 @@
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
 
+(add-to-list 'load-path "~/.emacs.d/modes/")
+
 (autoload 'mode-compile "mode-compile"
       "Command to compile current buffer file based on the major mode" t)
+
+(require 'lusty-explorer)
+(global-set-key (kbd "C-x C-f") 'lusty-file-explorer)
+(global-set-key (kbd "C-x b")   'lusty-buffer-explorer)
 
 (setq yas/root-directory "~/.emacs.d/snippets")
 (yas/load-directory yas/root-directory)
 
-(add-to-list 'load-path "~/.emacs.d/modes/")
+(require 'autopair)
+(autopair-global-mode 1)
+(setq autopair-autowrap t)
+
 (autoload 'company-mode "company" nil t)
 
 (add-to-list 'load-path "~/.emacs.d/modes/mustache-mode.el")
@@ -39,7 +48,6 @@
  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)    
 
 (require 'sass-mode)
-;;(require 'smarty-mode)
 
 (require 'linum)
 (global-linum-mode 1)
@@ -96,6 +104,7 @@
 (show-paren-mode 1)
 (setq-default c-basic-offset 2)
 (setq-default indent-tabs-mode nil)
+(delete-selection-mode 1)
 
 (require 'ebs)
   (ebs-initialize)
