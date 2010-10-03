@@ -1,3 +1,4 @@
+
 (defun toggle-fullscreen ()
   (interactive)
   (cond ((string= window-system "x")
@@ -42,6 +43,8 @@
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(setq js2-bounce-indent-p t)
+(setq js2-mirror-mode nil)
 
 (load "~/.emacs.d/modes/haskell-mode/haskell-site-file")
  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
@@ -55,6 +58,8 @@
 
 (require 'autotest)
 (require 'toggle)
+
+;(setq tags-table-list (list "./" "./../" "./../../" "./../../../" "./../../../" "/home/rjspotter/.bundle/ruby/1.8/gems" "/usr/local/lib/ruby/gems/1.8/gems/"))
 
 ;;stylin
 (require 'color-theme)
@@ -96,10 +101,15 @@
 
 (cond ((string= window-system "x")(color-theme-rjspotter-green)))
 
-(cua-mode t)
-    (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
-    (transient-mark-mode 1) ;; No region when it is not highlighted
-    (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
+;(cua-mode t)
+;    (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
+;    (transient-mark-mode 1) ;; No region when it is not highlighted
+;    (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
+;(cua-mode nil)
+
+(setq x-select-enable-clipboard t)
+(global-set-key (kbd "C-w") 'copy-region-as-kill)
+(global-set-key (kbd "M-w") 'kill-region)
 
 (show-paren-mode 1)
 (setq-default c-basic-offset 2)
@@ -124,3 +134,10 @@
 (add-hook 'rinari-minor-mode-hook
   (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
 )
+
+(add-hook 'ruby-mode-hook
+  (lambda ()
+    (define-key ruby-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+  )
+)
+
