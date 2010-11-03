@@ -1,4 +1,5 @@
 
+
 (defun toggle-fullscreen ()
   (interactive)
   (cond ((string= window-system "x")
@@ -46,6 +47,26 @@
 (setq js2-bounce-indent-p t)
 (setq js2-mirror-mode nil)
 
+(add-to-list 'load-path "~/.emacs.d/modes/coffee-mode")
+(require 'coffee-mode)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+(defun coffee-custom ()
+  "coffee-mode-hook"
+  (set (make-local-variable 'tab-width) 2)
+
+  (setq coffee-debug-mode t)
+
+  (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
+
+  (add-hook 'after-save-hook
+    '(lambda ()
+      (when (string-match "\.coffee$" (buffer-name))
+        (coffee-compile-file))))
+)
+(add-hook 'coffee-mode-hook
+  '(lambda() (coffee-custom)))
+
 (load "~/.emacs.d/modes/haskell-mode/haskell-site-file")
  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)    
@@ -69,7 +90,7 @@
   (interactive)
   (color-theme-install
     '(color-theme-rjspotter-green
-       ((foreground-color . "#799979")
+       ((foreground-color . "#bdddbd")
          (background-color . "#0d170d")
          (background-mode . dark))
        (bold ((t (:bold t))))
