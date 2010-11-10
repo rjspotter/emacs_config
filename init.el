@@ -15,6 +15,7 @@
 (setq inhibit-startup-message t) ;no splash screen
 (setq make-backup-files nil)     ;no backup files
 (setq default-directory "~/code/" )
+(tool-bar-mode -1)
 
 (when
     (load
@@ -162,3 +163,8 @@
   )
 )
 
+(add-hook 'coffee-mode-hook
+  (lambda ()
+    (define-key coffee-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+  )
+)
