@@ -42,6 +42,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/modes/mustache-mode.el")
 (require 'mustache-mode)
+(add-to-list 'auto-mode-alist '("\\.mustache$" . tpl-mode))
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -152,6 +153,10 @@
   (yank)
 )
 (global-set-key (kbd "C-d") 'duplicate-line)
+
+(global-set-key (kbd "C-z") 'goto-line)
+
+(global-set-key (kbd "C-j") 'other-window)
 
 (add-hook 'rinari-minor-mode-hook
   (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
