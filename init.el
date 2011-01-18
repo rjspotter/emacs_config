@@ -40,51 +40,6 @@
 (autopair-global-mode 1)
 (setq autopair-autowrap t)
 
-;;
-;; SLIME !!!
-;;
-;(setq inferior-lisp-program "/usr/bin/sbcl")
-(setq slime-lisp-implementations
-     '(
-        (mit-scheme ("/usr/bin/mit-scheme") :init mit-scheme-init)
-        (sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)))
-(add-to-list 'load-path "/usr/share/emacs-snapshot/site-lisp/slime/")
-(add-to-list 'load-path "/usr/share/emacs-snapshot/site-lisp/slime/contrib/")
-(add-hook 'slime-load-hook (lambda () (require 'slime-scheme)))
-(require 'slime)
-(slime-setup)
-
-(defun mit-scheme-init (file encoding)
-  (format "%S\n\n"
-	  `(begin
-	    (load-option 'format)
-	    (load-option 'sos)
-	    (eval 
-	     '(construct-normal-package-from-description
-	       (make-package-description '(swank) '(()) 
-					 (vector) (vector) (vector) false))
-	     (->environment '(package)))
-	    (load ,(expand-file-name 
-		    "~/.emacs.d/modes/swank-mit-scheme.scm" ; <-- insert your path
-		    slime-path)
-		  (->environment '(swank)))
-	    (eval '(start-swank ,file) (->environment '(swank))))))
-
-(defun mit-scheme ()
-  (interactive)
-  (slime 'mit-scheme))
-
-(defun find-mit-scheme-package ()
-  (save-excursion
-    (let ((case-fold-search t))
-      (and (re-search-backward "^[;]+ package: \\((.+)\\).*$" nil t)
-	   (match-string-no-properties 1)))))
-
-(setq slime-find-buffer-package-function 'find-mit-scheme-package)
-
-;
-; !!! End SLIME
-;
 
 (autoload 'company-mode "company" nil t)
 
@@ -129,6 +84,20 @@
 
 (require 'autotest)
 (require 'toggle)
+
+(autoload 'multi-term "multi-term" nil t)
+(autoload 'multi-term-next "multi-term" nil t)
+
+(setq multi-term-program "/bin/bash")   ;; use bash
+;; (setq multi-term-program "/bin/zsh") ;; or use zsh...
+
+;; only needed if you use autopair
+;(add-hook 'term-mode-hook
+;  #'(lambda () (setq autopair-dont-activate t)))
+
+
+(global-set-key (kbd "C-c t") 'multi-term-next)
+(global-set-key (kbd "C-c T") 'multi-term) ;; create a new one
 
 ;(setq tags-table-list (list "./" "./../" "./../../" "./../../../" "./../../../" "/home/rjspotter/.bundle/ruby/1.8/gems" "/usr/local/lib/ruby/gems/1.8/gems/"))
 
@@ -200,11 +169,17 @@
   (next-line 1)
   (yank)
 )
-(global-set-key (kbd "C-d") 'duplicate-line)
+;;(global-set-key (kbd "C-o") 'duplicate-line)
+
+(global-set-key (kbd "C-d") 'backward-char)
 
 (global-set-key (kbd "C-z") 'goto-line)
 
-(global-set-key (kbd "C-j") 'other-window)
+(global-set-key (kbd "C-b") 'lusty-buffer-explorer)
+
+(global-set-key (kbd "C-o") 'other-window)
+
+(global-set-key (kbd "C-k") 'kill-buffer)
 
 (add-hook 'rinari-minor-mode-hook
   (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
