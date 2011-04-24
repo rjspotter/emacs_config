@@ -196,3 +196,27 @@
     (define-key coffee-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
   )
 )
+
+(put 'upcase-region 'disabled nil)
+
+(defun rjspotter-set-font-snap()
+  (interactive)
+  (set-default-font "-artwiz-snap-normal-normal-normal-*-10-*-*-*-*-90-iso10646-1")
+)
+
+(defun rjspotter-set-font-edges()
+  (interactive)
+  (set-default-font "-artwiz-edges-normal-normal-normal-*-10-*-*-*-*-90-iso10646-1")
+)
+
+(defun rjspotter-set-font-bitstream()
+  (interactive)
+  (set-default-font "-*-bitstream vera sans mono-medium-r-*-*-*-100-*-*-*-*-iso8859-*")
+)
+
+(defun rjspotter-set-font-whiterabbit()
+  (interactive)
+(set-default-font "-*-white rabbit-normal-normal-normal-*-14-*-*-*-*-100-iso10646-1")
+)
+
+## font to try http://www.fonts.com/findfonts/detail.htm?productid=46934
