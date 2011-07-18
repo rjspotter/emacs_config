@@ -1,5 +1,6 @@
 
 
+
 (defun toggle-fullscreen ()
   (interactive)
   (cond ((string= window-system "x")
@@ -16,7 +17,7 @@
 (setq make-backup-files nil)     ;no backup files
 (setq default-directory "~/code/" )
 (tool-bar-mode -1)
-(set-default-font "-artwiz-snap-normal-normal-normal-*-10-*-*-*-*-90-iso10646-1")
+(set-default-font "-*-white rabbit-normal-normal-normal-*-14-*-*-*-*-120-iso10646-1")
 (modify-frame-parameters nil '((wait-for-wm . nil)))
 
 (when
@@ -42,6 +43,9 @@
 
 
 (autoload 'company-mode "company" nil t)
+
+(require 'puppet-mode)
+(add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
 
 (add-to-list 'load-path "~/.emacs.d/modes/mustache-mode.el")
 (require 'mustache-mode)
@@ -77,6 +81,10 @@
  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)    
 
 (require 'sass-mode)
+
+(autoload 'php-mode "php-mode" "Major mode for editing php code." t)
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
 
 (require 'linum)
 (global-linum-mode 1)
@@ -218,5 +226,4 @@
   (interactive)
 (set-default-font "-*-white rabbit-normal-normal-normal-*-14-*-*-*-*-100-iso10646-1")
 )
-
-## font to try http://www.fonts.com/findfonts/detail.htm?productid=46934
+;; font to try http://www.fonts.com/findfonts/detail.htm?productid=46934
