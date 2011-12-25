@@ -41,6 +41,9 @@
 (autopair-global-mode 1)
 (setq autopair-autowrap t)
 
+(add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
+  (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
+  (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
 
 (autoload 'company-mode "company" nil t)
 
@@ -123,7 +126,7 @@
 (require 'color-theme)
 
 (defun color-theme-rjspotter-green ()
-  "dark green theme created by rjspotter, june, 2010."
+  "dark green theme created by rjspotter, june, 2010.  updated Dec, 2011"
   (interactive)
   (color-theme-install
     '(color-theme-rjspotter-green
@@ -141,15 +144,15 @@
        (font-lock-doc-string-face ((t (:foreground "#880b88"))))
        (font-lock-doc-face ((t (:foreground "#8968cd"))))
        (font-lock-reference-face ((t (:foreground "#864b06"))))
-       (font-lock-function-name-face ((t (:foreground "#064b87"))))
+       (font-lock-function-name-face ((t (:foreground "#367bb7"))))
        (font-lock-keyword-face ((t (:foreground "#79cdcd"))))
        (font-lock-preprocessor-face ((t (:foreground "#488f06"))))
        (font-lock-string-face ((t (:foreground "#ad5dc7"))))
-       (font-lock-type-face ((t (:bold t :foreground "#870b46"))))
+       (font-lock-type-face ((t (:bold t :foreground "#a72b66"))))
        (font-lock-variable-name-face ((t (:foreground "#488f06"))))
        (font-lock-warning-face ((t (:foreground "#850b06"))))
        (hl-line ((t (:background "#111111"))))
-       (mode-line ((t (:foreground "#ffffff" :background "#111111"))))
+       (mode-line ((t (:foreground "#eeeeee" :background "#111111"))))
        (region ((t (:foreground nil :background "#223344"))))
        (show-paren-match-face ((t (:foreground "#7fff00"))))
     )
