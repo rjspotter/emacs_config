@@ -41,6 +41,13 @@
 (autopair-global-mode 1)
 (setq autopair-autowrap t)
 
+(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
+(add-to-list 'load-path "~/.emacs.d/modes/slime/")  ; your SLIME directory
+(require 'slime)
+(add-hook 'slime-mode-common-hook
+          #'(lambda () (setq autopair-dont-activate t)))
+(slime-setup)
+
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
   (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
   (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
@@ -169,8 +176,8 @@
 ;(cua-mode nil)
 
 (setq x-select-enable-clipboard t)
-(global-set-key (kbd "C-w") 'copy-region-as-kill)
-(global-set-key (kbd "M-w") 'kill-region)
+;(global-set-key (kbd "C-w") 'copy-region-as-kill)
+;(global-set-key (kbd "M-w") 'kill-region)
 
 (show-paren-mode 1)
 (setq-default c-basic-offset 2)
