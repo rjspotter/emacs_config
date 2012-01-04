@@ -1,6 +1,4 @@
 
-
-
 (defun toggle-fullscreen ()
   (interactive)
   (cond ((string= window-system "x")
@@ -41,11 +39,12 @@
 (autopair-global-mode 1)
 (setq autopair-autowrap t)
 
+(set-default 'autopair-dont-activate #'(lambda () (eq major-mode 'sldb-mode)))
+;;(add-hook 'sldb-mode-hook #'(lambda () (setq autopair-dont-activate t)))
+
 (setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
 (add-to-list 'load-path "~/.emacs.d/modes/slime/")  ; your SLIME directory
 (require 'slime)
-(add-hook 'slime-mode-common-hook
-          #'(lambda () (setq autopair-dont-activate t)))
 (slime-setup)
 
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
