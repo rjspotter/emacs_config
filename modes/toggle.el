@@ -83,7 +83,8 @@
     (rspec   . (("app/models/\\1.rb"      . "spec/models/\\1_spec.rb")
                 ("app/controllers/\\1.rb" . "spec/controllers/\\1_spec.rb")
                 ("app/views/\\1.rb"       . "spec/views/\\1_spec.rb")
-                ("app/helpers/\\1.rb"     . "spec/helpers/\\1_spec.rb")))
+                ("app/helpers/\\1.rb"     . "spec/helpers/\\1_spec.rb")
+                ("lib/\\1.rb"             . "spec/\\1_spec.rb")))
     (rails   . (("app/controllers/\\1.rb" . "test/functional/\\1_test.rb")
                 ("app/models/\\1.rb"      . "test/unit/\\1_test.rb")
                 ("lib/\\1.rb"             . "test/unit/test_\\1.rb")))
@@ -113,7 +114,7 @@
                          (cons
                           (replace-regexp-in-string
                            "\\\\1" "\\\\(.*\\\\)"
-                           (replace-regexp-in-string ; special case for "\\1.ext"
+                           (replace-regexp-in-string ; special case for "\\1b.ext"
                             "^\\\\1" "\\\\([^/]*\\\\)" (car pair)))
                           (cdr pair)))
                        (mapcan 'list

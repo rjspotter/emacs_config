@@ -1,4 +1,5 @@
 
+
 (defun toggle-fullscreen ()
   (interactive)
   (cond ((string= window-system "x")
@@ -41,6 +42,15 @@
 
 (set-default 'autopair-dont-activate #'(lambda () (eq major-mode 'sldb-mode)))
 ;;(add-hook 'sldb-mode-hook #'(lambda () (setq autopair-dont-activate t)))
+
+(require 'info-look)
+(info-lookup-add-help
+ :mode 'lisp-mode
+ :regexp "[^][()'\" \t\n]+"
+ :ignore-case t
+ :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
+
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
 
 (setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
 (add-to-list 'load-path "~/.emacs.d/modes/slime/")  ; your SLIME directory
@@ -129,44 +139,10 @@
 ;(setq tags-table-list (list "./" "./../" "./../../" "./../../../" "./../../../" "/home/rjspotter/.bundle/ruby/1.8/gems" "/usr/local/lib/ruby/gems/1.8/gems/"))
 
 ;;stylin
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+
 (require 'color-theme)
-
-(defun color-theme-rjspotter-green ()
-  "dark green theme created by rjspotter, june, 2010.  updated Dec, 2011"
-  (interactive)
-  (color-theme-install
-    '(color-theme-rjspotter-green
-       ((foreground-color . "#bdddbd")
-         (background-color . "#0d170d")
-         (background-mode . dark))
-       (bold ((t (:bold t))))
-       (bold-italic ((t (:italic t :bold t))))
-       (default ((t (nil))))
-       
-       (font-lock-builtin-face ((t (:foreground "#068876"))))
-       (font-lock-comment-face ((t (:foreground "#999999"))))
-       (font-lock-comment-delimiter-face ((t (:foreground "#888888"))))
-       (font-lock-constant-face ((t (:foreground "#797e07"))))
-       (font-lock-doc-string-face ((t (:foreground "#880b88"))))
-       (font-lock-doc-face ((t (:foreground "#8968cd"))))
-       (font-lock-reference-face ((t (:foreground "#864b06"))))
-       (font-lock-function-name-face ((t (:foreground "#367bb7"))))
-       (font-lock-keyword-face ((t (:foreground "#79cdcd"))))
-       (font-lock-preprocessor-face ((t (:foreground "#488f06"))))
-       (font-lock-string-face ((t (:foreground "#ad5dc7"))))
-       (font-lock-type-face ((t (:bold t :foreground "#a72b66"))))
-       (font-lock-variable-name-face ((t (:foreground "#488f06"))))
-       (font-lock-warning-face ((t (:foreground "#850b06"))))
-       (hl-line ((t (:background "#111111"))))
-       (mode-line ((t (:foreground "#eeeeee" :background "#111111"))))
-       (region ((t (:foreground nil :background "#223344"))))
-       (show-paren-match-face ((t (:foreground "#7fff00"))))
-    )
-  )
-)
-
-
-(cond ((string= window-system "x")(color-theme-rjspotter-green)))
 
 ;(cua-mode t)
 ;    (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
@@ -207,6 +183,10 @@
 (global-set-key (kbd "C-o") 'other-window)
 
 (global-set-key (kbd "C-k") 'kill-buffer)
+
+(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
+(autoload 'inf-ruby-keys "inf-ruby" "" t) 
+(eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
 
 (add-hook 'rinari-minor-mode-hook
   (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
@@ -274,3 +254,19 @@
       (setq cursor-type djcb-normal-cursor-type))))
 
 (add-hook 'post-command-hook 'djcb-set-cursor-according-to-mode)
+
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "/usr/bin/conkeror")
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("16c3a1560cc699bfc8ea13e9acba10045b02aa8d" "d66b5da4870d8838edbf984b1dc31e37efe1257b" "b5d3a19124561e92127c3bd917a6c2ae520c4c10" "c3adda001695657e6da90aa3268bbbf4f6af433b" "101b2a189997144931107b663cf1937ce94acd5a" "07c541895ec9b323bf25dc3c63a8a400dba6d2ca" "f67bc85632a7db951c45fbcdf55456b882f1ce32" "63baf5b4551d57e16ae558d40a0b27c426fbd880" "285a5928d414486528564472e49ce46db448e296" "9f3b064f42e48f3cce4ee007301453e37a871df5" "a71460243d93d271e33a969dd064a663022781d7" "f1ca2dfb5f86a53c386c18a8cc194474f4932a79" "0943252a540b205d7a7e492b33067c6740a0870a" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
