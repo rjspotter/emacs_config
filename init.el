@@ -31,7 +31,7 @@
 
 (require 'lusty-explorer)
 (global-set-key (kbd "C-x C-f") 'lusty-file-explorer)
-(global-set-key (kbd "C-x b")   'lusty-buffer-explorer)
+(global-set-key (kbd "C-x C-b")   'lusty-buffer-explorer)
 
 (setq yas/root-directory "~/.emacs.d/snippets")
 (yas/load-directory yas/root-directory)
@@ -177,11 +177,11 @@
 )
 ;;(global-set-key (kbd "C-o") 'duplicate-line)
 
-(global-set-key (kbd "C-d") 'backward-char)
+;;(global-set-key (kbd "C-d") 'backward-char)
 
 (global-set-key (kbd "C-z") 'goto-line)
 
-(global-set-key (kbd "C-b") 'lusty-buffer-explorer)
+;;(global-set-key (kbd "C-b") 'lusty-buffer-explorer)
 
 (global-set-key (kbd "C-o") 'other-window)
 
