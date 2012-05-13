@@ -19,10 +19,10 @@
 (set-default-font "-*-white rabbit-normal-normal-normal-*-14-*-*-*-*-120-iso10646-1")
 (modify-frame-parameters nil '((wait-for-wm . nil)))
 
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
+(require 'package)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(package-initialize)
 
 (add-to-list 'load-path "~/.emacs.d/modes/")
 
@@ -50,10 +50,10 @@
  :ignore-case t
  :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;(load (expand-file-name "~/quicklisp/slime-helper.el"))
 
-(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
-(add-to-list 'load-path "~/.emacs.d/modes/slime/")  ; your SLIME directory
+;(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
+;(add-to-list 'load-path "~/.emacs.d/modes/slime/")  ; your SLIME directory
 (require 'slime)
 (slime-setup)
 
