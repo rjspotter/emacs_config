@@ -162,6 +162,10 @@
 (setq-default indent-tabs-mode nil)
 (delete-selection-mode 1)
 
+(require 'whitespace)
+(setq whitespace-style '(face lines-tail trailing))
+(global-whitespace-mode t)
+
 (require 'ebs)
   (ebs-initialize)
   (global-set-key [(control tab)] 'ebs-switch-buffer)
