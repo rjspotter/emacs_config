@@ -38,11 +38,13 @@
 
 ;; Hippie expand stuff
 (require 'cc-mode)
-   (defun tags-complete-tag (string predicate what)
-     (save-excursion
-     ;; If we need to ask for the tag table, allow that.
-     (if (eq what t)
-         (all-completions string (tags-completion-table) predicate)
+(require 'etags-table)
+
+(defun tags-complete-tag (string predicate what)
+  (save-excursion
+    ;; If we need to ask for the tag table, allow that.
+    (if (eq what t)
+        (all-completions string (tags-completion-table) predicate)
       (try-completion string (tags-completion-table) predicate))))
 
 (defun he-tag-beg ()
