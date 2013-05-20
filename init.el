@@ -21,6 +21,8 @@
 (require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
 (add-to-list 'load-path "~/.emacs.d/modes/")
@@ -95,12 +97,16 @@
 
 ;(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
 ;(add-to-list 'load-path "~/.emacs.d/modes/slime/")  ; your SLIME directory
+
 (require 'slime)
 (slime-setup)
 
+;;Clojure
 (require 'clojure-mode)
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+(require 'nrepl)
 
+;;ML
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
   (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
   (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
