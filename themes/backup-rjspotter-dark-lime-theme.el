@@ -22,14 +22,14 @@
 
 (custom-theme-set-faces
  'rjspotter-dark-lime
- '(default ((t (:foreground "#eeeeee"))))
+ '(default ((t (:background "#222222" :foreground "#eeeeee"))))
  '(cursor ((t (:background "#222222" :foreground "#22ee22"))))
  '(region ((t (:background "#444444" :foreground "#eeeeee"))))
  '(mode-line ((t (:background "#111111" :foreground "#229922"))))
  '(mode-line-inactive ((t (:background "#111111" :foreground "#dddddd"))))
  '(fringe ((t (:background "#111111"))))
- '(minibuffer-prompt ((t (:foreground "#22aa22"))))
- '(font-lock-builtin-face ((t (:foreground "#22ff22"))))
+ '(minibuffer-prompt ((t (:background "#222222" :foreground "#22aa22"))))
+ '(font-lock-builtin-face ((t (:background "#222222" :foreground "#22ff22"))))
  '(font-lock-comment-face ((t (:foreground "#aaaaaa"))))
  '(font-lock-constant-face ((t (:foreground "#22bb22"))))
  '(font-lock-function-name-face ((t (:foreground "#22ff22"))))
