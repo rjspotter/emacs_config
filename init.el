@@ -76,7 +76,8 @@
                         '(try-expand-dabbrev-visible
                           try-expand-dabbrev
                           try-expand-dabbrev-all-buffers
-                          try-expand-tag) t))
+                          ;try-expand-tag
+                          ) t))
 ;; end hippie expand stuff
 
 (require 'autopair)
@@ -137,10 +138,10 @@
 
   (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
 
-  (add-hook 'after-save-hook
-    '(lambda ()
-      (when (string-match "\.coffee$" (buffer-name))
-        (coffee-compile-file))))
+;  (add-hook 'after-save-hook
+;    '(lambda ()
+;      (when (string-match "\.coffee$" (buffer-name))
+;        (coffee-compile-file))))
 )
 (add-hook 'coffee-mode-hook
   '(lambda() (coffee-custom)))
@@ -245,6 +246,8 @@
 (add-hook 'rinari-minor-mode-hook
   (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
 )
+
+(setq ruby-insert-encoding-magic-comment nil)
 
 (add-hook 'ruby-mode-hook
   (lambda ()
