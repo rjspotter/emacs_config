@@ -1,4 +1,4 @@
-
+;; init
 (defun toggle-fullscreen ()
   (interactive)
   (cond ((string= window-system "x")
@@ -18,11 +18,14 @@
 (set-default-font "-*-white rabbit-normal-normal-normal-*-14-*-*-*-*-120-iso10646-1")
 (modify-frame-parameters nil '((wait-for-wm . nil)))
 
+;; Manage
 (require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
 (package-initialize)
 
 (add-to-list 'load-path "~/.emacs.d/modes/")
@@ -30,10 +33,14 @@
 (autoload 'mode-compile "mode-compile"
       "Command to compile current buffer file based on the major mode" t)
 
+;; Lusty Explorer find stuff better
 (require 'lusty-explorer)
 (global-set-key (kbd "C-x C-f") 'lusty-file-explorer)
 (global-set-key (kbd "C-x C-b")   'lusty-buffer-explorer)
 
+;;Snippets
+(require 'yasnippet)
+(yas/initialize)
 (setq yas/root-directory "~/.emacs.d/snippets")
 (yas/load-directory yas/root-directory)
 
@@ -80,12 +87,7 @@
                           ) t))
 ;; end hippie expand stuff
 
-(require 'autopair)
-(autopair-global-mode 1)
-(setq autopair-autowrap t)
-
-(set-default 'autopair-dont-activate #'(lambda () (eq major-mode 'sldb-mode)))
-;;(add-hook 'sldb-mode-hook #'(lambda () (setq autopair-dont-activate t)))
+;; CL
 
 (require 'info-look)
 (info-lookup-add-help
@@ -103,9 +105,11 @@
 (slime-setup)
 
 ;;Clojure
+(require 'rainbow-delimiters)
 (require 'clojure-mode)
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
-(require 'nrepl)
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(require 'cider)
 
 ;;ML
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
@@ -114,18 +118,28 @@
 
 (autoload 'company-mode "company" nil t)
 
+;;Puppet
 (require 'puppet-mode)
 (add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
 
+;;Mustache
 (add-to-list 'load-path "~/.emacs.d/modes/mustache-mode.el")
 (require 'mustache-mode)
 (add-to-list 'auto-mode-alist '("\\.mustache$" . tpl-mode))
 
+;;Markdown
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;;Javascript
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (setq js2-bounce-indent-p t)
 (setq js2-mirror-mode nil)
 
+;;Coffee
 (add-to-list 'load-path "~/.emacs.d/modes/coffee-mode")
 (require 'coffee-mode)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
@@ -146,16 +160,20 @@
 (add-hook 'coffee-mode-hook
   '(lambda() (coffee-custom)))
 
+;;Haskell
 (load "~/.emacs.d/modes/haskell-mode/haskell-site-file")
  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)    
 
+;;Sass
 (require 'sass-mode)
 
+;;PHP
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
 
+;;Octave
 (autoload 'octave-mode "octave-mod" nil t)
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
@@ -166,12 +184,19 @@
             (if (eq window-system 'x)
                 (font-lock-mode 1))))
 
+;; Global Useful
 (require 'linum)
 (global-linum-mode 1)
 (setq linum-format " %d ")
 
 (require 'autotest)
 (require 'toggle)
+
+(require 'autopair)
+(autopair-global-mode 1)
+(setq autopair-autowrap t)
+(set-default 'autopair-dont-activate #'(lambda () (eq major-mode 'sldb-mode)))
+
 
 (autoload 'multi-term "multi-term" nil t)
 (autoload 'multi-term-next "multi-term" nil t)
@@ -227,20 +252,15 @@
   (next-line 1)
   (yank)
 )
-;;(global-set-key (kbd "C-o") 'duplicate-line)
-
-;;(global-set-key (kbd "C-d") 'backward-char)
 
 (global-set-key (kbd "C-z") 'goto-line)
-
-;;(global-set-key (kbd "C-b") 'lusty-buffer-explorer)
 
 (global-set-key (kbd "C-o") 'other-window)
 
 (global-set-key (kbd "C-k") 'kill-buffer)
 
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
-(autoload 'inf-ruby-keys "inf-ruby" "" t) 
+(autoload 'inf-ruby-keys "inf-ruby" "" t)
 (eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
 
 (add-hook 'rinari-minor-mode-hook
