@@ -41,8 +41,10 @@
 ;;Snippets
 (require 'yasnippet)
 (yas/initialize)
-(setq yas/root-directory "~/.emacs.d/snippets")
-(yas/load-directory yas/root-directory)
+;;(setq yas/root-directory "~/.emacs.d/snippets")
+;;(yas/load-directory yas/root-directory)
+(setq yas-snippet-dirs (append yas-snippet-dirs
+                                      '("~/.emacs.d/snippets")))
 
 
 ;; Hippie expand stuff
@@ -105,11 +107,12 @@
 (slime-setup)
 
 ;;Clojure
-(require 'rainbow-delimiters)
 (require 'clojure-mode)
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (require 'cider)
+(add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+(setq cider-auto-select-error-buffer nil)
 
 ;;ML
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
@@ -185,6 +188,10 @@
                 (font-lock-mode 1))))
 
 ;; Global Useful
+
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
+
 (require 'linum)
 (global-linum-mode 1)
 (setq linum-format " %d ")
@@ -220,15 +227,7 @@
 
 (require 'color-theme)
 
-;(cua-mode t)
-;    (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
-;    (transient-mark-mode 1) ;; No region when it is not highlighted
-;    (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
-;(cua-mode nil)
-
 (setq x-select-enable-clipboard t)
-;(global-set-key (kbd "C-w") 'copy-region-as-kill)
-;(global-set-key (kbd "M-w") 'kill-region)
 
 (show-paren-mode 1)
 (setq-default c-basic-offset 2)

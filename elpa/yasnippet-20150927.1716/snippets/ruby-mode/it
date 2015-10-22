@@ -1,0 +1,5 @@
+# name: should ... do ... end
+# --
+it "$1" do
+  $0
+end
