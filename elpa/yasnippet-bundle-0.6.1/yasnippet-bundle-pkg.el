@@ -1,1 +1,2 @@
-(define-package "yasnippet-bundle" "0.6.1" "Yet another snippet extension (Auto compiled bundle)" (quote nil))
+;;; -*- no-byte-compile: t -*-
+(define-package "yasnippet-bundle" "0.6.1" "Yet another snippet extension (Auto compiled bundle)" 'nil)
