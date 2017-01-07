@@ -199,8 +199,8 @@
 (global-linum-mode 1)
 (setq linum-format " %d ")
 
-(require 'autotest)
-(require 'toggle)
+;(require 'autotest)
+;(require 'toggle)
 
 (require 'autopair)
 (autopair-global-mode 1)
