@@ -14,7 +14,7 @@
 (setq inhibit-startup-message t) ;no splash screen
 (setq make-backup-files nil)     ;no backup files
 (setq default-directory "~/code/" )
-(tool-bar-mode -1)
+;(tool-bar-mode -1)
 (set-default-font "-*-white rabbit-normal-normal-normal-*-14-*-*-*-*-120-iso10646-1")
 (modify-frame-parameters nil '((wait-for-wm . nil)))
 
