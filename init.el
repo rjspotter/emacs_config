@@ -202,11 +202,28 @@
 ;(require 'autotest)
 ;(require 'toggle)
 
-(require 'autopair)
-(autopair-global-mode 1)
-(setq autopair-autowrap t)
-(set-default 'autopair-dont-activate #'(lambda () (eq major-mode 'sldb-mode)))
+;(require 'autopair)
+;(autopair-global-mode 1)
+;(setq autopair-autowrap t)
+;(set-default 'autopair-dont-activate #'(lambda () (eq major-mode 'sldb-mode)))
 
+(defvar skeletons-alist
+      '((?\( . ?\))
+        (?\' . ?\')
+        (?\" . ?\")
+        (?[  . ?])
+        (?{  . ?})))
+
+(defadvice delete-backward-char (before delete-empty-pair activate)
+      (if (eq (cdr (assq (char-before) skeletons-alist)) (char-after))
+          (and (char-after) (delete-char 1))))
+
+(setq skeleton-pair t)
+(setq skeleton-autowrap t)
+(global-set-key "(" 'skeleton-pair-insert-maybe)
+(global-set-key "[" 'skeleton-pair-insert-maybe)
+(global-set-key "{" 'skeleton-pair-insert-maybe)
+(global-set-key "\"" 'skeleton-pair-insert-maybe)
 
 (autoload 'multi-term "multi-term" nil t)
 (autoload 'multi-term-next "multi-term" nil t)
