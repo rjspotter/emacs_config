@@ -41,12 +41,6 @@
 ;;Snippets
 (require 'yasnippet)
 (yas-global-mode 1)
-;(require 'yasnippet)
-;(yas/initialize)
-;;(setq yas/root-directory "~/.emacs.d/snippets")
-;;(yas/load-directory yas/root-directory)
-;(setq yas-snippet-dirs (append yas-snippet-dirs
-;                                      '("~/.emacs.d/snippets")))
 
 
 ;; Hippie expand stuff
@@ -107,6 +101,11 @@
 
 ;(require 'slime)
 ;(slime-setup)
+
+;; Elixir
+(add-to-list 'elixir-mode-hook (alchemist-mode +1))
+(setq alchemist-hooks-test-on-save t)
+(setq alchemist-hooks-compile-on-save t)
 
 ;;Clojure
 (require 'clojure-mode)
