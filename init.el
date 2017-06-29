@@ -9,7 +9,7 @@
     )
   )
 )
-(toggle-fullscreen) 
+(toggle-fullscreen)
 
 (setq inhibit-startup-message t) ;no splash screen
 (setq make-backup-files nil)     ;no backup files
@@ -85,6 +85,9 @@
                           ) t))
 ;; end hippie expand stuff
 
+;; Company Mode
+(autoload 'company-mode "company" nil t)
+
 ;; CL
 
 (require 'info-look)
@@ -103,9 +106,16 @@
 ;(slime-setup)
 
 ;; Elixir
-(add-to-list 'elixir-mode-hook (alchemist-mode +1))
+(add-hook 'elixir-mode-hook 'alchemist-mode)
+(add-hook 'elixir-mode-hook 'company-mode)
 (setq alchemist-hooks-test-on-save t)
 (setq alchemist-hooks-compile-on-save t)
+
+(add-hook 'elixir-mode-hook
+  (lambda ()
+    (define-key elixir-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+  )
+)
 
 ;;Clojure
 (require 'clojure-mode)
@@ -119,8 +129,6 @@
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
   (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
   (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-
-(autoload 'company-mode "company" nil t)
 
 ;;Puppet
 (require 'puppet-mode)
@@ -170,7 +178,7 @@
 ;;Haskell
 (load "~/.emacs.d/modes/haskell-mode/haskell-site-file")
  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
- (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)    
+ (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 ;;Sass
 (require 'sass-mode)
@@ -190,6 +198,19 @@
             (auto-fill-mode 1)
             (if (eq window-system 'x)
                 (font-lock-mode 1))))
+
+;; Ruby
+(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
+(autoload 'inf-ruby-keys "inf-ruby" "" t)
+(eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
+
+(setq ruby-insert-encoding-magic-comment nil)
+
+(add-hook 'ruby-mode-hook
+  (lambda ()
+    (define-key ruby-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+  )
+)
 
 ;; Global Useful
 
@@ -279,21 +300,6 @@
 
 (global-set-key (kbd "C-k") 'kill-buffer)
 
-(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
-(autoload 'inf-ruby-keys "inf-ruby" "" t)
-(eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
-
-(add-hook 'rinari-minor-mode-hook
-  (lambda () (define-key ruby-mode-map "\C-t" 'toggle-window))
-)
-
-(setq ruby-insert-encoding-magic-comment nil)
-
-(add-hook 'ruby-mode-hook
-  (lambda ()
-    (define-key ruby-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
-  )
-)
 
 (add-hook 'coffee-mode-hook
   (lambda ()
@@ -346,7 +352,7 @@
     (overwrite-mode
       (set-cursor-color djcb-overwrite-color)
       (setq cursor-type djcb-overwrite-cursor-type))
-    (t 
+    (t
       (set-cursor-color djcb-normal-color)
       (setq cursor-type djcb-normal-cursor-type))))
 
@@ -365,7 +371,7 @@
     ("04731852318149f51dcf8ea7b1cafd20ff890d73ad7e585960a31d641d433893" "569db32037846cb93193d61c602eea9e6a4298ae3c4ee427cba2bcf14abeeef5" "dafd9d8d03e1068a05f98d77930e6cae260401fc9b93d1c03a5283b4db5ad26d" "fcc4badafd60fc0213472e655145fba70a7fa537db9f2aca80ec9edda221741d" "1414739793dd40e6cded535aaab7aa1f85577325312f3c4f7a294ac7464d7355" "32bf5c3ac67a48d910fbe94ccf3a8252b60f6ddf" "16c3a1560cc699bfc8ea13e9acba10045b02aa8d" "d66b5da4870d8838edbf984b1dc31e37efe1257b" "b5d3a19124561e92127c3bd917a6c2ae520c4c10" "c3adda001695657e6da90aa3268bbbf4f6af433b" "101b2a189997144931107b663cf1937ce94acd5a" "07c541895ec9b323bf25dc3c63a8a400dba6d2ca" "f67bc85632a7db951c45fbcdf55456b882f1ce32" "63baf5b4551d57e16ae558d40a0b27c426fbd880" "285a5928d414486528564472e49ce46db448e296" "9f3b064f42e48f3cce4ee007301453e37a871df5" "a71460243d93d271e33a969dd064a663022781d7" "f1ca2dfb5f86a53c386c18a8cc194474f4932a79" "0943252a540b205d7a7e492b33067c6740a0870a" default)))
  '(package-selected-packages
    (quote
-    (yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete))))
+    (inf-ruby lusty-explorer multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -3,6 +3,7 @@
 ;; Copyright (C) 2008 Stephen Bach <http://items.sjbach.com/about>
 ;;
 ;; Version: 2.5
+;; Package-Version: 20150508.1557
 ;; Created: July 27, 2010
 ;; Keywords: convenience, files, matching
 ;; Compatibility: GNU Emacs 22, 23, and 24
@@ -85,6 +86,11 @@
 
 ;; Used only for its faces (for color-theme).
 (require 'dired)
+;; Backward compatibility: use noflet if present, fallback to (deprecated since 24.3) flet otherwise
+(defalias 'lusty--flet 'flet)
+(when (require 'noflet nil 'noerror)
+  (defalias 'lusty--flet 'noflet))
+
 
 (declaim (optimize (speed 3) (safety 0)))
 
@@ -155,12 +161,26 @@ buffer names in the matches window; 0.10 = %10."
 (defvar lusty-mode-map nil
   "Minibuffer keymap for `lusty-file-explorer' and `lusty-buffer-explorer'.")
 
+(defvar lusty-global-map
+  (let ((map (make-sparse-keymap)))
+    (dolist (b '((switch-to-buffer . lusty-buffer-explorer)
+                 (find-file . lusty-file-explorer)))
+      (if (fboundp 'command-remapping)
+          (define-key map (vector 'remap (car b)) (cdr b))
+        (substitute-key-definition (car b) (cdr b) map global-map)))
+    map))
 
 (defvar lusty--active-mode nil)
 (defvar lusty--wrapping-ido-p nil)
 (defvar lusty--initial-window-config nil)
 (defvar lusty--previous-minibuffer-contents nil)
 (defvar lusty--current-idle-timer nil)
+(if
+    (not(boundp 'lusty--completion-ignored-regexps))
+    (defvar lusty--completion-ignored-regexps '()) )
+(defvar lusty--ignored-buffer-regex
+  (mapconcat 'identity lusty--completion-ignored-regexps "\\|"))
+
 (defvar lusty--ignored-extensions-regex
   ;; Recalculated at execution time.
   (concat "\\(?:" (regexp-opt completion-ignored-extensions) "\\)$"))
@@ -231,6 +251,8 @@ Uses the faces `lusty-directory-face', `lusty-slash-face', and
     (lusty--define-mode-map)
     (let* ((lusty--ignored-extensions-regex
             (concat "\\(?:" (regexp-opt completion-ignored-extensions) "\\)$"))
+	   (lusty--ignored-buffer-regex
+	    (mapconcat 'identity lusty--completion-ignored-regexps "\\|"))
            (minibuffer-local-filename-completion-map lusty-mode-map)
            (file
             ;; read-file-name is silly in that if the result is equal to the
@@ -254,6 +276,18 @@ Uses the faces `lusty-directory-face', `lusty-slash-face', and
            (buffer (lusty--run 'read-buffer)))
       (when buffer
         (switch-to-buffer buffer)))))
+
+;;;###autoload
+(define-minor-mode lusty-explorer-mode
+  "Toggle Lusty Explorer mode.
+With a prefix argument ARG, enable Lusty Explorer mode if ARG is
+positive, and disable it otherwise.  If called from Lisp, enable
+the mode if ARG is omitted or nil.
+
+Lusty Explorer mode is a global minor mode that enables switching
+between buffers and finding files using substrings, fuzzy matching,
+and recency information."
+  nil nil lusty-global-map :global t)
 
 ;;;###autoload
 (defun lusty-highlight-next ()
@@ -466,10 +500,13 @@ much as possible."
 (defun lusty-filter-buffers (buffers)
   "Return BUFFERS converted to strings with hidden buffers removed."
   (macrolet ((ephemeral-p (name)
-               `(eq (string-to-char ,name) ?\ )))
+               `(eq (string-to-char ,name) ?\ ))
+	     (ignored-p (name)
+			`(string-match lusty--ignored-buffer-regex ,name)))
     (loop for buffer in buffers
           for name = (buffer-name buffer)
-          unless (ephemeral-p name)
+          unless (or (ephemeral-p name)
+		     (ignored-p name))
           collect (copy-sequence name))))
 
 ;; Written kind-of silly for performance.
@@ -581,11 +618,16 @@ does not begin with '.'."
 (defun lusty-max-window-width ()
   (frame-width))
 
+(defun lusty-window-width ()
+  (window-width
+   (get-buffer-window
+    (get-buffer-create lusty-buffer-name))))
+
 ;; Only needed for Emacs 23 compatibility, because the Emacs root window in an
 ;; already split frame is not a living window.
 (defun lusty-lowest-window ()
   "Return the lowest window on the frame."
-  (flet ((iterate-non-dedicated-window (start-win direction)
+  (lusty--flet ((iterate-non-dedicated-window (start-win direction)
            ;; Skip dedicated windows when iterating.
            (let ((iterating-p t)
                  (next start-win))
@@ -618,15 +660,21 @@ does not begin with '.'."
           (setq window-search-p nil))))
     lowest-window)))
 
+(defun lusty--setup-window-to-split ()
+  ;; Emacs 23 compatibility
+  (let ((root-window (frame-root-window)))
+    (if (window-live-p root-window)
+        root-window
+      (lusty-lowest-window))))
+
 (defun lusty--setup-matches-window ()
   (let ((lusty-buffer (get-buffer-create lusty-buffer-name)))
     (save-selected-window
-      (let* ((root-window (frame-root-window))
-             ;; Emacs 23 compatibility
-             (window (if (window-live-p root-window)
-                         root-window
-                       (lusty-lowest-window)))
-             (lusty-window (split-window window)))
+      (let* ((window (lusty--setup-window-to-split))
+             (lusty-window (condition-case nil (split-window window)
+                               (error ; Perhaps it is too small.
+                                (delete-window window)
+                                (split-window (lusty--setup-window-to-split))))))
         (select-window lusty-window)
         (when lusty-fully-expand-matches-window-p
           ;; Try to get a window covering the full frame.  Sometimes
@@ -681,7 +729,7 @@ does not begin with '.'."
 (defun lusty-buffer-list ()
   "Return a list of buffers ordered with those currently visible at the end."
   (let ((visible-buffers '()))
-    (flet ((add-buffer-maybe (window)
+    (lusty--flet ((add-buffer-maybe (window)
              (let ((b (window-buffer window)))
                (unless (memq b visible-buffers)
                  (push b visible-buffers)))))
@@ -729,7 +777,7 @@ does not begin with '.'."
 
 (defun lusty--compute-layout-matrix (items)
   (let* ((max-visible-rows (1- (lusty-max-window-height)))
-         (max-width (lusty-max-window-width))
+         (max-width (lusty-window-width))
          (upper-bound most-positive-fixnum)
          (n-items (length items))
          (lengths-v (make-vector n-items 0))
@@ -839,7 +887,7 @@ does not begin with '.'."
   (let* ((separator-length (length lusty-column-separator))
          (n-items (length lengths-v))
          (max-visible-rows (1- (lusty-max-window-height)))
-         (available-width (lusty-max-window-width))
+         (available-width (lusty-window-width))
          (lengths-h
           ;; Hashes by cons, e.g. (0 . 2), representing the width
           ;; of the column bounded by the range of [0..2].
