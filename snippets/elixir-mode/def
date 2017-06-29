@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: def
+# key: def
+# --
+@doc """
+${5:doc-doc-doc}
+"""
+@spec $1(${4:args-types}) :: ${5:return-type}
+def ${1:function}${2:(${3:args})} do
+$0
+end
