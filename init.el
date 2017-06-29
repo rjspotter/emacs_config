@@ -88,6 +88,9 @@
 ;; Company Mode
 (autoload 'company-mode "company" nil t)
 
+;; Rainbow delimiters
+(autoload 'rainbow-delimiters-mode "rainbow-delimiters" nil t)
+
 ;; CL
 
 (require 'info-look)
@@ -108,6 +111,7 @@
 ;; Elixir
 (add-hook 'elixir-mode-hook 'alchemist-mode)
 (add-hook 'elixir-mode-hook 'company-mode)
+(add-hook 'elixir-mode-hook 'rainbow-delimiters-mode)
 (setq alchemist-hooks-test-on-save t)
 (setq alchemist-hooks-compile-on-save t)
 
@@ -138,6 +142,7 @@
 (add-to-list 'load-path "~/.emacs.d/modes/mustache-mode.el")
 (require 'mustache-mode)
 (add-to-list 'auto-mode-alist '("\\.mustache$" . tpl-mode))
+(add-hook 'mustache-mode-hook 'rainbow-delimiters-mode)
 
 ;;Markdown
 (autoload 'markdown-mode "markdown-mode"
@@ -151,6 +156,7 @@
 ;;Javascript
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-hook 'js2-mode-hook 'rainbow-delimiters-mode)
 (setq js2-bounce-indent-p t)
 (setq js2-mirror-mode nil)
 
@@ -159,6 +165,7 @@
 (require 'coffee-mode)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+(add-hook 'coffee-mode-hook 'rainbow-delimiters-mode)
 (defun coffee-custom ()
   "coffee-mode-hook"
   (set (make-local-variable 'tab-width) 2)
@@ -179,6 +186,7 @@
 (load "~/.emacs.d/modes/haskell-mode/haskell-site-file")
  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'rainbow-delimiters-mode)
 
 ;;Sass
 (require 'sass-mode)
@@ -201,11 +209,11 @@
 
 ;; Ruby
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
-(autoload 'inf-ruby-keys "inf-ruby" "" t)
-(eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
+(add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
 
 (setq ruby-insert-encoding-magic-comment nil)
 
+(add-hook 'ruby-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'ruby-mode-hook
   (lambda ()
     (define-key ruby-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
@@ -214,20 +222,10 @@
 
 ;; Global Useful
 
-(require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
-
 (require 'linum)
 (global-linum-mode 1)
 (setq linum-format " %d ")
 
-;(require 'autotest)
-;(require 'toggle)
-
-;(require 'autopair)
-;(autopair-global-mode 1)
-;(setq autopair-autowrap t)
-;(set-default 'autopair-dont-activate #'(lambda () (eq major-mode 'sldb-mode)))
 
 (defvar skeletons-alist
       '((?\( . ?\))
