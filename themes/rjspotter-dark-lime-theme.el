@@ -47,7 +47,21 @@
  '(link-visited ((t (:foreground "#22aaaa" :underline t))))
  '(button ((t (:underline t))))
  '(header-line ((t (:background "#444444" :foreground "#dddddd")))))
-
+   ;; magit
+ '(magit-branch ((t (:foreground "#eeeeee" :weight bold))))
+ '(magit-diff-context-highlight ((t (:background "#22ff22" :foreground "#eeeeee"))))
+ '(magit-diff-file-header ((t (:foreground "#22ff22"))))
+ '(magit-diffstat-added   ((t (:foreground "#22bb22"))))
+ '(magit-diffstat-removed ((t (:foreground "#882255"))))
+ '(magit-hash ((t (:foreground "#22ff22"))))
+ '(magit-hunk-heading           ((t (:background "#22ff22"))))
+ '(magit-hunk-heading-highlight ((t (:background "#22ff22"))))
+ '(magit-item-highlight ((t :background "#444444")))
+ '(magit-log-author ((t (:foreground "#22ff22"))))
+ '(magit-process-ng ((t (:foreground "#882255" :weight bold))))
+ '(magit-process-ok ((t (:foreground "#22ff22" :weight bold))))
+ '(magit-section-heading        ((t (:foreground "#22ee22" :weight bold))))
+ '(magit-section-highlight      ((t (:background "#444444"))))
 (provide-theme 'rjspotter-dark-lime)
 
 ;; Local Variables:
