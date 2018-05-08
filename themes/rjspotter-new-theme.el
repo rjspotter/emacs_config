@@ -126,6 +126,64 @@
    `(isearch ((t (:background, *normal* :foreground, *regexp*))))
    `(isearch-fail ((t (:background, *warning*))))
    `(lazy-highlight ((t (:background, *operators* :foreground, *visual-selection*))))
+;;;;; company-mode
+   `(company-tooltip ((t (:foreground ,zenburn-fg :background ,zenburn-bg+1))))
+   `(company-tooltip-annotation ((t (:foreground ,zenburn-orange :background ,zenburn-bg+1))))
+   `(company-tooltip-annotation-selection ((t (:foreground ,zenburn-orange :background ,zenburn-bg-1))))
+   `(company-tooltip-selection ((t (:foreground ,zenburn-fg :background ,zenburn-bg-1))))
+   `(company-tooltip-mouse ((t (:background ,zenburn-bg-1))))
+   `(company-tooltip-common ((t (:foreground ,zenburn-green+2))))
+   `(company-tooltip-common-selection ((t (:foreground ,zenburn-green+2))))
+   `(company-scrollbar-fg ((t (:background ,zenburn-bg-1))))
+   `(company-scrollbar-bg ((t (:background ,zenburn-bg+2))))
+   `(company-preview ((t (:background ,zenburn-green+2))))
+   `(company-preview-common ((t (:foreground ,zenburn-green+2 :background ,zenburn-bg-1))))
+;;;;; helm
+   `(helm-header
+     ((t (:foreground ,zenburn-green
+                      :background ,zenburn-bg
+                      :underline nil
+                      :box nil))))
+   `(helm-source-header
+     ((t (:foreground ,zenburn-yellow
+                      :background ,zenburn-bg-1
+                      :underline nil
+                      :weight bold
+                      :box (:line-width -1 :style released-button)))))
+   `(helm-selection ((t (:background ,zenburn-bg+1 :underline nil))))
+   `(helm-selection-line ((t (:background ,zenburn-bg+1))))
+   `(helm-visible-mark ((t (:foreground ,zenburn-bg :background ,zenburn-yellow-2))))
+   `(helm-candidate-number ((t (:foreground ,zenburn-green+4 :background ,zenburn-bg-1))))
+   `(helm-separator ((t (:foreground ,zenburn-red))))
+   `(helm-time-zone-current ((t (:foreground ,zenburn-green+2))))
+   `(helm-time-zone-home ((t (:foreground ,zenburn-red))))
+   `(helm-bookmark-addressbook ((t (:foreground ,zenburn-orange))))
+   `(helm-bookmark-directory ((t (:foreground nil :background nil :inherit helm-ff-directory))))
+   `(helm-bookmark-file ((t (:foreground nil :background nil :inherit helm-ff-file))))
+   `(helm-bookmark-gnus ((t (:foreground ,zenburn-magenta))))
+   `(helm-bookmark-info ((t (:foreground ,zenburn-green+2))))
+   `(helm-bookmark-man ((t (:foreground ,zenburn-yellow))))
+   `(helm-bookmark-w3m ((t (:foreground ,zenburn-magenta))))
+   `(helm-buffer-not-saved ((t (:foreground ,zenburn-red))))
+   `(helm-buffer-process ((t (:foreground ,zenburn-cyan))))
+   `(helm-buffer-saved-out ((t (:foreground ,zenburn-fg))))
+   `(helm-buffer-size ((t (:foreground ,zenburn-fg-1))))
+   `(helm-ff-directory ((t (:foreground ,zenburn-cyan :background ,zenburn-bg :weight bold))))
+   `(helm-ff-file ((t (:foreground ,zenburn-fg :background ,zenburn-bg :weight normal))))
+   `(helm-ff-executable ((t (:foreground ,zenburn-green+2 :background ,zenburn-bg :weight normal))))
+   `(helm-ff-invalid-symlink ((t (:foreground ,zenburn-red :background ,zenburn-bg :weight bold))))
+   `(helm-ff-symlink ((t (:foreground ,zenburn-yellow :background ,zenburn-bg :weight bold))))
+   `(helm-ff-prefix ((t (:foreground ,zenburn-bg :background ,zenburn-yellow :weight normal))))
+   `(helm-grep-cmd-line ((t (:foreground ,zenburn-cyan))))
+   `(helm-grep-file ((t (:foreground ,zenburn-fg))))
+   `(helm-grep-finish ((t (:foreground ,zenburn-green+2))))
+   `(helm-grep-lineno ((t (:foreground ,zenburn-fg-1))))
+   `(helm-grep-match ((t (:foreground nil :background nil :inherit helm-match))))
+   `(helm-grep-running ((t (:foreground ,zenburn-red))))
+   `(helm-match ((t (:foreground ,zenburn-orange :background ,zenburn-bg-1 :weight bold))))
+   `(helm-moccur-buffer ((t (:foreground ,zenburn-cyan))))
+   `(helm-mu-contacts-address-face ((t (:foreground ,zenburn-fg-1))))
+   `(helm-mu-contacts-name-face ((t (:foreground ,zenburn-fg))))
 ;;;;; magit
 ;;;;;; headings and diffs
    `(magit-section-highlight           ((t (:background ,zenburn-bg+05))))

@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "inflections" "inflections.el" (23268 44417
-;;;;;;  901343 215000))
+;;;### (autoloads nil "inflections" "inflections.el" (23282 1367
+;;;;;;  595130 201000))
 ;;; Generated autoloads from inflections.el
 
 (autoload 'inflection-singularize-string "inflections" "\
@@ -20,6 +20,11 @@ Return the pluralized version of STR.
 \(fn STR)" nil nil)
 
 (define-obsolete-function-alias 'pluralize-string 'inflection-pluralize-string)
+
+;;;***
+
+;;;### (autoloads nil nil ("inflections-pkg.el") (23281 65189 965147
+;;;;;;  202000))
 
 ;;;***
 
