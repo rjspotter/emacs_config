@@ -248,6 +248,15 @@
     (define-key minitest-mode-map (kbd "C-c a t") 'minitest-verify-all)
     (define-key minitest-mode-map (kbd "C-c a r") 'minitest-rerun)
     (define-key minitest-mode-map (kbd "C-c a m t b") 'minitest-verify)
+    (define-key minitest-mode-map (kbd "C-c a m t .") 'minitest-verify-single)
+  )
+)
+
+(add-hook 'minitest-compilation-mode-hook
+  (lambda ()
+    (define-key minitest-compilation-mode-map (kbd "C-o") nil)
+    (define-key minitest-compilation-mode-map (kbd "C-c a t") 'minitest-verify-all)
+    (define-key minitest-compilation-mode-map (kbd "C-c a r") 'minitest-rerun)
   )
 )
 
@@ -274,6 +283,8 @@
     (define-key ruby-mode-map (kbd "C-c a i i") 'inf-ruby-console-auto)
   )
 )
+
+(add-hook 'compilation-filter-hook 'inf-ruby-auto-enter)
 
 ;; Global Useful
 
@@ -313,6 +324,8 @@
 (global-set-key (kbd "C-c t") 'multi-term-next)
 (global-set-key (kbd "C-c T") 'multi-term) ;; create a new one
 
+(global-set-key (kbd "M-S-<up>")   'enlarge-window)
+(global-set-key (kbd "M-S-<down>") 'shrink-window)
 ;;stylin
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -347,6 +360,7 @@
 (global-set-key (kbd "C-z") 'goto-line)
 
 (global-set-key (kbd "C-o") 'other-window)
+(global-set-key (kbd "C-u") 'previous-multiframe-window)
 
 (global-set-key (kbd "C-k") 'kill-buffer)
 

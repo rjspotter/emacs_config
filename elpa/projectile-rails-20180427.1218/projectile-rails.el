@@ -1045,9 +1045,9 @@ Will try to look for a template or partial file, and assets file."
   (if (member projectile-rails-server-buffer-name (mapcar 'buffer-name (buffer-list)))
       (switch-to-buffer projectile-rails-server-buffer-name)
     (projectile-rails-with-root
-     (compile (projectile-rails-with-preloader :spring (concat projectile-rails-spring-command " rails server")
+     (compile (projectile-rails-with-preloader :spring (concat projectile-rails-spring-command " rails server -b 0.0.0.0")
                                                :zeus (concat projectile-rails-zeus-command " server")
-                                               :vanilla (concat projectile-rails-vanilla-command " server"))
+                                               :vanilla (concat projectile-rails-vanilla-command " server -b 0.0.0.0"))
               'projectile-rails-server-mode))))
 
 (defun projectile-rails--completion-in-region ()
