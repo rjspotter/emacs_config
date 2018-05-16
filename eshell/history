@@ -1,0 +1,5 @@
+cd
+/bin/bash
+cd code/obtvse2/
+ls
+exit

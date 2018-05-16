@@ -46,6 +46,17 @@
 (global-set-key (kbd "C-x C-g") 'projectile-ripgrep)
 (global-set-key (kbd "C-c g i r") 'ripgrep-regexp)
 
+;; Company Mode
+(autoload 'company-mode "company" nil t)
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; Rainbow delimiters
+(autoload 'rainbow-delimiters-mode "rainbow-delimiters" nil t)
+
+;; Flycheck
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 ;;Snippets
 (require 'yasnippet)
 (setq yas-snippet-dirs
@@ -95,16 +106,6 @@
                           ;try-expand-tag
                           ) t))
 ;; end hippie expand stuff
-
-;; Company Mode
-(autoload 'company-mode "company" nil t)
-(add-hook 'after-init-hook 'global-company-mode)
-
-;; Rainbow delimiters
-(autoload 'rainbow-delimiters-mode "rainbow-delimiters" nil t)
-
-;; Flycheck
-(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; CL
 
@@ -169,8 +170,6 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;;Mustache
-(add-to-list 'load-path "~/.emacs.d/modes/mustache-mode.el")
-(require 'mustache-mode)
 (add-to-list 'auto-mode-alist '("\\.mustache$" . tpl-mode))
 (add-hook 'mustache-mode-hook 'rainbow-delimiters-mode)
 
@@ -186,6 +185,36 @@
 (add-hook 'js2-mode-hook 'company-mode)
 ;(setq js2-bounce-indent-p t)
 ;(setq js2-mirror-mode nil)
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))
+
+(add-hook 'json-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'json-mode-hook 'company-mode)
+(add-hook 'json-mode-hook
+          (lambda ()
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))
+
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+	  '(json-jsonlist)))
 
 ;;Coffee
 (add-to-list 'load-path "~/.emacs.d/modes/coffee-mode")
@@ -268,6 +297,7 @@
 
 (add-hook 'ruby-mode-hook 'projectile-mode)
 
+(require 'projectile-rails)
 (projectile-rails-global-mode)
 (setq projectile-rails-expand-snippet nil)
 
@@ -435,7 +465,7 @@
     ("80cc2866d01d4beeb62e7db06e1b3da3238dfa308dac6b84ca73104b41da4f0d" "64aa574bcf17bcb3991ba2ae2790a1e376751f1a78e93969b7999fafc7397788" "875a26098a8383b7077ed6b420f5f35c9d48ccea41ecf3029482d00fbe299705" "d8e14fb20c3b86f63b7815ca3fbe8cca2783c959efa5553c10b740af11fda8b1" "6804f0a43f217541d825911dffd8b9e8f6520744846976d5c6c3ad1f9f3c15ba" "563dd3ddad50e6887c9bc1aecf296cc3f2edce55537f0db48f719a70d3401131" "6f4c7ba06a17f53ce8fd24339558a320e255a135463f0b52820d2d64d07fa20b" "d6c896faa310e2c894f77c46cc083ae88b5da037d5ff1f06f850e330dcfc19bb" "a29b6383f0ab5550cb33b372b33006119f980fc369c6276a8f6de2ae14511b50" "964fd76d9adab895b54238794ef7e7036c1696bd8a44ed0093810cd467ec988d" "e03cb2cc566c46866bb355d691404cba3bf71d286426d9f142a0e7355b6bf3e6" "3d5f2fe54a9ab976d144f8d19bbc72b074c8a412a6cda0f9d691c37e4c53427c" "ca3b4f9009735476101aa08fcfb0872150810aa22e571d79e2b69193b61f1c86" "4528fb576178303ee89888e8126449341d463001cb38abe0015541eb798d8a23" "a8474a7e7e8951c5c111f80ac20de97139d44f20a8ed04254aa912a0edf501b2" "04731852318149f51dcf8ea7b1cafd20ff890d73ad7e585960a31d641d433893" "569db32037846cb93193d61c602eea9e6a4298ae3c4ee427cba2bcf14abeeef5" "dafd9d8d03e1068a05f98d77930e6cae260401fc9b93d1c03a5283b4db5ad26d" "fcc4badafd60fc0213472e655145fba70a7fa537db9f2aca80ec9edda221741d" "1414739793dd40e6cded535aaab7aa1f85577325312f3c4f7a294ac7464d7355" "32bf5c3ac67a48d910fbe94ccf3a8252b60f6ddf" "16c3a1560cc699bfc8ea13e9acba10045b02aa8d" "d66b5da4870d8838edbf984b1dc31e37efe1257b" "b5d3a19124561e92127c3bd917a6c2ae520c4c10" "c3adda001695657e6da90aa3268bbbf4f6af433b" "101b2a189997144931107b663cf1937ce94acd5a" "07c541895ec9b323bf25dc3c63a8a400dba6d2ca" "f67bc85632a7db951c45fbcdf55456b882f1ce32" "63baf5b4551d57e16ae558d40a0b27c426fbd880" "285a5928d414486528564472e49ce46db448e296" "9f3b064f42e48f3cce4ee007301453e37a871df5" "a71460243d93d271e33a969dd064a663022781d7" "f1ca2dfb5f86a53c386c18a8cc194474f4932a79" "0943252a540b205d7a7e492b33067c6740a0870a" default)))
  '(package-selected-packages
    (quote
-    (helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete))))
+    (handlebars-mode handlebars-sgml-mode prettier-js helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

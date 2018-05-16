@@ -1,1 +1,1 @@
-("~/code/obtvse2/" "~/code/sample/" "/usr/local/rbenv/" "~/.emacs.d/" "~/code/mission-control/")
+("~/.emacs.d/" "~/code/obtvse2/" "~/code/sample/" "/usr/local/rbenv/" "~/code/mission-control/")
