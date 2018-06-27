@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/code/obtvse2/" "~/code/sample/" "/usr/local/rbenv/" "~/code/mission-control/")
+("~/code/litmus/" "~/code/obtvse2/" "~/code/kata/" "~/code/milk_crate/" "~/.emacs.d/" "~/code/sample/" "/usr/local/rbenv/" "~/code/mission-control/")
