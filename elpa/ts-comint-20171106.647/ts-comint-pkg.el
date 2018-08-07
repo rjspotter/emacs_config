@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "ts-comint" "20171106.647" "Run a Typescript interpreter in an inferior process window." 'nil :commit "8817dc7b3a6eb78c3cad42e5677c2113274a1963" :keywords '("typescript" "node" "inferior-mode" "convenience") :authors '(("Paul Huff" . "paul.huff@gmail.com")) :maintainer '("Paul Huff" . "paul.huff@gmail.com") :url "https://github.com/josteink/ts-comint")
