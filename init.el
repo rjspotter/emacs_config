@@ -146,8 +146,11 @@
 
 ;;ML
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
-  (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
-  (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
+(autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
+(autoload 'camldebug "camldebug" "Run the Caml debugger" t)
+
+;; (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+;; (add-hook 'tuareg-mode-hook 'utop-minor-mode)
 
 ;;Puppet
 (require 'puppet-mode)
@@ -316,6 +319,19 @@
 
 (add-to-list 'auto-mode-alist '("\\.re$" . reason-mode))
 (add-to-list 'auto-mode-alist '("\\.rei$" . reason-mode))
+
+(require 'utop)
+;;(setq utop-command "opam config exec -- rtop -emacs")
+(setq utop-command "rtop -emacs")
+(add-hook 'reason-mode-hook #'utop-minor-mode)
+
+(add-hook 'reason-mode-hook
+  (lambda ()
+    (define-key reason-mode-map (kbd "C-c a i b") 'utop-eval-buffer)
+    (define-key reason-mode-map (kbd "C-c a i r") 'utop-eval-region)
+    (define-key reason-mode-map (kbd "C-c a i i") 'utop)
+  )
+)
 
 ;; Ruby
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
