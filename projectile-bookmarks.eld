@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/code/obtvse2/" "~/code/legal_example/" "~/code/litmus/" "~/code/ibfe/" "~/code/rediscovering_javascript/" "~/code/kata/" "~/code/milk_crate/" "~/code/sample/" "/usr/local/rbenv/" "~/code/mission-control/")
+("~/.emacs.d/" "~/code/adonis/" "~/code/admin.adonis/" "~/code/enroll.adonis/" "/usr/local/rbenv/")
