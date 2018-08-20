@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/code/adonis/" "~/code/admin.adonis/" "~/code/enroll.adonis/" "/usr/local/rbenv/")
+("~/.emacs.d/" "/usr/local/rbenv/")
