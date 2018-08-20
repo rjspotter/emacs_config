@@ -414,6 +414,10 @@
 (global-set-key "{" 'skeleton-pair-insert-maybe)
 (global-set-key "\"" 'skeleton-pair-insert-maybe)
 
+;; Terminals
+
+(setq explicit-shell-file-name "/usr/bin/fish")
+
 (autoload 'multi-term "multi-term" nil t)
 (autoload 'multi-term-next "multi-term" nil t)
 
