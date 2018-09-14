@@ -346,6 +346,7 @@
 
 (add-hook 'ruby-mode-hook 'rainbow-delimiters-mode)
 
+;; Start minitest setup
 (add-hook 'ruby-mode-hook 'minitest-mode)
 (eval-after-load 'minitest
   '(minitest-install-snippets))
@@ -366,6 +367,40 @@
     (define-key minitest-compilation-mode-map (kbd "C-c a r") 'minitest-rerun)
   )
 )
+;; End Minitest setup
+
+;; Start Rspec Setup
+;; (add-hook 'ruby-mode-hook 'rspec-mode)
+;; (eval-after-load 'rspec-mode
+;;  '(rspec-install-snippets))
+;; (add-hook 'rspec-mode-hook
+;;   (lambda ()
+;;     (define-key rspec-mode-map (kbd "C-c a t") 'rspec-verify-all)
+;;     (define-key rspec-mode-map (kbd "C-c a r") 'rspec-rerun)
+;;     (define-key rspec-mode-map (kbd "C-c a m t b") 'rspec-verify)
+;;     (define-key rspec-mode-map (kbd "C-c a m t .") 'rspec-verify-single)
+;;   )
+;; )
+;; (add-hook 'rspec-verifiable-mode-hook
+;;   (lambda ()
+;;     (define-key rspec-verifiable-mode-map (kbd "C-c a t") 'rspec-verify-all)
+;;     (define-key rspec-verifiable-mode-map (kbd "C-c a r") 'rspec-rerun)
+;;     (define-key rspec-verifiable-mode-map (kbd "C-c a m t b") 'rspec-verify)
+;;     (define-key rspec-verifiable-mode-map (kbd "C-c a m t .") 'rspec-verify-method)
+;;   )
+;; )
+;; (add-hook 'rspec-compilation-mode-hook
+;;   (lambda ()
+;;     (define-key rspec-compilation-mode-map (kbd "C-o") nil)
+;;     (define-key rspec-compilation-mode-map (kbd "C-c a t") 'rspec-verify-all)
+;;     (define-key rspec-compilation-mode-map (kbd "C-c a r") 'rspec-rerun)
+;;   )
+;; )
+;; (setq rspec-use-rvm nil)
+;; (setq rspec-use-spring-when-possible nil)
+;; (add-hook 'after-init-hook 'inf-ruby-switch-setup)
+
+;; End Rspec Setup
 
 (require 'robe)
 (add-hook 'ruby-mode-hook 'robe-mode)
