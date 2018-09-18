@@ -346,6 +346,9 @@
 
 (add-hook 'ruby-mode-hook 'rainbow-delimiters-mode)
 
+(add-hook 'ruby-mode-hook #'rubocopfmt-mode)
+(add-hook 'ruby-mode-hook 'rubocop-mode)
+
 ;; Start minitest setup
 (add-hook 'ruby-mode-hook 'minitest-mode)
 (eval-after-load 'minitest
