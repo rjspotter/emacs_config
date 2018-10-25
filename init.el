@@ -45,6 +45,11 @@
 ;; Ripgrep find stuff better
 (global-set-key (kbd "C-x C-g") 'projectile-ripgrep)
 (global-set-key (kbd "C-c g i r") 'ripgrep-regexp)
+(add-hook 'ripgrep-search-mode-hook
+  (lambda ()
+    (define-key ripgrep-search-mode-map (kbd "C-o") nil)
+  )
+)
 
 ;; Company Mode
 (autoload 'company-mode "company" nil t)
@@ -348,58 +353,58 @@
 (add-hook 'ruby-mode-hook 'rubocop-mode)
 
 ;; Start minitest setup
-(add-hook 'ruby-mode-hook 'minitest-mode)
-(eval-after-load 'minitest
-  '(minitest-install-snippets))
+;; (add-hook 'ruby-mode-hook 'minitest-mode)
+;; (eval-after-load 'minitest
+;;   '(minitest-install-snippets))
 
-(add-hook 'minitest-mode-hook
-  (lambda ()
-    (define-key minitest-mode-map (kbd "C-c a t") 'minitest-verify-all)
-    (define-key minitest-mode-map (kbd "C-c a r") 'minitest-rerun)
-    (define-key minitest-mode-map (kbd "C-c a m t b") 'minitest-verify)
-    (define-key minitest-mode-map (kbd "C-c a m t .") 'minitest-verify-single)
-  )
-)
+;; (add-hook 'minitest-mode-hook
+;;   (lambda ()
+;;     (define-key minitest-mode-map (kbd "C-c a t") 'minitest-verify-all)
+;;     (define-key minitest-mode-map (kbd "C-c a r") 'minitest-rerun)
+;;     (define-key minitest-mode-map (kbd "C-c a m t b") 'minitest-verify)
+;;     (define-key minitest-mode-map (kbd "C-c a m t .") 'minitest-verify-single)
+;;   )
+;; )
 
-(add-hook 'minitest-compilation-mode-hook
-  (lambda ()
-    (define-key minitest-compilation-mode-map (kbd "C-o") nil)
-    (define-key minitest-compilation-mode-map (kbd "C-c a t") 'minitest-verify-all)
-    (define-key minitest-compilation-mode-map (kbd "C-c a r") 'minitest-rerun)
-  )
-)
+;; (add-hook 'minitest-compilation-mode-hook
+;;   (lambda ()
+;;     (define-key minitest-compilation-mode-map (kbd "C-o") nil)
+;;     (define-key minitest-compilation-mode-map (kbd "C-c a t") 'minitest-verify-all)
+;;     (define-key minitest-compilation-mode-map (kbd "C-c a r") 'minitest-rerun)
+;;   )
+;; )
 ;; End Minitest setup
 
 ;; Start Rspec Setup
-;; (add-hook 'ruby-mode-hook 'rspec-mode)
-;; (eval-after-load 'rspec-mode
-;;  '(rspec-install-snippets))
-;; (add-hook 'rspec-mode-hook
-;;   (lambda ()
-;;     (define-key rspec-mode-map (kbd "C-c a t") 'rspec-verify-all)
-;;     (define-key rspec-mode-map (kbd "C-c a r") 'rspec-rerun)
-;;     (define-key rspec-mode-map (kbd "C-c a m t b") 'rspec-verify)
-;;     (define-key rspec-mode-map (kbd "C-c a m t .") 'rspec-verify-single)
-;;   )
-;; )
-;; (add-hook 'rspec-verifiable-mode-hook
-;;   (lambda ()
-;;     (define-key rspec-verifiable-mode-map (kbd "C-c a t") 'rspec-verify-all)
-;;     (define-key rspec-verifiable-mode-map (kbd "C-c a r") 'rspec-rerun)
-;;     (define-key rspec-verifiable-mode-map (kbd "C-c a m t b") 'rspec-verify)
-;;     (define-key rspec-verifiable-mode-map (kbd "C-c a m t .") 'rspec-verify-method)
-;;   )
-;; )
-;; (add-hook 'rspec-compilation-mode-hook
-;;   (lambda ()
-;;     (define-key rspec-compilation-mode-map (kbd "C-o") nil)
-;;     (define-key rspec-compilation-mode-map (kbd "C-c a t") 'rspec-verify-all)
-;;     (define-key rspec-compilation-mode-map (kbd "C-c a r") 'rspec-rerun)
-;;   )
-;; )
-;; (setq rspec-use-rvm nil)
-;; (setq rspec-use-spring-when-possible nil)
-;; (add-hook 'after-init-hook 'inf-ruby-switch-setup)
+(add-hook 'ruby-mode-hook 'rspec-mode)
+(eval-after-load 'rspec-mode
+ '(rspec-install-snippets))
+(add-hook 'rspec-mode-hook
+  (lambda ()
+    (define-key rspec-mode-map (kbd "C-c a t") 'rspec-verify-all)
+    (define-key rspec-mode-map (kbd "C-c a r") 'rspec-rerun)
+    (define-key rspec-mode-map (kbd "C-c a m t b") 'rspec-verify)
+    (define-key rspec-mode-map (kbd "C-c a m t .") 'rspec-verify-single)
+  )
+)
+(add-hook 'rspec-verifiable-mode-hook
+  (lambda ()
+    (define-key rspec-verifiable-mode-map (kbd "C-c a t") 'rspec-verify-all)
+    (define-key rspec-verifiable-mode-map (kbd "C-c a r") 'rspec-rerun)
+    (define-key rspec-verifiable-mode-map (kbd "C-c a m t b") 'rspec-verify)
+    (define-key rspec-verifiable-mode-map (kbd "C-c a m t .") 'rspec-verify-method)
+  )
+)
+(add-hook 'rspec-compilation-mode-hook
+  (lambda ()
+    (define-key rspec-compilation-mode-map (kbd "C-o") nil)
+    (define-key rspec-compilation-mode-map (kbd "C-c a t") 'rspec-verify-all)
+    (define-key rspec-compilation-mode-map (kbd "C-c a r") 'rspec-rerun)
+  )
+)
+(setq rspec-use-rvm nil)
+(setq rspec-use-spring-when-possible nil)
+(add-hook 'after-init-hook 'inf-ruby-switch-setup)
 
 ;; End Rspec Setup
 
