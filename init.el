@@ -263,6 +263,12 @@
 
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
+(add-hook 'typescript-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c a i i") 'run-ts)
+            (local-set-key (kbd "C-c a i r") 'ts-send-region-and-go)
+            (local-set-key (kbd "C-c a i b") 'ts-send-buffer-and-go)))
+
 ;;Coffee
 (require 'coffee-mode)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
