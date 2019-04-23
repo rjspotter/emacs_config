@@ -314,6 +314,7 @@
     (define-key julia-mode-map (kbd "C-c a i p") 'julia-repl)
   )
 )
+(setq julia-indent-offset 2)
 
 ;;Octave
 (autoload 'octave-mode "octave-mod" nil t)
