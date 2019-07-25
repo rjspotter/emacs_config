@@ -327,6 +327,24 @@
             (if (eq window-system 'x)
                 (font-lock-mode 1))))
 
+;; Scala
+(add-hook 'ensime-mode-hook
+  (lambda ()
+    ;; (define-key ensime-mode-map (kbd "C-c a i b") 'ammonite-term-repl-load-file)
+    ;; (define-key ensime-mode-map (kbd "C-c a i r") 'ammonite-term-repl-send-region)
+    ;; (define-key ensime-mode-map (kbd "C-c a i i") 'run-ammonite)
+    (define-key ensime-mode-map (kbd "C-c a i b") 'ensime-inf-eval-buffer)
+    (define-key ensime-mode-map (kbd "C-c a i r") 'ensime-inf-eval-region)
+    (define-key ensime-mode-map (kbd "C-c a i i") 'ensime-inf-switch)
+    (define-key ensime-mode-map (kbd "C-c a i p") 'ensime-sbt-switch)
+    (define-key ensime-mode-map (kbd "C-c a t") 'ensime-sbt-do-test)
+    (define-key ensime-mode-map (kbd "C-c a r") 'ensime-sbt-do-test-quick-dwim)
+    (define-key ensime-mode-map (kbd "C-c a m t b") 'ensime-sbt-do-test-dwim)
+    (define-key ensime-mode-map (kbd "C-c a m t .") 'ensime-sbt-do-test-only-dwim)
+
+    (add-hook 'before-save-hook 'ensime-format-source)
+  )
+)
 ;; ReasonML
 (defun shell-cmd (cmd)
   "Returns the stdout output of a shell command or nil if the command returned
