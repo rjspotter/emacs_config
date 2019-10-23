@@ -509,6 +509,26 @@
 
 (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter)
 
+;; SQL mode
+;; Capitalize keywords in SQL mode
+(add-hook 'sql-mode-hook 'sqlup-mode)
+;; Capitalize keywords in an interactive session (e.g. psql)
+(add-hook 'sql-interactive-mode-hook 'sqlup-mode)
+
+(eval-after-load 'flycheck
+  '(flycheck-soar-setup))
+
+(setq sql-indent-offset 2)
+
+
+(add-hook 'sql-mode-hook
+  (lambda ()
+    (define-key sql-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)
+    (define-key sql-mode-map (kbd "C-c a i m") 'sql-send-region-and-go)
+  )
+)
+
 ;; Global Useful
 
 (require 'linum)
