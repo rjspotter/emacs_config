@@ -516,13 +516,45 @@
 (add-hook 'sql-interactive-mode-hook 'sqlup-mode)
 
 (eval-after-load 'flycheck
-  '(flycheck-soar-setup))
+  '(progn
+     (flycheck-add-mode 'sql-sqlint 'sql-mode)))
+
+;; (eval-after-load 'flycheck
+;;   '(flycheck-soar-setup))
+
+;; (flycheck-define-checker sql-sqlcheck
+;;   "Identify anti-patterns"
+;;   :command ("sqlcheck" "-v" "-f" source-inplace)
+;;   ;; :standard-input t
+;;   :error-patterns
+;;   (
+;;    ;; (info line-start (file-name) ":" line ":" column ": C: "
+;;    ;;       (optional (id (one-or-more (not (any ":")))) ": ") (message) line-end)
+;;    ;; (warning line-start (file-name) ":" line ":" column ": W: "
+;;    ;;          (optional (id (one-or-more (not (any ":")))) ": ") (message)
+;;    ;;          line-end)
+;;    (error line-start
+;;           (minimal-match (one-or-more (not-char "[")))
+;;           "[" (file-name) "]: (HIGH RISK)" (message (one-or-more (not-char "[")))
+;;           "[Matching Expression:" (minimal-match (one-or-more not-newline)) "]"line-end)
+;;    )
+;;   :modes (sql-mode)
+;;   :predicate (lambda () (buffer-file-name))
+;;   )
+;; (add-to-list 'flycheck-checkers 'sql-sqlcheck t)
+;;
+;; (eval-after-load 'flycheck
+;;   '(progn
+;;      (flycheck-add-mode 'sql-sqlcheck 'sql-mode)))
+;;
+;; (flycheck-add-next-checker 'sql-sqlint 'sql-sqlcheck)
 
 (setq sql-indent-offset 2)
 
 
 (add-hook 'sql-mode-hook
   (lambda ()
+    (add-hook 'before-save-hook #'format-sql-buffer)
     (define-key sql-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
     (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)
     (define-key sql-mode-map (kbd "C-c a i m") 'sql-send-region-and-go)
@@ -530,6 +562,7 @@
 )
 
 ;; Global Useful
+
 
 (require 'linum)
 (global-linum-mode 1)
@@ -675,6 +708,17 @@
 
 ;; Auto load rjspotter-new theme in terminal mode
 (add-hook 'after-init-hook (lambda () (load-theme 'rjspotter-new)))
+
+(defun package-reinstall-all-activated-packages ()
+  "Refresh and reinstall all activated packages."
+  (interactive)
+  (package-refresh-contents)
+  (dolist (package-name package-activated-list)
+    (when (package-installed-p package-name)
+      (unless (ignore-errors                   ;some packages may fail to install
+                (package-reinstall package-name))
+        (warn "Package %s failed to reinstall" package-name)))))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
