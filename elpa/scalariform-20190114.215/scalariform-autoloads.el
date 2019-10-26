@@ -1,10 +1,12 @@
 ;;; scalariform-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "scalariform" "scalariform.el" (23799 61606
-;;;;;;  735076 665000))
+;;;### (autoloads nil "scalariform" "scalariform.el" (0 0 0 0))
 ;;; Generated autoloads from scalariform.el
 
 (autoload 'scalariform-format-region "scalariform" "\
@@ -19,11 +21,14 @@ Format the region or buffer.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "scalariform" '("scalariform-")))
+
 ;;;***
 
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; scalariform-autoloads.el ends here

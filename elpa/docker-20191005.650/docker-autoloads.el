@@ -1,16 +1,19 @@
 ;;; docker-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "docker" "docker.el" (23981 1373 515507 216000))
+;;;### (autoloads nil "docker" "docker.el" (0 0 0 0))
 ;;; Generated autoloads from docker.el
  (autoload 'docker "docker" nil t)
 
 ;;;***
 
-;;;### (autoloads nil "docker-compose" "docker-compose.el" (23981
-;;;;;;  1373 503507 576000))
+;;;### (autoloads nil "docker-compose" "docker-compose.el" (0 0 0
+;;;;;;  0))
 ;;; Generated autoloads from docker-compose.el
 
 (autoload 'docker-compose-build "docker-compose" "\
@@ -84,10 +87,12 @@ Run \"docker-compose config ARGS\".
 \(fn ARGS)" t nil)
  (autoload 'docker-compose "docker-compose" nil t)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-compose" '("docker-compose-")))
+
 ;;;***
 
-;;;### (autoloads nil "docker-container" "docker-container.el" (23981
-;;;;;;  1373 523506 975000))
+;;;### (autoloads nil "docker-container" "docker-container.el" (0
+;;;;;;  0 0 0))
 ;;; Generated autoloads from docker-container.el
 
 (autoload 'docker-container-attach "docker-container" "\
@@ -187,10 +192,11 @@ List docker containers.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-container" '("docker-container-")))
+
 ;;;***
 
-;;;### (autoloads nil "docker-image" "docker-image.el" (23981 1373
-;;;;;;  539506 497000))
+;;;### (autoloads nil "docker-image" "docker-image.el" (0 0 0 0))
 ;;; Generated autoloads from docker-image.el
 
 (autoload 'docker-pull "docker-image" "\
@@ -221,10 +227,12 @@ List docker images.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-image" '("docker-image-")))
+
 ;;;***
 
-;;;### (autoloads nil "docker-machine" "docker-machine.el" (23981
-;;;;;;  1373 499507 695000))
+;;;### (autoloads nil "docker-machine" "docker-machine.el" (0 0 0
+;;;;;;  0))
 ;;; Generated autoloads from docker-machine.el
 
 (autoload 'docker-machine-config "docker-machine" "\
@@ -292,10 +300,12 @@ List docker machines.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-machine" '("docker-machine-")))
+
 ;;;***
 
-;;;### (autoloads nil "docker-network" "docker-network.el" (23981
-;;;;;;  1373 491507 936000))
+;;;### (autoloads nil "docker-network" "docker-network.el" (0 0 0
+;;;;;;  0))
 ;;; Generated autoloads from docker-network.el
 
 (autoload 'docker-network-rm "docker-network" "\
@@ -308,10 +318,26 @@ List docker networks.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-network" '("docker-network-")))
+
 ;;;***
 
-;;;### (autoloads nil "docker-volume" "docker-volume.el" (23981 1373
-;;;;;;  535506 617000))
+;;;### (autoloads nil "docker-process" "docker-process.el" (0 0 0
+;;;;;;  0))
+;;; Generated autoloads from docker-process.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-process" '("docker-")))
+
+;;;***
+
+;;;### (autoloads nil "docker-utils" "docker-utils.el" (0 0 0 0))
+;;; Generated autoloads from docker-utils.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-utils" '("docker-utils-")))
+
+;;;***
+
+;;;### (autoloads nil "docker-volume" "docker-volume.el" (0 0 0 0))
 ;;; Generated autoloads from docker-volume.el
 
 (autoload 'docker-volume-dired "docker-volume" "\
@@ -329,10 +355,12 @@ List docker volumes.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-volume" '("docker-volume-")))
+
 ;;;***
 
-;;;### (autoloads nil nil ("docker-group.el" "docker-pkg.el" "docker-process.el"
-;;;;;;  "docker-utils.el") (23981 1373 547506 257000))
+;;;### (autoloads nil nil ("docker-group.el" "docker-pkg.el") (0
+;;;;;;  0 0 0))
 
 ;;;***
 
@@ -340,5 +368,6 @@ List docker volumes.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; docker-autoloads.el ends here

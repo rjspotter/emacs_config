@@ -1,10 +1,12 @@
 ;;; helm-rb-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "helm-rb" "helm-rb.el" (23400 45662 383078
-;;;;;;  246000))
+;;;### (autoloads nil "helm-rb" "helm-rb.el" (0 0 0 0))
 ;;; Generated autoloads from helm-rb.el
 
 (autoload 'helm-rb "helm-rb" "\
@@ -14,10 +16,11 @@ the program's path to `helm-rb-get-methods-program' variable.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-rb" '("helm-rb-")))
+
 ;;;***
 
-;;;### (autoloads nil nil ("helm-rb-pkg.el") (23400 45662 423077
-;;;;;;  153000))
+;;;### (autoloads nil nil ("helm-rb-pkg.el") (0 0 0 0))
 
 ;;;***
 
@@ -25,5 +28,6 @@ the program's path to `helm-rb-get-methods-program' variable.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; helm-rb-autoloads.el ends here

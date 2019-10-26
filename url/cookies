@@ -2,9 +2,8 @@
 ;; Automatically generated file!!! DO NOT EDIT!!!
 
 (setq url-cookie-storage
- '(("marmalade-repo.org"
-  [url-cookie "connect.sid" "Ng0skXSoFxh9gjmpOezFjeDe.4s9bONfD0ZLh52MKzteX%2F4R%2FvsT5EX%2Fit2Dml7oTj8A" "Tue, 30 Apr 2013 10:02:08 GMT" "/" "marmalade-repo.org" nil]
-  [url-cookie "httpOnly" nil "Tue, 30 Apr 2013 10:02:08 GMT" "/" "marmalade-repo.org" nil]))
+ '((".google.com"
+  [url-cookie "NID" "190=ABpnEZDjpJioU9eEda5zkojBvN-ihhNKsOXL46R7G9xDpxmw7T-TP0Ugq_z8vRutu3tlvGCnVPQx866Ia70K8TJwrsTgeLn82nZYUZDlNGnypaQOqlzFiGUKagaqxvbzBiTXUHF0Nja8qTSeSTWAD9ChPziT1VcHSYvikfyMGcA" "Sat, 25-Apr-2020 22:04:01 GMT" "/" ".google.com" nil]))
 )
 (setq url-cookie-secure-storage
  'nil)

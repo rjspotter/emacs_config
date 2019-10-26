@@ -1,10 +1,13 @@
 ;;; elm-yasnippets-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "elm-yasnippets" "elm-yasnippets.el" (23400
-;;;;;;  45677 678660 81000))
+;;;### (autoloads nil "elm-yasnippets" "elm-yasnippets.el" (0 0 0
+;;;;;;  0))
 ;;; Generated autoloads from elm-yasnippets.el
 
 (autoload 'elm-snippets-initialize "elm-yasnippets" "\
@@ -16,8 +19,7 @@
 
 ;;;***
 
-;;;### (autoloads nil nil ("elm-yasnippets-pkg.el") (23400 45677
-;;;;;;  670660 300000))
+;;;### (autoloads nil nil ("elm-yasnippets-pkg.el") (0 0 0 0))
 
 ;;;***
 
@@ -25,5 +27,6 @@
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; elm-yasnippets-autoloads.el ends here

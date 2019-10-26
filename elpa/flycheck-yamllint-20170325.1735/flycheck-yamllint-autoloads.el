@@ -1,10 +1,13 @@
 ;;; flycheck-yamllint-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "flycheck-yamllint" "flycheck-yamllint.el"
-;;;;;;  (23400 45672 810793 149000))
+;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from flycheck-yamllint.el
 
 (autoload 'flycheck-yamllint-setup "flycheck-yamllint" "\
@@ -18,5 +21,6 @@ Setup Flycheck YAMLLint integration.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; flycheck-yamllint-autoloads.el ends here

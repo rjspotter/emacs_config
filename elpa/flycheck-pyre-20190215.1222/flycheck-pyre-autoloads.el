@@ -1,10 +1,12 @@
 ;;; flycheck-pyre-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "flycheck-pyre" "flycheck-pyre.el" (23916 2885
-;;;;;;  429850 879000))
+;;;### (autoloads nil "flycheck-pyre" "flycheck-pyre.el" (0 0 0 0))
 ;;; Generated autoloads from flycheck-pyre.el
 
 (autoload 'flycheck-pyre-setup "flycheck-pyre" "\
@@ -12,10 +14,11 @@ Setup Flycheck Pyre.
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "flycheck-pyre" '("flycheck-pyre-")))
+
 ;;;***
 
-;;;### (autoloads nil nil ("flycheck-pyre-pkg.el") (23916 2885 417851
-;;;;;;  228000))
+;;;### (autoloads nil nil ("flycheck-pyre-pkg.el") (0 0 0 0))
 
 ;;;***
 
@@ -23,5 +26,6 @@ Setup Flycheck Pyre.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; flycheck-pyre-autoloads.el ends here

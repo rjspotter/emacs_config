@@ -1,10 +1,13 @@
 ;;; projectile-ripgrep-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
 ;;;### (autoloads nil "projectile-ripgrep" "projectile-ripgrep.el"
-;;;;;;  (23452 11797 625781 423000))
+;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from projectile-ripgrep.el
 
 (autoload 'projectile-ripgrep "projectile-ripgrep" "\
@@ -21,5 +24,6 @@ regular expression.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; projectile-ripgrep-autoloads.el ends here

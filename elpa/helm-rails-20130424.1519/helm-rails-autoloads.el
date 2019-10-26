@@ -1,9 +1,15 @@
 ;;; helm-rails-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil nil ("helm-rails.el") (23400 45662 807066 653000))
+;;;### (autoloads nil "helm-rails" "helm-rails.el" (0 0 0 0))
+;;; Generated autoloads from helm-rails.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-rails" '("helm-rails-")))
 
 ;;;***
 
@@ -11,5 +17,6 @@
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; helm-rails-autoloads.el ends here

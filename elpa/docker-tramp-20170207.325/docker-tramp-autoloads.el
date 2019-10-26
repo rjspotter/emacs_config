@@ -1,10 +1,12 @@
 ;;; docker-tramp-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "docker-tramp" "docker-tramp.el" (23981 1371
-;;;;;;  635563 592000))
+;;;### (autoloads nil "docker-tramp" "docker-tramp.el" (0 0 0 0))
 ;;; Generated autoloads from docker-tramp.el
 
 (defvar docker-tramp-docker-options nil "\
@@ -30,10 +32,12 @@ Add docker tramp method.
 
 (eval-after-load 'tramp '(progn (docker-tramp-add-method) (tramp-set-completion-function docker-tramp-method docker-tramp-completion-function-alist)))
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "docker-tramp" '("docker-tramp-")))
+
 ;;;***
 
 ;;;### (autoloads nil nil ("docker-tramp-compat.el" "docker-tramp-pkg.el")
-;;;;;;  (23981 1371 643563 351000))
+;;;;;;  (0 0 0 0))
 
 ;;;***
 
@@ -41,5 +45,6 @@ Add docker tramp method.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; docker-tramp-autoloads.el ends here

@@ -1,10 +1,27 @@
 ;;; reason-mode-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "reason-mode" "reason-mode.el" (23855 49497
-;;;;;;  993436 880000))
+;;;### (autoloads nil "reason-indent" "reason-indent.el" (0 0 0 0))
+;;; Generated autoloads from reason-indent.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "reason-indent" '("reason-")))
+
+;;;***
+
+;;;### (autoloads nil "reason-interaction" "reason-interaction.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from reason-interaction.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "reason-interaction" '("reason-")))
+
+;;;***
+
+;;;### (autoloads nil "reason-mode" "reason-mode.el" (0 0 0 0))
 ;;; Generated autoloads from reason-mode.el
 
 (autoload 'reason-mode "reason-mode" "\
@@ -16,9 +33,11 @@ Major mode for Reason code.
 
 (add-to-list 'auto-mode-alist '("\\.rei?\\'" . reason-mode))
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "reason-mode" '("reason-")))
+
 ;;;***
 
-;;;### (autoloads nil "refmt" "refmt.el" (23855 49498 1436 648000))
+;;;### (autoloads nil "refmt" "refmt.el" (0 0 0 0))
 ;;; Generated autoloads from refmt.el
 
 (autoload 'refmt-before-save "refmt" "\
@@ -27,10 +46,11 @@ Add this to .emacs to run refmt on the current buffer when saving:
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "refmt" '("reason--" "refmt" "apply-refmt")))
+
 ;;;***
 
-;;;### (autoloads nil nil ("reason-indent.el" "reason-interaction.el"
-;;;;;;  "reason-mode-pkg.el") (23855 49498 9436 414000))
+;;;### (autoloads nil nil ("reason-mode-pkg.el") (0 0 0 0))
 
 ;;;***
 
@@ -38,5 +58,6 @@ Add this to .emacs to run refmt on the current buffer when saving:
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; reason-mode-autoloads.el ends here

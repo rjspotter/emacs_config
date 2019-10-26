@@ -1,10 +1,12 @@
 ;;; pgdevenv-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory #$) (car load-path))))
+
 
-;;;### (autoloads nil "pgdevenv" "pgdevenv.el" (23984 54336 203648
-;;;;;;  403000))
+;;;### (autoloads nil "pgdevenv" "pgdevenv.el" (0 0 0 0))
 ;;; Generated autoloads from pgdevenv.el
 
 (autoload 'pgdev-open-shell "pgdevenv" "\
@@ -77,10 +79,12 @@ Must be run from a pgdev shell, visit the postgresql.conf file
 
 \(fn)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pgdevenv" '("pgdev-")))
+
 ;;;***
 
-;;;### (autoloads nil "pgsql-minor-mode" "pgsql-minor-mode.el" (23984
-;;;;;;  54336 195648 644000))
+;;;### (autoloads nil "pgsql-minor-mode" "pgsql-minor-mode.el" (0
+;;;;;;  0 0 0))
 ;;; Generated autoloads from pgsql-minor-mode.el
 
 (autoload 'pgsql-beginning-of-query "pgsql-minor-mode" "\
@@ -115,10 +119,11 @@ postgresql sql minor mode.
 
 \(fn &optional ARG)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "pgsql-minor-mode" '("pgsql-" "*pgsql-")))
+
 ;;;***
 
-;;;### (autoloads nil nil ("pgdevenv-pkg.el") (23984 54336 191648
-;;;;;;  767000))
+;;;### (autoloads nil nil ("pgdevenv-pkg.el") (0 0 0 0))
 
 ;;;***
 
@@ -126,5 +131,6 @@ postgresql sql minor mode.
 ;; version-control: never
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
+;; coding: utf-8
 ;; End:
 ;;; pgdevenv-autoloads.el ends here
