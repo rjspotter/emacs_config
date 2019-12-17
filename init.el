@@ -645,7 +645,7 @@
 
 (global-set-key (kbd "C-z") 'goto-line)
 (global-set-key (kbd "C-o") 'other-window)
-(global-set-key (kbd "C-i") 'previous-multiframe-window)
+;;(global-set-key (kbd "C-i") 'previous-multiframe-window)
 (global-set-key (kbd "C-k") 'kill-buffer)
 
 
