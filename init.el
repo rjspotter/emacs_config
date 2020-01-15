@@ -519,6 +519,11 @@
 
 ;;(add-to-list 'sqlup-blacklist "id")
 
+;; sqlformat
+(setq sqlformat-command 'pgformatter)
+(setq sqlformat-args '("-s" "2"))
+(add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
+
 (eval-after-load 'flycheck
   '(progn
      (flycheck-add-mode 'sql-sqlint 'sql-mode)))
@@ -563,6 +568,9 @@
     (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)
     (define-key sql-mode-map (kbd "C-c a i m") 'sql-send-region-and-go)
     (define-key sql-mode-map (kbd "C-c a i b") 'sql-send-buffer)
+    (define-key sql-mode-map (kbd "C-c a f b") 'sqlformat-buffer)
+    (define-key sql-mode-map (kbd "C-c a f r") 'sqlformat-region)
+    (define-key sql-mode-map (kbd "C-c a f s") 'sqlformat-on-save-mode)
   )
 )
 
@@ -591,7 +599,7 @@
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
 (global-set-key "\"" 'skeleton-pair-insert-maybe)
-;; (global-set-key "' 'skeleton-pair-insert-maybe)
+(global-set-key "'" 'skeleton-pair-insert-maybe)
 
 ;; Terminals
 
