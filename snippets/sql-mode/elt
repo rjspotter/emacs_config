@@ -1,0 +1,10 @@
+# name: elt_is_current (et al)
+# --
+AND
+"$1".ELT_IS_CURRENT = TRUE
+AND
+"$1".ELT_IS_DELETED = FALSE
+AND
+"$1".ELT_START_DATE <= CURRENT_TIMESTAMP
+AND
+"$1".ELT_END_DATE IS NULL

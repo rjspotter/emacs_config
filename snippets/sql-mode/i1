@@ -1,0 +1,12 @@
+# name: inner join first/top match
+# --
+INNER JOIN "$1" ON "$1"."$2_id" = "$2s"."id"
+  AND "$1"."created_at" = (
+    SELECT
+      max("$1_deux"."created_at")
+    FROM
+      "$1" AS "$1_deux"
+    WHERE
+      "$1_deux"."$2_id" = "$2s"."id"
+    ORDER BY
+      "$1_deux"."created_at" DESC)
