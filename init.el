@@ -530,8 +530,8 @@
   '(progn
      (flycheck-add-mode 'sql-sqlint 'sql-mode)))
 
-(eval-after-load 'flycheck
-  '(flycheck-soar-setup))
+;; (eval-after-load 'flycheck
+;;   '(flycheck-soar-setup))
 
 ;; (flycheck-define-checker sql-sqlcheck
 ;;   "Identify anti-patterns"
