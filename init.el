@@ -560,9 +560,6 @@
 ;;
 ;; (flycheck-add-next-checker 'sql-sqlint 'sql-sqlcheck)
 
-(setq sql-indent-offset 2)
-
-
 (add-hook 'sql-mode-hook
   (lambda ()
     ;; (add-hook 'before-save-hook #'format-sql-buffer)
@@ -573,6 +570,9 @@
     (define-key sql-mode-map (kbd "C-c a f b") 'sqlformat-buffer)
     (define-key sql-mode-map (kbd "C-c a f r") 'sqlformat-region)
     (define-key sql-mode-map (kbd "C-c a f s") 'sqlformat-on-save-mode)
+    (setq indent-tabs-mode t)
+    (setq tab-width 2)
+    (setq tab-always-indent nil)
   )
 )
 
