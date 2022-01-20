@@ -359,23 +359,116 @@
                 (font-lock-mode 1))))
 
 ;; Scala
-(add-hook 'ensime-mode-hook
-  (lambda ()
-    ;; (define-key ensime-mode-map (kbd "C-c a i b") 'ammonite-term-repl-load-file)
-    ;; (define-key ensime-mode-map (kbd "C-c a i r") 'ammonite-term-repl-send-region)
-    ;; (define-key ensime-mode-map (kbd "C-c a i i") 'run-ammonite)
-    (define-key ensime-mode-map (kbd "C-c a i b") 'ensime-inf-eval-buffer)
-    (define-key ensime-mode-map (kbd "C-c a i r") 'ensime-inf-eval-region)
-    (define-key ensime-mode-map (kbd "C-c a i i") 'ensime-inf-switch)
-    (define-key ensime-mode-map (kbd "C-c a i p") 'ensime-sbt-switch)
-    (define-key ensime-mode-map (kbd "C-c a t") 'ensime-sbt-do-test)
-    (define-key ensime-mode-map (kbd "C-c a r") 'ensime-sbt-do-test-quick-dwim)
-    (define-key ensime-mode-map (kbd "C-c a m t b") 'ensime-sbt-do-test-dwim)
-    (define-key ensime-mode-map (kbd "C-c a m t .") 'ensime-sbt-do-test-only-dwim)
+(require 'package)
 
-    (add-hook 'before-save-hook 'ensime-format-source)
-  )
+;; Add melpa to your packages repositories
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+(package-initialize)
+
+;; Install use-package if not already installed
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
+
+;; Enable defer and ensure by default for use-package
+;; Keep auto-save/backup files separate from source code:  https://github.com/scalameta/metals/issues/1027
+(setq use-package-always-defer t
+      use-package-always-ensure t
+      backup-directory-alist `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+;; Enable scala-mode for highlighting, indentation and motion commands
+(use-package scala-mode
+  :interpreter
+    ("scala" . scala-mode))
+
+;; Enable sbt mode for executing sbt commands
+(use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map)
+   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+   (setq sbt:program-options '("-Dsbt.supershell=false"))
 )
+
+;; Enable nice rendering of diagnostics like compile errors.
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+(use-package lsp-mode
+  ;; Optional - enable lsp-mode automatically in scala files
+  :hook  (scala-mode . lsp)
+         (lsp-mode . lsp-lens-mode)
+  :config
+  ;; Uncomment following section if you would like to tune lsp-mode performance according to
+  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+  ;;       (setq gc-cons-threshold 100000000) ;; 100mb
+  ;;       (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  ;;       (setq lsp-idle-delay 0.500)
+  ;;       (setq lsp-log-io nil)
+  ;;       (setq lsp-completion-provider :capf)
+  (setq lsp-prefer-flymake nil))
+
+;; Add metals backend for lsp-mode
+(use-package lsp-metals)
+
+;; Enable nice rendering of documentation on hover
+;;   Warning: on some systems this package can reduce your emacs responsiveness significally.
+;;   (See: https://emacs-lsp.github.io/lsp-mode/page/performance/)
+;;   In that case you have to not only disable this but also remove from the packages since
+;;   lsp-mode can activate it automatically.
+(use-package lsp-ui)
+
+;; lsp-mode supports snippets, but in order for them to work you need to use yasnippet
+;; If you don't want to use snippets set lsp-enable-snippet to nil in your lsp-mode settings
+;;   to avoid odd behavior with snippets and indentation
+(use-package yasnippet)
+
+;; Use company-capf as a completion provider.
+;;
+;; To Company-lsp users:
+;;   Company-lsp is no longer maintained and has been removed from MELPA.
+;;   Please migrate to company-capf.
+(use-package company
+  :hook (scala-mode . company-mode)
+  :config
+  (setq lsp-completion-provider :capf))
+
+;; Use the Debug Adapter Protocol for running tests and debugging
+(use-package posframe
+  ;; Posframe is a pop-up tool that must be manually installed for dap-mode
+  )
+(use-package dap-mode
+  :hook
+  (lsp-mode . dap-mode)
+  (lsp-mode . dap-ui-mode)
+  )
+;; (add-hook 'ensime-mode-hook
+;;   (lambda ()
+;;     ;; (define-key ensime-mode-map (kbd "C-c a i b") 'ammonite-term-repl-load-file)
+;;     ;; (define-key ensime-mode-map (kbd "C-c a i r") 'ammonite-term-repl-send-region)
+;;     ;; (define-key ensime-mode-map (kbd "C-c a i i") 'run-ammonite)
+;;     (define-key ensime-mode-map (kbd "C-c a i b") 'ensime-inf-eval-buffer)
+;;     (define-key ensime-mode-map (kbd "C-c a i r") 'ensime-inf-eval-region)
+;;     (define-key ensime-mode-map (kbd "C-c a i i") 'ensime-inf-switch)
+;;     (define-key ensime-mode-map (kbd "C-c a i p") 'ensime-sbt-switch)
+;;     (define-key ensime-mode-map (kbd "C-c a t") 'ensime-sbt-do-test)
+;;     (define-key ensime-mode-map (kbd "C-c a r") 'ensime-sbt-do-test-quick-dwim)
+;;     (define-key ensime-mode-map (kbd "C-c a m t b") 'ensime-sbt-do-test-dwim)
+;;     (define-key ensime-mode-map (kbd "C-c a m t .") 'ensime-sbt-do-test-only-dwim)
+
+;;     (add-hook 'before-save-hook 'ensime-format-source)
+;;   )
+;; )
+
 ;; ReasonML
 (defun shell-cmd (cmd)
   "Returns the stdout output of a shell command or nil if the command returned
@@ -599,9 +692,10 @@
 ;; Global Useful
 
 
-(require 'linum)
-(global-linum-mode 1)
-(setq linum-format " %d ")
+;; (require 'linum)
+;; (global-linum-mode 1)
+;; (setq linum-format " %d ")
+(global-display-line-numbers-mode)
 
 
 (defvar skeletons-alist
@@ -773,11 +867,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   (quote
-    ("80cc2866d01d4beeb62e7db06e1b3da3238dfa308dac6b84ca73104b41da4f0d" "64aa574bcf17bcb3991ba2ae2790a1e376751f1a78e93969b7999fafc7397788" "875a26098a8383b7077ed6b420f5f35c9d48ccea41ecf3029482d00fbe299705" "d8e14fb20c3b86f63b7815ca3fbe8cca2783c959efa5553c10b740af11fda8b1" "6804f0a43f217541d825911dffd8b9e8f6520744846976d5c6c3ad1f9f3c15ba" "563dd3ddad50e6887c9bc1aecf296cc3f2edce55537f0db48f719a70d3401131" "6f4c7ba06a17f53ce8fd24339558a320e255a135463f0b52820d2d64d07fa20b" "d6c896faa310e2c894f77c46cc083ae88b5da037d5ff1f06f850e330dcfc19bb" "a29b6383f0ab5550cb33b372b33006119f980fc369c6276a8f6de2ae14511b50" "964fd76d9adab895b54238794ef7e7036c1696bd8a44ed0093810cd467ec988d" "e03cb2cc566c46866bb355d691404cba3bf71d286426d9f142a0e7355b6bf3e6" "3d5f2fe54a9ab976d144f8d19bbc72b074c8a412a6cda0f9d691c37e4c53427c" "ca3b4f9009735476101aa08fcfb0872150810aa22e571d79e2b69193b61f1c86" "4528fb576178303ee89888e8126449341d463001cb38abe0015541eb798d8a23" "a8474a7e7e8951c5c111f80ac20de97139d44f20a8ed04254aa912a0edf501b2" "04731852318149f51dcf8ea7b1cafd20ff890d73ad7e585960a31d641d433893" "569db32037846cb93193d61c602eea9e6a4298ae3c4ee427cba2bcf14abeeef5" "dafd9d8d03e1068a05f98d77930e6cae260401fc9b93d1c03a5283b4db5ad26d" "fcc4badafd60fc0213472e655145fba70a7fa537db9f2aca80ec9edda221741d" "1414739793dd40e6cded535aaab7aa1f85577325312f3c4f7a294ac7464d7355" "32bf5c3ac67a48d910fbe94ccf3a8252b60f6ddf" "16c3a1560cc699bfc8ea13e9acba10045b02aa8d" "d66b5da4870d8838edbf984b1dc31e37efe1257b" "b5d3a19124561e92127c3bd917a6c2ae520c4c10" "c3adda001695657e6da90aa3268bbbf4f6af433b" "101b2a189997144931107b663cf1937ce94acd5a" "07c541895ec9b323bf25dc3c63a8a400dba6d2ca" "f67bc85632a7db951c45fbcdf55456b882f1ce32" "63baf5b4551d57e16ae558d40a0b27c426fbd880" "285a5928d414486528564472e49ce46db448e296" "9f3b064f42e48f3cce4ee007301453e37a871df5" "a71460243d93d271e33a969dd064a663022781d7" "f1ca2dfb5f86a53c386c18a8cc194474f4932a79" "0943252a540b205d7a7e492b33067c6740a0870a" default)))
+   '("80cc2866d01d4beeb62e7db06e1b3da3238dfa308dac6b84ca73104b41da4f0d" "64aa574bcf17bcb3991ba2ae2790a1e376751f1a78e93969b7999fafc7397788" "875a26098a8383b7077ed6b420f5f35c9d48ccea41ecf3029482d00fbe299705" "d8e14fb20c3b86f63b7815ca3fbe8cca2783c959efa5553c10b740af11fda8b1" "6804f0a43f217541d825911dffd8b9e8f6520744846976d5c6c3ad1f9f3c15ba" "563dd3ddad50e6887c9bc1aecf296cc3f2edce55537f0db48f719a70d3401131" "6f4c7ba06a17f53ce8fd24339558a320e255a135463f0b52820d2d64d07fa20b" "d6c896faa310e2c894f77c46cc083ae88b5da037d5ff1f06f850e330dcfc19bb" "a29b6383f0ab5550cb33b372b33006119f980fc369c6276a8f6de2ae14511b50" "964fd76d9adab895b54238794ef7e7036c1696bd8a44ed0093810cd467ec988d" "e03cb2cc566c46866bb355d691404cba3bf71d286426d9f142a0e7355b6bf3e6" "3d5f2fe54a9ab976d144f8d19bbc72b074c8a412a6cda0f9d691c37e4c53427c" "ca3b4f9009735476101aa08fcfb0872150810aa22e571d79e2b69193b61f1c86" "4528fb576178303ee89888e8126449341d463001cb38abe0015541eb798d8a23" "a8474a7e7e8951c5c111f80ac20de97139d44f20a8ed04254aa912a0edf501b2" "04731852318149f51dcf8ea7b1cafd20ff890d73ad7e585960a31d641d433893" "569db32037846cb93193d61c602eea9e6a4298ae3c4ee427cba2bcf14abeeef5" "dafd9d8d03e1068a05f98d77930e6cae260401fc9b93d1c03a5283b4db5ad26d" "fcc4badafd60fc0213472e655145fba70a7fa537db9f2aca80ec9edda221741d" "1414739793dd40e6cded535aaab7aa1f85577325312f3c4f7a294ac7464d7355" "32bf5c3ac67a48d910fbe94ccf3a8252b60f6ddf" "16c3a1560cc699bfc8ea13e9acba10045b02aa8d" "d66b5da4870d8838edbf984b1dc31e37efe1257b" "b5d3a19124561e92127c3bd917a6c2ae520c4c10" "c3adda001695657e6da90aa3268bbbf4f6af433b" "101b2a189997144931107b663cf1937ce94acd5a" "07c541895ec9b323bf25dc3c63a8a400dba6d2ca" "f67bc85632a7db951c45fbcdf55456b882f1ce32" "63baf5b4551d57e16ae558d40a0b27c426fbd880" "285a5928d414486528564472e49ce46db448e296" "9f3b064f42e48f3cce4ee007301453e37a871df5" "a71460243d93d271e33a969dd064a663022781d7" "f1ca2dfb5f86a53c386c18a8cc194474f4932a79" "0943252a540b205d7a7e492b33067c6740a0870a" default))
  '(package-selected-packages
-   (quote
-    (python-black python-pytest string-inflection jinja2-mode mmm-jinja2 mmm-mode company-ansible company-ctags company-fuzzy company-inf-ruby company-lsp company-nginx company-statistics company-terraform company-try-hard sparql-mode sql-impala google-translate sql-presto flycheck-soar format-sql helm-sql-connect hive pgdevenv sql-indent sqlup-mode docker docker-cli docker-compose-mode docker-tramp dockerfile-mode ein py-autopep8 elpy flycheck-pycheckers flycheck-pyflakes flycheck-pyre ammonite-term-repl ensime scala-mode scalariform fsharp-mode ng2-mode ess flycheck-julia julia-mode julia-repl julia-shell caml coffee-mode flycheck-ocaml haskell-mode haskell-snippets php-mode smarty-mode tuareg rubocop rubocopfmt rspec-mode foreman-mode fish-mode utop lusty-explorer merlin merlin-eldoc reason-mode eslint-fix indium handlebars-mode handlebars-sgml-mode prettier-js helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete))))
+   '(sbt-mode python-black python-pytest string-inflection jinja2-mode mmm-jinja2 mmm-mode company-ansible company-ctags company-fuzzy company-inf-ruby company-lsp company-nginx company-statistics company-terraform company-try-hard sparql-mode sql-impala google-translate sql-presto flycheck-soar format-sql helm-sql-connect hive pgdevenv sql-indent sqlup-mode docker docker-cli docker-compose-mode docker-tramp dockerfile-mode ein py-autopep8 elpy flycheck-pycheckers flycheck-pyflakes flycheck-pyre ammonite-term-repl scala-mode scalariform fsharp-mode ng2-mode ess flycheck-julia julia-mode julia-repl julia-shell caml coffee-mode flycheck-ocaml haskell-mode haskell-snippets php-mode smarty-mode tuareg rubocop rubocopfmt rspec-mode foreman-mode fish-mode utop lusty-explorer merlin merlin-eldoc reason-mode eslint-fix indium handlebars-mode handlebars-sgml-mode prettier-js helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
