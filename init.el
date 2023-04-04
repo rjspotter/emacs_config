@@ -403,23 +403,23 @@
 (use-package flycheck
   :init (global-flycheck-mode))
 
-(use-package lsp-mode
-  ;; Optional - enable lsp-mode automatically in scala files
-  :hook  (scala-mode . lsp)
-         (lsp-mode . lsp-lens-mode)
-  :config
-  ;; Uncomment following section if you would like to tune lsp-mode performance according to
-  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-  ;;       (setq gc-cons-threshold 100000000) ;; 100mb
-  ;;       (setq read-process-output-max (* 1024 1024)) ;; 1mb
-  ;;       (setq lsp-idle-delay 0.500)
-  ;;       (setq lsp-log-io nil)
-  ;;       (setq lsp-completion-provider :capf)
-  (setq lsp-prefer-flymake nil))
+;; (use-package lsp-mode
+;;   ;; Optional - enable lsp-mode automatically in scala files
+;;   :hook  (scala-mode . lsp)
+;;          (lsp-mode . lsp-lens-mode)
+;;   :config
+;;   ;; Uncomment following section if you would like to tune lsp-mode performance according to
+;;   ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+;;   ;;       (setq gc-cons-threshold 100000000) ;; 100mb
+;;   ;;       (setq read-process-output-max (* 1024 1024)) ;; 1mb
+;;   ;;       (setq lsp-idle-delay 0.500)
+;;   ;;       (setq lsp-log-io nil)
+;;   ;;       (setq lsp-completion-provider :capf)
+;;   (setq lsp-prefer-flymake nil))
 
 
 ;; Add metals backend for lsp-mode
-(use-package lsp-metals)
+;; (use-package lsp-metals)
 
 ;; Enable nice rendering of documentation on hover
 ;;   Warning: on some systems this package can reduce your emacs responsiveness significally.
@@ -888,3 +888,4 @@
  ;; If there is more than one, they won't work right.
  )
 
+(put 'erase-buffer 'disabled nil)
