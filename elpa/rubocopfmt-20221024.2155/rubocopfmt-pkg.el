@@ -1,2 +1,0 @@
-;;; Generated package description from rubocopfmt-20221024.2155/rubocopfmt.el  -*- no-byte-compile: t -*-
-(define-package "rubocopfmt" "20221024.2155" "Minor-mode to format Ruby code with RuboCop on save" '((cl-lib "0.5")) :commit "b180786c007e6f4c2f2a9673a13fb0651d012f76" :authors '(("Jim Myhrberg")) :maintainer '("Jim Myhrberg") :keywords '("convenience" "wp" "edit" "ruby" "rubocop") :url "https://github.com/jimeh/rubocopfmt.el")

@@ -30,6 +30,9 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("gnu" . "https://elpa.gnu.org/packages/"))
+
+(setq package-check-signature nil)
+
 (package-initialize)
 
 (add-to-list 'load-path "~/.emacs.d/modes/")
