@@ -3,3 +3,4 @@ session.*
 projectile-bookmarks.eld
 eshell/history
 eshell/lastdir
+.lsp-session*
