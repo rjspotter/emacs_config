@@ -69,11 +69,6 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package lsp-mode
-  :ensure t)
-
-(define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
 
@@ -82,10 +77,45 @@
 ;; (global-set-key (kbd "C-x C-f") 'lusty-file-explorer)
 ;; (global-set-key (kbd "C-x C-b") 'lusty-buffer-explorer)
 
-;; Helm Projectile find files in projects better
-;; (global-set-key (kbd "C-x C-p") 'helm-projectile)
-;; (global-set-key (kbd "C-x C-g") 'projectile-ripgrep)
 
+;;; eldoc
+(use-package eldoc
+  :ensure t
+  ;; :custom (eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
+)
+
+(setq read-process-output-max (* 1024 1024))
+
+
+;;;; LSP Stuff
+
+;;; lsp-mode
+(use-package lsp-mode
+  :commands lsp
+  :ensure t
+  :diminish lsp-mode
+  :hook
+  (elixir-ts-mode . lsp)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  (add-to-list 'exec-path "/home/rjspotter/lib/elixir-ls/"))
+
+(setq lsp-auto-guess-root nil)
+
+
+;;; eglot
+;; (use-package eglot
+;;   :ensure t
+;;   :demand t
+;;   :bind (:map eglot-mode-map
+;; 	      ("C-c a f b" . eglot-format-buffer)
+;; 	      ("C-c a a" . eglot-code-actions)
+;; 	      ("C-c a h e" . eldoc)
+;; 	      ("C-c a p r" . eglot-rename)
+;;               )
+  ;; :config
+  ;; (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
+;; )
 
 ;;; ripgrep
 (use-package rg
@@ -94,14 +124,20 @@
 (global-set-key (kbd "C-x C-p") 'project-find-file)
 (global-set-key (kbd "C-x C-g") 'rg-project)
 
-;; Ripgrep find stuff better
-;; (global-set-key (kbd "C-c g i r") 'ripgrep-regexp)
 
 ;; Company Mode
-(autoload 'company-mode "company" nil t)
-(add-hook 'after-init-hook 'global-company-mode)
-(setq company-dabbrev-downcase 0)
-(setq company-idle-delay 0)
+(use-package company
+  :ensure t
+  :config
+  (setq company-idle-delay 0.1
+        company-minimum-prefix-length 2
+        company-dabbrev-downcase 0))
+
+
+;; Helm Projectile find files in projects better
+;; (global-set-key (kbd "C-x C-p") 'helm-projectile)
+;; (global-set-key (kbd "C-x C-g") 'projectile-ripgrep)
+
 
 ;; Rainbow delimiters
 (autoload 'rainbow-delimiters-mode "rainbow-delimiters" nil t)
@@ -160,36 +196,64 @@
                           ) t))
 ;; end hippie expand stuff
 
-;; CL
+;;; Elixir
 
-(require 'info-look)
-(info-lookup-add-help
- :mode 'lisp-mode
- :regexp "[^][()'\" \t\n]+"
- :ignore-case t
- :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))
+;; (add-hook 'elixir-mode-hook 'alchemist-mode)
+;; (add-hook 'elixir-mode-hook 'rainbow-delimiters-mode)
+;; (setq alchemist-hooks-test-on-save t)
+;; ;(setq alchemist-hooks-compile-on-save t)
 
-;(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;; (add-hook 'elixir-mode-hook
+;;   (lambda ()
+;;     (define-key elixir-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+;;   )
+;; )
 
-;(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
-;(add-to-list 'load-path "~/.emacs.d/modes/slime/")  ; your SLIME directory
+(use-package elixir-ts-mode
+  :ensure t
+  :after (ls-mode)
+  :hook ((elixir-ts-mode . lsp)
+	 (elixir-ts-mode . company-tng-mode)
+	 (elixir-ts-mode . rainbow-delimiters-mode)
+         (before-save . lsp-format-buffer))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-ts-mode)))
 
-;(require 'slime)
-;(slime-setup)
+(use-package mix
+  :ensure t
+  :config
+  (add-hook 'elixir-ts-mode-hook 'mix-minor-mode))
 
-;; Elixir
-(add-hook 'elixir-mode-hook 'alchemist-mode)
-(add-hook 'elixir-mode-hook 'rainbow-delimiters-mode)
-(setq alchemist-hooks-test-on-save t)
-;(setq alchemist-hooks-compile-on-save t)
+(use-package inf-elixir
+  :ensure t)
 
-(add-hook 'elixir-mode-hook
+(require 'dap-elixir)
+
+(add-hook 'elixir-ts-mode-hook
   (lambda ()
-    (define-key elixir-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key elixir-ts-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key elixir-ts-mode-map (kbd "C-c a f b") 'lsp-format-buffer)
+    (define-key elixir-ts-mode-map (kbd "C-c a f b") 'lsp-format-region)
+    (define-key elixir-ts-mode-map (kbd "C-c a i i") 'inf-elixir)
+    (define-key elixir-ts-mode-map (kbd "C-c a i p") 'inf-elixir-project)
+    (define-key elixir-ts-mode-map (kbd "C-c a i r") 'inf-elixir-send-region)
+    (define-key elixir-ts-mode-map (kbd "C-c a i l") 'inf-elixir-send-line)
+    (define-key elixir-ts-mode-map (kbd "C-c a i b") 'inf-elixir-send-buffer)
+    (define-key elixir-ts-mode-map (kbd "C-c a i R") 'inf-elixir-reload-module)
+    (define-key elixir-ts-mode-map (kbd "C-c a m t t") 'mix-test)
+    (define-key elixir-ts-mode-map (kbd "C-c a m t .") 'mix-test-current-test)
+    (define-key elixir-ts-mode-map (kbd "C-c a m t b") 'mix-test-current-buffer)
+    (define-key elixir-ts-mode-map (kbd "C-c a m t r") 'mix-last-command)
+    (define-key elixir-ts-mode-map (kbd "C-c a m r") 'mix-last-command)
+    (define-key elixir-ts-mode-map (kbd "C-c a m x") 'mix-execute-task)
+    (define-key elixir-ts-mode-map (kbd "C-c a h e") 'eldoc)
   )
 )
 
-;;Clojure
+(add-to-list 'major-mode-remap-alist '(elixir-mode . elixir-ts-mode))
+
+
+;;; Clojure
 (require 'clojure-mode)
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
@@ -197,25 +261,13 @@
 (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 (setq cider-auto-select-error-buffer nil)
 
-;;ML
-(add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
-(autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
-(autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-
-;; (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
-;; (add-hook 'tuareg-mode-hook 'utop-minor-mode)
-
-;;Puppet
-(require 'puppet-mode)
-(add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
-
-;;Markdown
+;;; Markdown
 (autoload 'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-;;HTML web-mode
+;;; HTML web-mode
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
   (setq web-mode-markup-indent-offset 2)
@@ -230,156 +282,38 @@
 (add-to-list 'auto-mode-alist '("\\.mustache$" . tpl-mode))
 (add-hook 'mustache-mode-hook 'rainbow-delimiters-mode)
 
-;;Sass
+;;; Sass
 (require 'sass-mode)
 
-;; CSS
+;;; CSS
 (setq css-indent-offset 2)
 
-;;Javascript
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-hook 'js2-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'js2-mode-hook 'company-mode)
-;(setq js2-bounce-indent-p t)
-;(setq js2-mirror-mode nil)
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (make-local-variable 'js-indent-level)
-            (setq js-indent-level 2)))
+;;  Python
+(use-package python
+  :bind (:map python-ts-mode-map
+              ("C-c a f r" . recompile)
+              ("C-c a f b" . eglot-format-buffer))
+  :hook ((python-ts-mode . eglot-ensure)
+         (python-ts-mode . company-mode)
+         )
+  :mode (("\\.py\\'" . python-ts-mode)))
 
-(require 'indium)
-(add-hook 'js2-mode-hook #'indium-interaction-mode)
-
-(require 'prettier-js)
-(add-hook 'js2-mode-hook 'prettier-js-mode)
-
-(add-hook 'json-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'json-mode-hook 'company-mode)
-(add-hook 'json-mode-hook 'prettier-js-mode)
-(add-hook 'json-mode-hook
-          (lambda ()
-            (make-local-variable 'js-indent-level)
-            (setq js-indent-level 2)))
-
-;; turn on flychecking globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(javascript-jshint)))
-
-(defun my/use-eslint-from-node-modules ()
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                        root))))
-    (when (and eslint (file-executable-p eslint))
-      (setq-local flycheck-javascript-eslint-executable eslint))))
-(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
-
-;; use eslint with web-mode for jsx files & js2 mode
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-(flycheck-add-mode 'javascript-eslint 'js2-mode)
-
-;; customize flycheck temp file prefix
-(setq-default flycheck-temp-prefix ".flycheck")
-
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-	  '(json-jsonlist)))
-
-;; Typescript
-(setq typescript-indent-level 2
-      typescript-expr-indent-offset 2)
-
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (company-mode +1))
-
-;; aligns annotation to the right hand side
-;;(setq company-tooltip-align-annotations t)
-
-;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
-
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-(add-hook 'typescript-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c a i i") 'run-ts)
-            (local-set-key (kbd "C-c a i r") 'ts-send-region-and-go)
-            (local-set-key (kbd "C-c a i b") 'ts-send-buffer-and-go)))
-
-;;Coffee
-(require 'coffee-mode)
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
-(add-hook 'coffee-mode-hook 'rainbow-delimiters-mode)
-(defun coffee-custom ()
-  "coffee-mode-hook"
-  (set (make-local-variable 'tab-width) 2)
-
-  (setq coffee-debug-mode t)
-
-  (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
-
-;  (add-hook 'after-save-hook
-;    '(lambda ()
-;      (when (string-match "\.coffee$" (buffer-name))
-;        (coffee-compile-file))))
-)
-(add-hook 'coffee-mode-hook
-  '(lambda() (coffee-custom)))
-
-;;Python
-(elpy-enable)
-;; (setq python-shell-interpreter "jupyter"
-;;       python-shell-interpreter-args "console --simple-prompt"
-;;       python-shell-prompt-detect-failure-warning nil)
-;; (add-to-list 'python-shell-completion-native-disabled-interpreters
-;; 	                  "jupyter")
-
-(setq python-shell-interpreter "python3"
-      python-shell-interpreter-args " -i"
-      python-shell-prompt-detect-failure-warning nil)
-
-(add-to-list 'python-shell-completion-native-disabled-interpreters
-	                  "jupyter")
-
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-(add-hook 'python-mode 'python-black-on-save-mode-enable-dwim)
-
-(add-hook 'python-mode-hook
-  (lambda ()
-    (define-key python-mode-map (kbd "C-c a i b") 'python-shell-send-buffer)
-    (define-key python-mode-map (kbd "C-c a i r") 'python-shell-send-region)
-    (define-key python-mode-map (kbd "C-c a i i") 'run-python)
-    (define-key python-mode-map (kbd "C-c a i p") 'python-shell)
-  )
-)
+(use-package highlight-indent-guides
+  :ensure t
+  :hook (python-ts-mode . highlight-indent-guides-mode)
+  :config
+  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+  (setq highlight-indent-guides-method 'character))
 
 
-;;PHP
-(autoload 'php-mode "php-mode" "Major mode for editing php code." t)
-(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
-
-;;Haskell
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-mode-hook 'rainbow-delimiters-mode)
+;; (add-hook 'python-mode-hook
+;;   (lambda ()
+;;     (define-key python-mode-map (kbd "C-c a i b") 'python-shell-send-buffer)
+;;     (define-key python-mode-map (kbd "C-c a i r") 'python-shell-send-region)
+;;     (define-key python-mode-map (kbd "C-c a i i") 'run-python)
+;;     (define-key python-mode-map (kbd "C-c a i p") 'python-shell)
+;;   )
+;; )
 
 ;;Julia
 (require 'julia-mode)
@@ -397,85 +331,6 @@
 )
 (setq julia-indent-offset 2)
 
-;;Octave
-(autoload 'octave-mode "octave-mod" nil t)
-(setq auto-mode-alist
-      (cons '("\\.m$" . octave-mode) auto-mode-alist))
-(add-hook 'octave-mode-hook
-          (lambda ()
-            (abbrev-mode 1)
-            (auto-fill-mode 1)
-            (if (eq window-system 'x)
-                (font-lock-mode 1))))
-
-;; Scala
-(add-hook 'ensime-mode-hook
-  (lambda ()
-    ;; (define-key ensime-mode-map (kbd "C-c a i b") 'ammonite-term-repl-load-file)
-    ;; (define-key ensime-mode-map (kbd "C-c a i r") 'ammonite-term-repl-send-region)
-    ;; (define-key ensime-mode-map (kbd "C-c a i i") 'run-ammonite)
-    (define-key ensime-mode-map (kbd "C-c a i b") 'ensime-inf-eval-buffer)
-    (define-key ensime-mode-map (kbd "C-c a i r") 'ensime-inf-eval-region)
-    (define-key ensime-mode-map (kbd "C-c a i i") 'ensime-inf-switch)
-    (define-key ensime-mode-map (kbd "C-c a i p") 'ensime-sbt-switch)
-    (define-key ensime-mode-map (kbd "C-c a t") 'ensime-sbt-do-test)
-    (define-key ensime-mode-map (kbd "C-c a r") 'ensime-sbt-do-test-quick-dwim)
-    (define-key ensime-mode-map (kbd "C-c a m t b") 'ensime-sbt-do-test-dwim)
-    (define-key ensime-mode-map (kbd "C-c a m t .") 'ensime-sbt-do-test-only-dwim)
-
-    (add-hook 'before-save-hook 'ensime-format-source)
-  )
-)
-;; ReasonML
-(defun shell-cmd (cmd)
-  "Returns the stdout output of a shell command or nil if the command returned
-   an error"
-  (car (ignore-errors (apply 'process-lines (split-string cmd)))))
-
-(defun reason-cmd-where (cmd)
-  (let ((where (shell-cmd cmd)))
-    (if (not (string-equal "unknown flag ----where" where))
-      where)))
-
-(let* ((refmt-bin (or (reason-cmd-where "refmt ----where")
-                      (shell-cmd "which refmt")))
-       (merlin-bin (or (reason-cmd-where "ocamlmerlin ----where")
-                       (shell-cmd "which ocamlmerlin")))
-       (merlin-base-dir (when merlin-bin
-                          (replace-regexp-in-string "bin/ocamlmerlin$" "" merlin-bin))))
-  ;; Add merlin.el to the emacs load path and tell emacs where to find ocamlmerlin
-  (when merlin-bin
-    (add-to-list 'load-path (concat merlin-base-dir "share/emacs/site-lisp/"))
-    (setq merlin-command merlin-bin))
-
-  (when refmt-bin
-    (setq refmt-command refmt-bin)))
-
-(require 'reason-mode)
-(require 'merlin)
-
-(add-hook 'reason-mode-hook (lambda ()
-                              (add-hook 'before-save-hook 'refmt-before-save)
-                              (merlin-mode)))
-
-(setq merlin-ac-setup t)
-
-(add-to-list 'auto-mode-alist '("\\.re$" . reason-mode))
-(add-to-list 'auto-mode-alist '("\\.rei$" . reason-mode))
-
-(require 'utop)
-;;(setq utop-command "opam config exec -- rtop -emacs")
-(setq utop-command "rtop -emacs")
-(add-hook 'reason-mode-hook #'utop-minor-mode)
-
-(add-hook 'reason-mode-hook
-  (lambda ()
-    (define-key reason-mode-map (kbd "C-c a i b") 'utop-eval-buffer)
-    (define-key reason-mode-map (kbd "C-c a i r") 'utop-eval-region)
-    (define-key reason-mode-map (kbd "C-c a i i") 'utop)
-    (define-key reason-mode-map (kbd "C-c a i p") 'utop)
-  )
-)
 
 ;; Ruby
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
@@ -579,13 +434,13 @@
 
 (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter)
 
-;; Rust
-;; (use-package rustic)
-
-;; (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
-;; (setq rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer"))
+;; Rustic for Rust
+(use-package rustic
+  :ensure t)
 
 ;; If having problems with the analyzer not starting install it with rustup
+;; (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+;; (setq rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer"))
 
 (defun rustic-mode-auto-save-hook ()
   "Enable auto-saving in rustic-mode buffers."
@@ -593,6 +448,37 @@
     (setq-local compilation-ask-about-save nil)))
 
 (add-hook 'rustic-mode-hook 'rustic-mode-auto-save-hook)
+
+(add-hook 'rustic-mode-hook
+  (lambda ()
+    (define-key rustic-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key rustic-mode-map (kbd "C-c a c r") 'rustic-cargo-run)
+    (define-key rustic-mode-map (kbd "C-c a c b") 'rustic-cargo-build)
+    (define-key rustic-mode-map (kbd "C-c a c c") 'rustic-cargo-check)
+    (define-key rustic-mode-map (kbd "C-c a c f") 'rustic-cargo-fmt)
+    (define-key rustic-mode-map (kbd "C-c a c l") 'rustic-cargo-clippy)
+    (define-key rustic-mode-map (kbd "C-c a c L") 'rustic-cargo-clippy-fix)
+    (define-key rustic-mode-map (kbd "C-c a c B") 'rustic-cargo-bench)
+    (define-key rustic-mode-map (kbd "C-c a i b") 'rustic-format-buffer)
+    (define-key rustic-mode-map (kbd "C-c a i r") 'rustic-cargo-current-test)
+    (define-key rustic-mode-map (kbd "C-c a i t") 'rustic-cargo-test)
+    (define-key rustic-mode-map (kbd "C-c a p n") 'rustic-cargo-new)
+    (define-key rustic-mode-map (kbd "C-c a p o") 'rustic-cargo-outdated)
+    (define-key rustic-mode-map (kbd "C-c a p u") 'rustic-cargo-upgrade)
+    (define-key rustic-mode-map (kbd "C-c a p a") 'rustic-cargo-add)
+    (define-key rustic-mode-map (kbd "C-c a p r") 'rustic-cargo-rm)
+    (define-key rustic-mode-map (kbd "C-c a p d") 'rustic-cargo-doc)
+    (define-key rustic-mode-map (kbd "C-c a p c") 'rustic-cargo-clean)
+    (define-key rustic-mode-map (kbd "C-c a p i") 'rustic-cargo-init)
+  )
+)
+(add-hook 'rustic-compilation-mode-hook
+  (lambda ()
+    (define-key rustic-compilation-mode-map (kbd "C-d") 'compilation-display-error)
+    (define-key rustic-compilation-mode-map (kbd "C-o") 'other-window)
+  )
+)
+
 
 ;; SQL mode
 ;; Capitalize keywords in SQL mode
@@ -646,7 +532,6 @@
 ;; (flycheck-add-next-checker 'sql-sqlint 'sql-sqlcheck)
 
 (setq sql-indent-offset 2)
-
 
 (add-hook 'sql-mode-hook
   (lambda ()
@@ -717,7 +602,7 @@
 (delete-selection-mode 1)
 
 (require 'whitespace)
-(setq whitespace-style '(face lines-tail trailing))
+(setq whitespace-style '(face empty trailing))
 (global-whitespace-mode t)
 
 (require 'ebs)
@@ -814,7 +699,7 @@
  '(custom-safe-themes
    '("80cc2866d01d4beeb62e7db06e1b3da3238dfa308dac6b84ca73104b41da4f0d" "64aa574bcf17bcb3991ba2ae2790a1e376751f1a78e93969b7999fafc7397788" "875a26098a8383b7077ed6b420f5f35c9d48ccea41ecf3029482d00fbe299705" "d8e14fb20c3b86f63b7815ca3fbe8cca2783c959efa5553c10b740af11fda8b1" "6804f0a43f217541d825911dffd8b9e8f6520744846976d5c6c3ad1f9f3c15ba" "563dd3ddad50e6887c9bc1aecf296cc3f2edce55537f0db48f719a70d3401131" "6f4c7ba06a17f53ce8fd24339558a320e255a135463f0b52820d2d64d07fa20b" "d6c896faa310e2c894f77c46cc083ae88b5da037d5ff1f06f850e330dcfc19bb" "a29b6383f0ab5550cb33b372b33006119f980fc369c6276a8f6de2ae14511b50" "964fd76d9adab895b54238794ef7e7036c1696bd8a44ed0093810cd467ec988d" "e03cb2cc566c46866bb355d691404cba3bf71d286426d9f142a0e7355b6bf3e6" "3d5f2fe54a9ab976d144f8d19bbc72b074c8a412a6cda0f9d691c37e4c53427c" "ca3b4f9009735476101aa08fcfb0872150810aa22e571d79e2b69193b61f1c86" "4528fb576178303ee89888e8126449341d463001cb38abe0015541eb798d8a23" "a8474a7e7e8951c5c111f80ac20de97139d44f20a8ed04254aa912a0edf501b2" "04731852318149f51dcf8ea7b1cafd20ff890d73ad7e585960a31d641d433893" "569db32037846cb93193d61c602eea9e6a4298ae3c4ee427cba2bcf14abeeef5" "dafd9d8d03e1068a05f98d77930e6cae260401fc9b93d1c03a5283b4db5ad26d" "fcc4badafd60fc0213472e655145fba70a7fa537db9f2aca80ec9edda221741d" "1414739793dd40e6cded535aaab7aa1f85577325312f3c4f7a294ac7464d7355" "32bf5c3ac67a48d910fbe94ccf3a8252b60f6ddf" "16c3a1560cc699bfc8ea13e9acba10045b02aa8d" "d66b5da4870d8838edbf984b1dc31e37efe1257b" "b5d3a19124561e92127c3bd917a6c2ae520c4c10" "c3adda001695657e6da90aa3268bbbf4f6af433b" "101b2a189997144931107b663cf1937ce94acd5a" "07c541895ec9b323bf25dc3c63a8a400dba6d2ca" "f67bc85632a7db951c45fbcdf55456b882f1ce32" "63baf5b4551d57e16ae558d40a0b27c426fbd880" "285a5928d414486528564472e49ce46db448e296" "9f3b064f42e48f3cce4ee007301453e37a871df5" "a71460243d93d271e33a969dd064a663022781d7" "f1ca2dfb5f86a53c386c18a8cc194474f4932a79" "0943252a540b205d7a7e492b33067c6740a0870a" default))
  '(package-selected-packages
-   '(rg orderless marginalia vertico exec-path-from-shell rustic gnu-elpa-keyring-update sql-trino python-black python-pytest string-inflection jinja2-mode mmm-jinja2 mmm-mode company-ansible company-ctags company-fuzzy company-inf-ruby company-lsp company-nginx company-statistics company-terraform company-try-hard sparql-mode sql-impala google-translate sql-presto flycheck-soar format-sql helm-sql-connect hive pgdevenv sql-indent sqlup-mode docker docker-cli docker-compose-mode dockerfile-mode ein py-autopep8 elpy flycheck-pycheckers flycheck-pyflakes flycheck-pyre ammonite-term-repl ensime scala-mode scalariform fsharp-mode ng2-mode ess flycheck-julia julia-mode julia-repl julia-shell caml coffee-mode flycheck-ocaml haskell-mode haskell-snippets php-mode smarty-mode tuareg rubocop rubocopfmt rspec-mode foreman-mode fish-mode utop lusty-explorer merlin merlin-eldoc reason-mode eslint-fix indium handlebars-mode handlebars-sgml-mode prettier-js helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete)))
+   '(dap-mode sqlformat elixir-ts-mode heex-ts-mode inf-elixir mix highlight-indent-guides rg orderless marginalia vertico exec-path-from-shell rustic gnu-elpa-keyring-update sql-trino python-black python-pytest string-inflection jinja2-mode mmm-jinja2 mmm-mode company-ansible company-ctags company-fuzzy company-inf-ruby company-lsp company-nginx company-statistics company-terraform company-try-hard sparql-mode sql-impala google-translate sql-presto flycheck-soar format-sql helm-sql-connect hive pgdevenv sql-indent sqlup-mode docker docker-cli docker-compose-mode dockerfile-mode ein py-autopep8 elpy flycheck-pycheckers flycheck-pyflakes flycheck-pyre ammonite-term-repl ensime scala-mode scalariform fsharp-mode ng2-mode ess flycheck-julia julia-mode julia-repl julia-shell caml coffee-mode flycheck-ocaml haskell-mode haskell-snippets php-mode smarty-mode tuareg rubocop rubocopfmt rspec-mode foreman-mode fish-mode utop lusty-explorer merlin merlin-eldoc reason-mode eslint-fix indium handlebars-mode handlebars-sgml-mode prettier-js helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
