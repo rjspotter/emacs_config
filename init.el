@@ -102,6 +102,10 @@
   (setq lsp-keymap-prefix "C-c l")
   (add-to-list 'exec-path "/home/rjspotter/lib/elixir-ls/"))
 
+(use-package lsp-ui
+  :ensure t)
+
+(setq lsp-modeline-code-actions-segments '(count icon name))
 (setq lsp-auto-guess-root nil)
 
 
@@ -521,6 +525,8 @@
 
 (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter)
 
+;; Rust start
+;;
 ;; Rustic for Rust
 (use-package rustic
   :ensure t)
@@ -538,17 +544,25 @@
 
 (add-hook 'rustic-mode-hook
   (lambda ()
+    (rainbow-delimiters-mode)
     (define-key rustic-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key rustic-mode-map (kbd "C-c a f b") 'lsp-format-buffer)
+    (define-key rustic-mode-map (kbd "C-c a f r") 'lsp-format-region)
+    (define-key rustic-mode-map (kbd "C-c a f f") 'rustic-format-buffer)
+    (define-key rustic-mode-map (kbd "C-c a f c") 'rustic-cargo-fmt)
     (define-key rustic-mode-map (kbd "C-c a c r") 'rustic-cargo-run)
     (define-key rustic-mode-map (kbd "C-c a c b") 'rustic-cargo-build)
     (define-key rustic-mode-map (kbd "C-c a c c") 'rustic-cargo-check)
+    (define-key rustic-mode-map (kbd "C-c a c C") 'rustic-cargo-clean)
     (define-key rustic-mode-map (kbd "C-c a c f") 'rustic-cargo-fmt)
-    (define-key rustic-mode-map (kbd "C-c a c l") 'rustic-cargo-clippy)
-    (define-key rustic-mode-map (kbd "C-c a c L") 'rustic-cargo-clippy-fix)
+    (define-key rustic-mode-map (kbd "C-c a c l l") 'rustic-cargo-clippy)
+    (define-key rustic-mode-map (kbd "C-c a c l f") 'rustic-cargo-clippy-fix)
     (define-key rustic-mode-map (kbd "C-c a c B") 'rustic-cargo-bench)
-    (define-key rustic-mode-map (kbd "C-c a i b") 'rustic-format-buffer)
-    (define-key rustic-mode-map (kbd "C-c a i r") 'rustic-cargo-current-test)
-    (define-key rustic-mode-map (kbd "C-c a i t") 'rustic-cargo-test)
+    (define-key rustic-mode-map (kbd "C-c a t t") 'rustic-cargo-test)
+    (define-key rustic-mode-map (kbd "C-c a t .") 'rustic-cargo-current-test)
+    (define-key rustic-mode-map (kbd "C-c a t r") 'rustic-cargo-test-rerun)
+    (define-key rustic-mode-map (kbd "C-c a t f") 'lsp-rust-analyzer-related-tests)
+    (define-key rustic-mode-map (kbd "C-c a p O") 'lsp-rust-analyzer-open-cargo-toml)
     (define-key rustic-mode-map (kbd "C-c a p n") 'rustic-cargo-new)
     (define-key rustic-mode-map (kbd "C-c a p o") 'rustic-cargo-outdated)
     (define-key rustic-mode-map (kbd "C-c a p u") 'rustic-cargo-upgrade)
@@ -557,6 +571,18 @@
     (define-key rustic-mode-map (kbd "C-c a p d") 'rustic-cargo-doc)
     (define-key rustic-mode-map (kbd "C-c a p c") 'rustic-cargo-clean)
     (define-key rustic-mode-map (kbd "C-c a p i") 'rustic-cargo-init)
+    (define-key rustic-mode-map (kbd "C-c a p T") 'rustic-cargo-tree)
+    (define-key rustic-mode-map (kbd "C-c a e .") 'lsp-execute-code-action)
+    (define-key rustic-mode-map (kbd "C-c a e r") 'lsp-rename)
+    (define-key rustic-mode-map (kbd "C-c a h e") 'lsp-describe-thing-at-point)
+    (define-key rustic-mode-map (kbd "C-c a h D") 'lsp-find-definition)
+    (define-key rustic-mode-map (kbd "C-c a h T") 'lsp-find-type-definition)
+    (define-key rustic-mode-map (kbd "C-c a h m") 'lsp-rust-analyzer-expand-macro)
+    (define-key rustic-mode-map (kbd "C-c a h g") 'lsp-ui-doc-glance)
+    (define-key rustic-mode-map (kbd "C-c a h s") 'lsp-ui-doc-show)
+    (define-key rustic-mode-map (kbd "C-c a h x") 'lsp-ui-doc-hide)
+    (define-key rustic-mode-map (kbd "C-c a h d") 'lsp-ui-peek-find-definitions)
+    (define-key rustic-mode-map (kbd "C-c a h r") 'lsp-ui-peek-find-reference)
   )
 )
 (add-hook 'rustic-compilation-mode-hook
@@ -565,7 +591,7 @@
     (define-key rustic-compilation-mode-map (kbd "C-o") 'other-window)
   )
 )
-
+;; Rust end
 
 ;; SQL mode
 ;; Capitalize keywords in SQL mode
@@ -796,7 +822,7 @@
  '(custom-safe-themes
    '("80cc2866d01d4beeb62e7db06e1b3da3238dfa308dac6b84ca73104b41da4f0d" "64aa574bcf17bcb3991ba2ae2790a1e376751f1a78e93969b7999fafc7397788" "875a26098a8383b7077ed6b420f5f35c9d48ccea41ecf3029482d00fbe299705" "d8e14fb20c3b86f63b7815ca3fbe8cca2783c959efa5553c10b740af11fda8b1" "6804f0a43f217541d825911dffd8b9e8f6520744846976d5c6c3ad1f9f3c15ba" "563dd3ddad50e6887c9bc1aecf296cc3f2edce55537f0db48f719a70d3401131" "6f4c7ba06a17f53ce8fd24339558a320e255a135463f0b52820d2d64d07fa20b" "d6c896faa310e2c894f77c46cc083ae88b5da037d5ff1f06f850e330dcfc19bb" "a29b6383f0ab5550cb33b372b33006119f980fc369c6276a8f6de2ae14511b50" "964fd76d9adab895b54238794ef7e7036c1696bd8a44ed0093810cd467ec988d" "e03cb2cc566c46866bb355d691404cba3bf71d286426d9f142a0e7355b6bf3e6" "3d5f2fe54a9ab976d144f8d19bbc72b074c8a412a6cda0f9d691c37e4c53427c" "ca3b4f9009735476101aa08fcfb0872150810aa22e571d79e2b69193b61f1c86" "4528fb576178303ee89888e8126449341d463001cb38abe0015541eb798d8a23" "a8474a7e7e8951c5c111f80ac20de97139d44f20a8ed04254aa912a0edf501b2" "04731852318149f51dcf8ea7b1cafd20ff890d73ad7e585960a31d641d433893" "569db32037846cb93193d61c602eea9e6a4298ae3c4ee427cba2bcf14abeeef5" "dafd9d8d03e1068a05f98d77930e6cae260401fc9b93d1c03a5283b4db5ad26d" "fcc4badafd60fc0213472e655145fba70a7fa537db9f2aca80ec9edda221741d" "1414739793dd40e6cded535aaab7aa1f85577325312f3c4f7a294ac7464d7355" "32bf5c3ac67a48d910fbe94ccf3a8252b60f6ddf" "16c3a1560cc699bfc8ea13e9acba10045b02aa8d" "d66b5da4870d8838edbf984b1dc31e37efe1257b" "b5d3a19124561e92127c3bd917a6c2ae520c4c10" "c3adda001695657e6da90aa3268bbbf4f6af433b" "101b2a189997144931107b663cf1937ce94acd5a" "07c541895ec9b323bf25dc3c63a8a400dba6d2ca" "f67bc85632a7db951c45fbcdf55456b882f1ce32" "63baf5b4551d57e16ae558d40a0b27c426fbd880" "285a5928d414486528564472e49ce46db448e296" "9f3b064f42e48f3cce4ee007301453e37a871df5" "a71460243d93d271e33a969dd064a663022781d7" "f1ca2dfb5f86a53c386c18a8cc194474f4932a79" "0943252a540b205d7a7e492b33067c6740a0870a" default))
  '(package-selected-packages
-   '(julia-snail eat julia-formatter lsp-julia pyenv-mode dap-mode sqlformat elixir-ts-mode heex-ts-mode inf-elixir mix highlight-indent-guides rg orderless marginalia vertico exec-path-from-shell rustic gnu-elpa-keyring-update sql-trino python-black python-pytest string-inflection jinja2-mode mmm-jinja2 mmm-mode company-ansible company-ctags company-fuzzy company-inf-ruby company-lsp company-nginx company-statistics company-terraform company-try-hard sparql-mode sql-impala google-translate sql-presto flycheck-soar format-sql helm-sql-connect hive pgdevenv sql-indent sqlup-mode docker docker-cli docker-compose-mode dockerfile-mode ein py-autopep8 elpy flycheck-pycheckers flycheck-pyflakes flycheck-pyre ammonite-term-repl ensime scala-mode scalariform fsharp-mode ng2-mode ess flycheck-julia julia-mode julia-repl julia-shell caml coffee-mode flycheck-ocaml haskell-mode haskell-snippets php-mode smarty-mode tuareg rubocop rubocopfmt rspec-mode foreman-mode fish-mode utop lusty-explorer merlin merlin-eldoc reason-mode eslint-fix indium handlebars-mode handlebars-sgml-mode prettier-js helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete)))
+   '(lsp-ui julia-snail eat julia-formatter lsp-julia pyenv-mode dap-mode sqlformat elixir-ts-mode heex-ts-mode inf-elixir mix highlight-indent-guides rg orderless marginalia vertico exec-path-from-shell rustic gnu-elpa-keyring-update sql-trino python-black python-pytest string-inflection jinja2-mode mmm-jinja2 mmm-mode company-ansible company-ctags company-fuzzy company-inf-ruby company-lsp company-nginx company-statistics company-terraform company-try-hard sparql-mode sql-impala google-translate sql-presto flycheck-soar format-sql helm-sql-connect hive pgdevenv sql-indent sqlup-mode docker docker-cli docker-compose-mode dockerfile-mode ein py-autopep8 elpy flycheck-pycheckers flycheck-pyflakes flycheck-pyre ammonite-term-repl ensime scala-mode scalariform fsharp-mode ng2-mode ess flycheck-julia julia-mode julia-repl julia-shell caml coffee-mode flycheck-ocaml haskell-mode haskell-snippets php-mode smarty-mode tuareg rubocop rubocopfmt rspec-mode foreman-mode fish-mode utop lusty-explorer merlin merlin-eldoc reason-mode eslint-fix indium handlebars-mode handlebars-sgml-mode prettier-js helm-rg projectile-ripgrep ripgrep slim-mode minitest projectile robe helm-projectile helm-rails helm-rb helm-rubygems-local flycheck-clojure flycheck-credo flycheck-dialyxir flycheck-elixir flycheck-haskell flycheck-mix flycheck-yamllint yaml-mode tide ts-comint typescript-mode js2-mode graphql-mode magit json-mode inf-ruby multi-term mustache-mode rainbow-delimiters sass-mode yasnippet alchemist elm-mode elm-yasnippets web-mode flycheck cider clojure-mode clojure-snippets smartparens react-snippets markdown-mode+ javap-mode helm eval-sexp-fu elixir-yasnippets elixir-mode el-autoyas datomic-snippets company cil-mode autopair auto-complete)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
