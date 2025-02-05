@@ -287,6 +287,11 @@
    `(web-mode-warning-face ((t (:inherit font-lock-warning-face))))
    `(web-mode-whitespaces-face ((t (:background ,*warning*))))
 
+;;;;;;; eat mode
+   `(eat-term-color-blue        ((t (:foreground ,zenburn-cyan))))
+   `(eat-term-color-red        ((t (:foreground ,zenburn-magenta))))
+   `(eat-term-color-bright-blue        ((t (:foreground ,zenburn-cyan))))
+   `(eat-term-color-bright-red        ((t (:foreground ,zenburn-magenta))))
    ))
 ;;;###autoload
 (when (and (boundp 'custom-theme-load-path) load-file-name)
