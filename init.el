@@ -44,6 +44,9 @@
 
 (exec-path-from-shell-initialize)
 
+
+;;;;; Finding Things [Start]
+
 ;;; Better buffers
 
 (use-package vertico
@@ -79,6 +82,20 @@
 ;; (global-set-key (kbd "C-x C-f") 'lusty-file-explorer)
 ;; (global-set-key (kbd "C-x C-b") 'lusty-buffer-explorer)
 
+;;; ripgrep
+(use-package rg
+  :ensure t)
+
+(global-set-key (kbd "C-x C-p") 'project-find-file)
+(global-set-key (kbd "C-x C-g") 'rg-project)
+
+;; Helm Projectile find files in projects better
+;; (global-set-key (kbd "C-x C-p") 'helm-projectile)
+;; (global-set-key (kbd "C-x C-g") 'projectile-ripgrep)
+
+;;;;; Finding Things [End]
+
+;;;;; Completion & Hinting [Start]
 
 ;;; eldoc
 (use-package eldoc
@@ -123,12 +140,13 @@
   ;; (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
 ;; )
 
-;;; ripgrep
-(use-package rg
-  :ensure t)
 
-(global-set-key (kbd "C-x C-p") 'project-find-file)
-(global-set-key (kbd "C-x C-g") 'rg-project)
+;;Snippets
+(require 'yasnippet)
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"                 ;; personal snippets
+	        ))
+(yas-global-mode 1)
 
 
 ;; Company Mode
@@ -138,27 +156,6 @@
   (setq company-idle-delay 0.1
         company-minimum-prefix-length 2
         company-dabbrev-downcase 0))
-
-
-;; Helm Projectile find files in projects better
-;; (global-set-key (kbd "C-x C-p") 'helm-projectile)
-;; (global-set-key (kbd "C-x C-g") 'projectile-ripgrep)
-
-
-;; Rainbow delimiters
-(autoload 'rainbow-delimiters-mode "rainbow-delimiters" nil t)
-
-;; Flycheck
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;;Snippets
-(require 'yasnippet)
-(setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"                 ;; personal snippets
-	        ))
-(yas-global-mode 1)
-
 
 ;; Hippie expand stuff
 (require 'cc-mode)
@@ -201,6 +198,14 @@
                           ;try-expand-tag
                           ) t))
 ;; end hippie expand stuff
+
+;; Flycheck
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;;;;; Completion & Hinting [End]
+
+;;;;; Languages [Start]
 
 ;;; Elixir
 
@@ -355,33 +360,6 @@
 (add-to-list 'load-path "/home/rjspotter/.emacs.d/modes/julia-ts-mode/")
 (require 'julia-mode)
 
-(use-package eat
-  :pin nongnu
-  :custom
-  (eat-kill-buffer-on-exit t)
-  :config
-  (delete [?\C-u] eat-semi-char-non-bound-keys) ; make C-u work in Eat terminals like in normal terminals
-  (delete [?\C-g] eat-semi-char-non-bound-keys) ; ditto for C-g
-  (eat-update-semi-char-mode-map)
-  ;; XXX: Awkward workaround for the need to call eat-reload after changing Eat's keymaps,
-  ;; but reloading from :config section causes infinite recursion because :config wraps with-eval-after-load.
-  (defvar eat--prevent-use-package-config-recursion nil)
-  (unless eat--prevent-use-package-config-recursion
-    (setq eat--prevent-use-package-config-recursion t)
-    (eat-reload))
-  (makunbound 'eat--prevent-use-package-config-recursion)
-  )
-
-(add-hook 'eat-mode-hook
-  (lambda ()
-    (company-mode)
-    (rainbow-delimiters-mode)
-    (define-key eat-line-mode-map (kbd "C-o") 'other-window)
-    (define-key eat-semi-char-mode-map (kbd "C-o") 'other-window)
-    (define-key eat-char-mode-map (kbd "C-o") 'other-window)
-  )
-)
-
 ;; (require 'julia-repl)
 (use-package julia-snail
   :ensure t
@@ -514,6 +492,8 @@
 
 (add-hook 'ruby-mode-hook
   (lambda ()
+    (setq-default tab-width 2)
+    (add-hook 'before-save-hook #'whitespace-cleanup)
     (define-key ruby-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
     (define-key ruby-mode-map (kbd "C-c a i b") 'ruby-load-file)
     (define-key ruby-mode-map (kbd "C-c a i r") 'ruby-send-region)
@@ -600,59 +580,25 @@
 (add-hook 'sql-interactive-mode-hook 'sqlup-mode)
 
 ;;(add-to-list 'sqlup-blacklist "public")
-
 ;;(add-to-list 'sqlup-blacklist "id")
 
 ;; sqlformat
-;; (setq sqlformat-command 'pgformatter)
-;; (setq sqlformat-args '("-s" "2"))
+
 (require 'sqlformat)
 (setq sqlformat-command 'sqlfluff)
+(setq sqlformat-args '("-n"))
 (add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
-
-(eval-after-load 'flycheck
-  '(progn
-     (flycheck-add-mode 'sql-sqlint 'sql-mode)))
 
 ;;; try later
 ;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . sql-mode))
 ;; (mmm-add-mode-ext-class 'html-mode "\\.sql\\'" 'jinja2)
 
-;; (eval-after-load 'flycheck
-;;   '(flycheck-soar-setup))
-
-;; (flycheck-define-checker sql-sqlcheck
-;;   "Identify anti-patterns"
-;;   :command ("sqlcheck" "-v" "-f" source-inplace)
-;;   ;; :standard-input t
-;;   :error-patterns
-;;   (
-;;    ;; (info line-start (file-name) ":" line ":" column ": C: "
-;;    ;;       (optional (id (one-or-more (not (any ":")))) ": ") (message) line-end)
-;;    ;; (warning line-start (file-name) ":" line ":" column ": W: "
-;;    ;;          (optional (id (one-or-more (not (any ":")))) ": ") (message)
-;;    ;;          line-end)
-;;    (error line-start
-;;           (minimal-match (one-or-more (not-char "[")))
-;;           "[" (file-name) "]: (HIGH RISK)" (message (one-or-more (not-char "[")))
-;;           "[Matching Expression:" (minimal-match (one-or-more not-newline)) "]"line-end)
-;;    )
-;;   :modes (sql-mode)
-;;   :predicate (lambda () (buffer-file-name))
-;;   )
-;; (add-to-list 'flycheck-checkers 'sql-sqlcheck t)
-;;
-;; (eavl-after-load 'flycheck
-;;   '(progn
-;;      (flycheck-add-mode 'sql-sqlcheck 'sql-mode)))
-;;
-;; (flycheck-add-next-checker 'sql-sqlint 'sql-sqlcheck)
-
 (setq sql-indent-offset 2)
 
 (add-hook 'sql-mode-hook
   (lambda ()
-    ;; (add-hook 'before-save-hook #'format-sql-buffer)
+    (setq-default tab-width 2)
+    (add-hook 'before-save-hook #'whitespace-cleanup)
     (define-key sql-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
     (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)
     (define-key sql-mode-map (kbd "C-c a i m") 'sql-send-region-and-go)
@@ -663,13 +609,18 @@
   )
 )
 
-;; Global Useful
+;;;;; Languages [End]
 
+;;;;; Global Useful [Start]
 
 (require 'linum)
 (global-linum-mode 1)
 (setq linum-format " %d ")
 
+;; parens et al
+(autoload 'rainbow-delimiters-mode "rainbow-delimiters" nil t)
+
+(show-paren-mode 1)
 
 (defvar skeletons-alist
       '((?\( . ?\))
@@ -692,24 +643,34 @@
 
 ;; Terminals
 
-(setq explicit-shell-file-name "/usr/bin/fish")
+(setq explicit-shell-file-name "/bin/bash")
 
-(autoload 'multi-term "multi-term" nil t)
-(autoload 'multi-term-next "multi-term" nil t)
-
-(setq multi-term-program "/bin/bash")   ;; use bash
-;; (setq multi-term-program "/bin/zsh") ;; or use zsh...
-
-;; only needed if you use autopair
-;(add-hook 'term-mode-hook
-;  #'(lambda () (setq autopair-dont-activate t)))
-
-(add-hook 'term-mode-hook
-  (lambda ()
-    (define-key term-mode-map (kbd "C-o") 'other-window)
+(use-package eat
+  :pin nongnu
+  :custom
+  (eat-kill-buffer-on-exit t)
+  :config
+  (delete [?\C-u] eat-semi-char-non-bound-keys) ; make C-u work in Eat terminals like in normal terminals
+  (delete [?\C-g] eat-semi-char-non-bound-keys) ; ditto for C-g
+  (eat-update-semi-char-mode-map)
+  ;; XXX: Awkward workaround for the need to call eat-reload after changing Eat's keymaps,
+  ;; but reloading from :config section causes infinite recursion because :config wraps with-eval-after-load.
+  (defvar eat--prevent-use-package-config-recursion nil)
+  (unless eat--prevent-use-package-config-recursion
+    (setq eat--prevent-use-package-config-recursion t)
+    (eat-reload))
+  (makunbound 'eat--prevent-use-package-config-recursion)
   )
-)
 
+(add-hook 'eat-mode-hook
+  (lambda ()
+    (company-mode)
+    (rainbow-delimiters-mode)
+    (define-key eat-line-mode-map (kbd "C-o") 'other-window)
+    (define-key eat-semi-char-mode-map (kbd "C-o") 'other-window)
+    (define-key eat-char-mode-map (kbd "C-o") 'other-window)
+  )
+  )
 
 ;;stylin
 
@@ -719,18 +680,18 @@
 
 (setq x-select-enable-clipboard t)
 
-(show-paren-mode 1)
+;; indentation
 (setq-default c-basic-offset 2)
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq-default indent-line-function 'insert-tab)
+
 (delete-selection-mode 1)
 
 (require 'whitespace)
 (setq whitespace-style '(face empty trailing))
 (global-whitespace-mode t)
 
-(require 'ebs)
-  (ebs-initialize)
-  (global-set-key [(control tab)] 'ebs-switch-buffer)
 
 (defun duplicate-line()
   (interactive)
@@ -758,11 +719,6 @@
 (global-set-key (kbd "C-c a f c") 'string-inflection-camelcase)
 (global-set-key (kbd "C-c a f l") 'string-inflection-lower-camelcase)
 
-(add-hook 'coffee-mode-hook
-  (lambda ()
-    (define-key coffee-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
-  )
-)
 
 (defun rjspotter-set-font-whiterabbit()
   (interactive)
