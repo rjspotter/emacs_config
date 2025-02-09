@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: tryelse
-# key: tryelse
+# name: try_else
+# key: try
 # expand-env: ((yas-indent-line 'fixed))
 # --
 try:
