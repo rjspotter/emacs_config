@@ -1,0 +1,4 @@
+# name: dbt_utils.safe_divide
+# key: div
+# --
+{{ dbt_utils.safe_divide('$1', '$2') }}

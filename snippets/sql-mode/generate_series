@@ -1,0 +1,4 @@
+# name: dbt_utils.generate_series
+# key: series
+# --
+{{ dbt_utils.generate_series(upper_bound=$1) }}

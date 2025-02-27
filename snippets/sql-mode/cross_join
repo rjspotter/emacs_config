@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cross join
+# key: cross
+# --
+CROSS JOIN "$1" AS "$1"

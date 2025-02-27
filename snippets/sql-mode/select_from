@@ -1,0 +1,7 @@
+# name: select...from
+# key: select
+# --
+select
+    $2
+from
+    $1

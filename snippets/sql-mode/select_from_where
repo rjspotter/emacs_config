@@ -1,0 +1,10 @@
+# name: select...from...where...
+# key: select
+# --
+select
+    $4
+from
+    $1
+where
+    $1.$2 = '$3'
+;

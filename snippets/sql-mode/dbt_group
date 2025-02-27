@@ -1,0 +1,4 @@
+# name: dbt utils group_by
+# key: group
+# --
+{{ dbt_utils.group_by(n=$1) }}

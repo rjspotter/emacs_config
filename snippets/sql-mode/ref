@@ -1,0 +1,4 @@
+# name: dbt ref
+# key: ref
+# --
+{{ ref('$1') }}

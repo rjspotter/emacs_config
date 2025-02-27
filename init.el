@@ -86,12 +86,24 @@
 (use-package rg
   :ensure t)
 
-(global-set-key (kbd "C-x C-p") 'project-find-file)
-(global-set-key (kbd "C-x C-g") 'rg-project)
 
 ;; Helm Projectile find files in projects better
 ;; (global-set-key (kbd "C-x C-p") 'helm-projectile)
 ;; (global-set-key (kbd "C-x C-g") 'projectile-ripgrep)
+
+(use-package projectile
+  :ensure t
+  :init
+  (setq projectile-project-search-path '("~/code"))
+  :config
+  (define-key projectile-mode-map (kbd "C-c a p ") 'projectile-command-map)
+  (global-set-key (kbd "C-c a p ") 'projectile-command-map)
+  (projectile-mode +1))
+
+(add-hook 'project-find-functions #'project-projectile)
+
+;; (global-set-key (kbd "C-x C-p") 'project-find-file)
+(global-set-key (kbd "C-c a p g") 'projectile-ripgrep)
 
 ;;;;; Finding Things [End]
 
@@ -116,14 +128,14 @@
   :hook
   (elixir-ts-mode . lsp)
   :init
-  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-keymap-prefix "C-c l"
+        lsp-before-save-edits nil
+        lsp-auto-guess-root nil
+        lsp-modeline-code-actions-segments '(count icon name))
   (add-to-list 'exec-path "/home/rjspotter/lib/elixir-ls/"))
 
 (use-package lsp-ui
   :ensure t)
-
-(setq lsp-modeline-code-actions-segments '(count icon name))
-(setq lsp-auto-guess-root nil)
 
 
 ;;; eglot
@@ -154,11 +166,17 @@
   :config
   (setq company-idle-delay 0.1
         company-minimum-prefix-length 2
-        company-dabbrev-downcase 0
-        company-backends '(company-capf company-yasnippet company-files (company-dabbrev-code company-etags company-keywords) (company-dabbrev company-ispell))))
+        company-abort-on-unique-match nil
+        company-dabbrev-downcase t
+        company-dabbrev-code-everywhere t
+        company-dabbrev-code-modes t
+        company-dabbrev-code-other-buffers 'all
+        company-backends '((company-capf company-yasnippet) (company-dabbrev-code company-dabbrev company-files company-etags company-keywords) (company-ispell))
+  ))
 
 (define-key company-active-map (kbd "C-f") #'company-other-backend)
 (define-key company-active-map (kbd "C-d") #'company-try-hard)
+(define-key company-active-map (kbd "C-g") #'company-abort)
 
 (add-hook 'after-init-hook 'global-company-mode)
 
@@ -308,7 +326,6 @@
 (use-package python
   :hook ((python-ts-mode . lsp-deferred)
          (python-ts-mode . rainbow-delimiters-mode)
-         (before-save . lsp-format-buffer)
          )
   :custom (dap-python-debugger 'debugpy)
   :config (require 'dap-python)
@@ -317,6 +334,7 @@
 
 (add-hook 'python-ts-mode-hook
   (lambda ()
+    (add-hook 'before-save-hook #'whitespace-cleanup)
     (define-key python-ts-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
     (define-key python-ts-mode-map (kbd "C-c a f b") 'lsp-format-buffer)
     (define-key python-ts-mode-map (kbd "C-c a f r") 'lsp-format-region)
@@ -579,9 +597,9 @@
 ;;; SQL start
 
 ;; Capitalize keywords in SQL mode
-(add-hook 'sql-mode-hook 'sqlup-mode)
+;; (add-hook 'sql-mode-hook 'sqlup-mode)
 ;; Capitalize keywords in an interactive session (e.g. psql)
-(add-hook 'sql-interactive-mode-hook 'sqlup-mode)
+;; (add-hook 'sql-interactive-mode-hook 'sqlup-mode)
 
 ;;(add-to-list 'sqlup-blacklist "public")
 ;;(add-to-list 'sqlup-blacklist "id")
@@ -590,18 +608,25 @@
 
 (require 'sqlformat)
 (setq sqlformat-command 'sqlfluff)
-(setq sqlformat-args '("-n"))
+(setq sqlformat-args '("-n" "--ignore=templating" "--config=/home/rjspotter/code/absinthe/setup.cfg"))
 (add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
 
-;;; try later
+;;; [try later] add jinja mode for dbt
 ;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . sql-mode))
 ;; (mmm-add-mode-ext-class 'html-mode "\\.sql\\'" 'jinja2)
 
-(setq sql-indent-offset 2)
+(add-hook 'sql-mode-hook 'lsp)
+;; (setq lsp-sql-server-path "/usr/bin/sql-language-server")
+(setq lsp-sqls-server "/home/rjspotter/go/bin/sqls")
+(setq lsp-sqls-workspace-config-path nil)
+
+;; (add-hook 'sql-mode-hook 'sqlind-minor-mode)
+;; (setq sql-indent-offset 4)
 
 (add-hook 'sql-mode-hook
   (lambda ()
-    (setq-default tab-width 2)
+    (setq-default tab-width 4)
+    (setq-local company-backends '((company-capf company-yasnippet) (company-dabbrev-code company-dabbrev company-files company-etags company-keywords) (company-ispell)))
     (add-hook 'before-save-hook #'whitespace-cleanup)
     (define-key sql-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
     (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)
@@ -619,9 +644,7 @@
 
 ;;;;; Global Useful [Start]
 
-(require 'linum)
-(global-linum-mode 1)
-(setq linum-format " %d ")
+(global-display-line-numbers-mode 1)
 
 ;; parens et al
 (autoload 'rainbow-delimiters-mode "rainbow-delimiters" nil t)
@@ -649,7 +672,7 @@
 
 ;; Terminals
 
-(setq explicit-shell-file-name "/bin/bash")
+(setq explicit-shell-file-name "/home/rjspotter/.cargo/bin/fish")
 
 (use-package eat
   :pin nongnu
@@ -686,10 +709,10 @@
 (setq x-select-enable-clipboard t)
 
 ;; indentation
-(setq-default c-basic-offset 2)
+(setq-default c-basic-offset 4)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(setq-default indent-line-function 'insert-tab)
+;; (setq-default indent-line-function 'insert-tab)
 
 (delete-selection-mode 1)
 
@@ -716,14 +739,19 @@
 (global-set-key (kbd "C-o") 'other-window)
 ;;(global-set-key (kbd "C-i") 'previous-multiframe-window)
 (global-set-key (kbd "C-k") 'kill-buffer)
-(global-set-key (kbd "C-c t") 'multi-term-next)
-(global-set-key (kbd "C-c T") 'multi-term) ;; create a new one
+(global-set-key (kbd "C-c a T") 'eat)
 (global-set-key (kbd "M-S-<up>")   'enlarge-window)
 (global-set-key (kbd "M-S-<down>") 'shrink-window)
 (global-set-key (kbd "C-c a f u") 'string-inflection-underscore)
 (global-set-key (kbd "C-c a f c") 'string-inflection-camelcase)
 (global-set-key (kbd "C-c a f l") 'string-inflection-lower-camelcase)
 
+(defun kill-other-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (mapc 'kill-buffer
+          (delq (current-buffer)
+                (remove-if-not 'buffer-file-name (buffer-list)))))
 
 (defun rjspotter-set-font-whiterabbit()
   (interactive)
@@ -790,4 +818,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-

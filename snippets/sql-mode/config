@@ -1,0 +1,6 @@
+# name: dbt config
+# key: config
+# --
+{{
+    config(materialized='$1')
+}}

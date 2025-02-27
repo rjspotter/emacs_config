@@ -1,0 +1,7 @@
+# name: union relations
+# key: union
+# --
+{{ dbt_utils.union_relations(
+    relations=[ref('$1'), $2],
+    exclude=["_dbt_refreshed_at"]
+) }}

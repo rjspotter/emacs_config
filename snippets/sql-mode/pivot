@@ -1,0 +1,4 @@
+# name: dbt_utils.pivot
+# key: pivot
+# --
+{{ dbt_utils.pivot('$1', dbt_utils.get_column_values(ref('$2'), '$1')) }}

@@ -1,0 +1,4 @@
+# name: dbt_utils.width_bucket
+# key: bucket
+# --
+{{ dbt_utils.width_bucket(${1:expression}, ${2:min_value}, ${3:max_value}, ${4:num_buckets}) }}$0

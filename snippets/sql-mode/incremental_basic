@@ -1,0 +1,6 @@
+# name: incremental ... endif
+# key: incremental
+# --
+{% if is_incremental() %}
+    $0
+{% endif %}

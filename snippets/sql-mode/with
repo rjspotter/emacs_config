@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: with cte as
+# key: with
+# --
+with $1 as (
+    select
+        $3
+    from
+        $2
+)

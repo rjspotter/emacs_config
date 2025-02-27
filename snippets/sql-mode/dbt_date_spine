@@ -1,0 +1,9 @@
+# name: dbt utils date_spine
+# key: spine
+# --
+{{ dbt_utils.date_spine(
+    datepart="$1",
+    start_date="cast('$2' as date)",
+    end_date="cast('$3' as date)"
+   )
+}}

@@ -1,0 +1,7 @@
+# name: incremental load (_dbt_refreshed_at)
+# key: incremental
+# --
+{% if is_incremental() %}
+where
+    _dbt_refreshed_at > (select coalesce(max(_dbt_refreshed_at), '1970-01-01'::timestamptz) from {{ this }} )
+{% endif %}

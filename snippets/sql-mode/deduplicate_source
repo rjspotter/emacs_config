@@ -1,0 +1,9 @@
+# name: dedup src
+# key: dedup
+# --
+{{ dbt_utils.deduplicate(
+    relation=source('$1', '$2'),
+    partition_by='$3',
+    order_by='$4',
+   )
+}}

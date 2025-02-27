@@ -1,0 +1,4 @@
+# name: dbt source
+# key: source
+# --
+{{ source('$1', '$2') }}

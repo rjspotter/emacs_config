@@ -1,0 +1,4 @@
+# name: dbt_refreshed_at
+# key: at
+# --
+current_timestamp as _dbt_refreshed_at

@@ -313,7 +313,7 @@
 	       ("Philip Kaludercic" . "philipk@posteo.net"))
 	      (:commit . "dc0223f11daf526621fda206b38bf06c29759c94"))])
  (autorevert-tail-truncate .
-			   [(1 0 0)
+			   [(1 0 1)
 			    ((emacs
 			      (29 1)))
 			    "auto-revert-tail your files with RAM control" tar
@@ -322,7 +322,7 @@
 			     (:maintainer "Stephane Marks" . "shipmints@gmail.com")
 			     (:authors
 			      ("Stephane Marks" . "shipmints@gmail.com"))
-			     (:commit . "a9ce5a63d37c0a5ab3603d168599c72fbd57da50"))])
+			     (:commit . "b54df5838159abf760a48de2fd33b21cabd12e66"))])
  (avy .
       [(0 5 0)
        ((emacs
@@ -385,7 +385,7 @@
 	      ("John Wiegley" . "johnw@newartisans.com"))
 	     (:commit . "4932ed21d40f9e8ad48ad2a1f086fdf9b3847ac9"))])
  (blist .
-	[(0 4)
+	[(0 6)
 	 ((ilist
 	   (0 4))
 	  (emacs
@@ -396,7 +396,7 @@
 	  (:maintainer "Durand" . "durand@jsdurand.xyz")
 	  (:authors
 	   ("Durand" . "durand@jsdurand.xyz"))
-	  (:commit . "f5751add5626ad437459e484b66219952287c517"))])
+	  (:commit . "e3894193fd7602483e0132b82f1b0afbcebe654d"))])
  (bluetooth .
 	    [(0 4 1)
 	     ((emacs
@@ -1456,7 +1456,7 @@
 		     (:url . "https://elpa.gnu.org/packages/elisp-benchmarks.html")
 		     (:commit . "1a3d97954957a95a179806e0d49ca6d178b097af"))])
  (ellama .
-	 [(0 13 7)
+	 [(0 13 11)
 	  ((emacs
 	    (28 1))
 	   (llm
@@ -1473,7 +1473,7 @@
 	   (:maintainer "Sergey Kostyaev" . "sskostyaev@gmail.com")
 	   (:authors
 	    ("Sergey Kostyaev" . "sskostyaev@gmail.com"))
-	   (:commit . "cc436ef525b15015b99becb032bffb2c71a77e58"))])
+	   (:commit . "6fb94007b983a81f06e693569faf70513a1e2157"))])
  (emacs-gc-stats .
 		 [(1 4 2)
 		  ((emacs

@@ -1,0 +1,4 @@
+# name: dbt_utils.safe_add
+# key: add
+# --
+{{ dbt_utils.safe_add(['$1', '$2', $0]) }}

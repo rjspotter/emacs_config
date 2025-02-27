@@ -1,8 +1,0 @@
-# name: select...from...where...
-# --
-SELECT
-  *
-FROM
-  "$1"
-WHERE
-  "$1"."$2" = '$3';

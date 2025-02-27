@@ -1,0 +1,4 @@
+# name: dbt_utils.generate_surrogate_key
+# key: surrogate
+# --
+{{ dbt_utils.generate_surrogate_key(['$1', '$2']) }} as _dbt_row_id

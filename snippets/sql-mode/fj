@@ -1,3 +1,0 @@
-# name: full outer join
-# --
-FULL OUTER JOIN "$1" ON "$1"."$2_id" = "$2s"."id"

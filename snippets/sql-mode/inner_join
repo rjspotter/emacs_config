@@ -1,0 +1,5 @@
+# name: inner join
+# key: inner
+# --
+inner join $1 as $2
+    on $3.$4 = $2.$4

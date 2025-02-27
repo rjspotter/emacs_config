@@ -1,0 +1,4 @@
+# name: dbt utils star
+# key: star
+# --
+{{ dbt_utils.star(from=ref('$1'), except=['$3'], prefix='$2') }}

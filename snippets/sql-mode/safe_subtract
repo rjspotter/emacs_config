@@ -1,0 +1,4 @@
+# name: dbt_utils.safe_subtract
+# key: sub
+# --
+{{ dbt_utils.safe_subtract(['$1', '$2'$0]) }}
