@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: capitalize string
+# key: .capitalize
+# group: str
+# --
+.capitalize()

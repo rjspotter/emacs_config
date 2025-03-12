@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Removes all elements from [list, dict, set]
+# key: .clear
+# group: iterable
+# --
+.clear()

@@ -1,8 +1,6 @@
 # -*- mode: snippet -*-
-# name: classmethod
-# key: cm
-# group: object oriented
+# name: Convert method to classmethod
+# key: classmethod
+# group: oop
 # --
-@classmethod
-def ${1:meth}(cls, $2):
-    $0
+classmethod(${1:function})

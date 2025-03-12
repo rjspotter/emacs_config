@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: Greatest Common Divisor
+# key: algo-gcd.hcf.gcf
+# description: Greatest Common Divisor aka Greatest Common Factor of two number
+# --
+def greatest_common_divisor(a: int, b: int) -> int:
+	"""
+	Euclidean Algorithm:  GCD(A,0) = A  GCD(0,B) = B
+	A in quotient Q remainder R form (A = ⋅QB + R)
+	The greatest divisor can divide (A - QB) Linear Combination aka R as well 
+	Thus gcd(A,B) = gcd(B,R) notice we just swap the position and use R
+	so we repeat getting the R to 0
+
+	>>> greatest_common_divisor(7,5)
+	1
+
+	>>> greatest_common_divisor(121, 11)
+	11
+	"""
+	if a < b:
+		a, b = b, a
+
+	while a % b != 0:
+		a, b = b, a % b
+
+	return b
+

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: string to lower case
+# key: .downcase
+# group: str
+# --
+.casefold()

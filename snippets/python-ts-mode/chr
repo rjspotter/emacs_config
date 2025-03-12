@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Unicode character code
+# key: chr
+# group: str
+# --
+chr(${1:ascii_int})

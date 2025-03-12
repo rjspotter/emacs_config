@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: class=>subclass
+# key: subclass
+# expand-env: ((yas-indent-line 'fixed))
+# group: oop
+# --
+class ${2:SubClass}(${1:SuperClass}):
+
+	def __init__(self):
+		# call super() function
+		super().__init__()
+
+    $0

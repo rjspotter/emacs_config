@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: append -list
+# key: <<
+# description: Adds an element at the end of the list
+# --
+`(backward-delete-char 1)`.append(${1:item})

@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: BinaryExponentiation
+# key: algo-fast_power
+# description: performs a^b operation with O(log(n)) Complexity
+# --
+def fast_power(x: float, y: int) -> int:
+	"""
+	Return x^y with O(log(n)) Time Complexity.
+	"""
+	if y == 0:
+		return 1
+	elif y == 1:
+		return x
+	elif y == -1:
+		return 1/x
+	else:
+		ans = fast_power(x, y//2)
+		if y % 2 == 0:
+			return ans*ans
+		else:
+			return ans * ans * x
+
+

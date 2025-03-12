@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Returns Hash containing the counts of each element.
+# key: tally
+# expand-env: ((yas-indent-line 'fixed))
+# group: iterable
+# --
+from collections import Counter
+
+${2:result} = dict(Counter(${1:lst}))
+$0

@@ -1,8 +1,7 @@
 # -*- mode: snippet -*-
-# name: if
-# key: if
+# name: return if
+# key: return
 # expand-env: ((yas-indent-line 'fixed))
 # group: control structure
 # --
-if ${1:cond}:
-    $0
+return ${1:var} if ${2:cond} else None

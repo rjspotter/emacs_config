@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: True if any item is true
+# key: any
+# group: iterable
+# --
+any(${1:iterable})

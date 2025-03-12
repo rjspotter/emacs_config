@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
 # name: for ... in ... : ...
-# key: for
+# key: each
 # expand-env: ((yas-indent-line 'fixed))
-# group: control structure
+# group : control structure
 # --
 for ${2:var} in ${1:collection}:
     $0

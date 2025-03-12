@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: convert timezone
+# key: to_timezone
+# group: datetime
+# --
+from datetime import datetime
+
+${1:datetime_object}.astimezone('${2:tz_string}')

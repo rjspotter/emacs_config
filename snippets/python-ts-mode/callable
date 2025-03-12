@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: is callable?
+# key: callable
+# --
+callable(${1:object})

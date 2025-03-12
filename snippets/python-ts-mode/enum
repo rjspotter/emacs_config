@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: enum
-# key: en
+# key: enum
+# expand-env: ((yas-indent-line 'fixed))
 # group: object oriented
 # --
 class ${1:class}(Enum):

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: readable version of an object
+# key: ascii
+# group: str
+# --
+ascii(${1:object})

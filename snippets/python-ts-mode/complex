@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: return complex number
+# key: complex
+# group: math
+# --
+complex(${1:real}, ${2:imaginary})

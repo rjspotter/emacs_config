@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: datatype.bool
+# key: bool initialise
+# description: datatype of bool in python
+# --
+${1:varA}__B: bool = ${2:False}

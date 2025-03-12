@@ -94,7 +94,8 @@
 (use-package projectile
   :ensure t
   :init
-  (setq projectile-project-search-path '("~/code"))
+  (setq projectile-project-search-path '("~/code")
+        projectile-tags-command "/home/rjspotter/bin/ctags")
   :config
   (define-key projectile-mode-map (kbd "C-c a p ") 'projectile-command-map)
   (global-set-key (kbd "C-c a p ") 'projectile-command-map)
@@ -131,6 +132,9 @@
   (setq lsp-keymap-prefix "C-c l"
         lsp-before-save-edits nil
         lsp-auto-guess-root nil
+        lsp-completion-provider :none
+        company-ctags-ignore-case t
+        company-ctags-fuzzy-match-p t
         lsp-modeline-code-actions-segments '(count icon name))
   (add-to-list 'exec-path "/home/rjspotter/lib/elixir-ls/"))
 
@@ -159,6 +163,7 @@
       '("~/.emacs.d/snippets"                 ;; personal snippets
 	        ))
 (yas-global-mode 1)
+(add-to-list 'warning-suppress-types '(yasnippet backquote-change))
 
 ;; Company Mode
 (use-package company
@@ -171,7 +176,7 @@
         company-dabbrev-code-everywhere t
         company-dabbrev-code-modes t
         company-dabbrev-code-other-buffers 'all
-        company-backends '((company-capf company-yasnippet) (company-dabbrev-code company-dabbrev company-files company-etags company-keywords) (company-ispell))
+        company-backends '((company-capf company-yasnippet company-dabbrev-code) (company-dabbrev company-files) (company-ispell))
   ))
 
 (define-key company-active-map (kbd "C-f") #'company-other-backend)
@@ -326,6 +331,7 @@
 (use-package python
   :hook ((python-ts-mode . lsp-deferred)
          (python-ts-mode . rainbow-delimiters-mode)
+         (python-ts-mode . python-black-on-save-mode)
          )
   :custom (dap-python-debugger 'debugpy)
   :config (require 'dap-python)
@@ -336,8 +342,8 @@
   (lambda ()
     (add-hook 'before-save-hook #'whitespace-cleanup)
     (define-key python-ts-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
-    (define-key python-ts-mode-map (kbd "C-c a f b") 'lsp-format-buffer)
-    (define-key python-ts-mode-map (kbd "C-c a f r") 'lsp-format-region)
+    (define-key python-ts-mode-map (kbd "C-c a f b") 'python-black-buffer)
+    (define-key python-ts-mode-map (kbd "C-c a f r") 'python-black-region)
     (define-key python-ts-mode-map (kbd "C-c a i b") 'python-shell-send-buffer)
     (define-key python-ts-mode-map (kbd "C-c a i r") 'python-shell-send-region)
     (define-key python-ts-mode-map (kbd "C-c a i i") 'run-python)
@@ -615,18 +621,17 @@
 ;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . sql-mode))
 ;; (mmm-add-mode-ext-class 'html-mode "\\.sql\\'" 'jinja2)
 
-(add-hook 'sql-mode-hook 'lsp)
+;; I haven't really found that LSP makes doing SQL better
+;; (add-hook 'sql-mode-hook 'lsp)
 ;; (setq lsp-sql-server-path "/usr/bin/sql-language-server")
-(setq lsp-sqls-server "/home/rjspotter/go/bin/sqls")
-(setq lsp-sqls-workspace-config-path nil)
+;; (setq lsp-sqls-server "/home/rjspotter/go/bin/sqls")
+;; (setq lsp-sqls-workspace-config-path nil)
 
 ;; (add-hook 'sql-mode-hook 'sqlind-minor-mode)
 ;; (setq sql-indent-offset 4)
 
 (add-hook 'sql-mode-hook
   (lambda ()
-    (setq-default tab-width 4)
-    (setq-local company-backends '((company-capf company-yasnippet) (company-dabbrev-code company-dabbrev company-files company-etags company-keywords) (company-ispell)))
     (add-hook 'before-save-hook #'whitespace-cleanup)
     (define-key sql-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
     (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)

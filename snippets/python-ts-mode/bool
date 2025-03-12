@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: bool=>
+# key: bool
+# description: Return the boolean value of the specified object
+# --
+bool(${1:object})

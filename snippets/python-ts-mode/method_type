@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
-# name: def name(...):
+# name: def method(self, ...) -> type:
 # key: def
 # expand-env: ((yas-indent-line 'fixed))
 # group: definitions
 # --
-def ${1:name}(${2:arg}):
+def ${1:methodname}(self, ${3:arg}: ${3:arg_type}) -> ${2:type}:
     $0

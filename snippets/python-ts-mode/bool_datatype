@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: datatype:bool
+# key: bool datatype
+# group: type
+# --
+: bool

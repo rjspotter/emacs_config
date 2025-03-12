@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: basic class
+# key: class
+# expand-env: ((yas-indent-line 'fixed))
+# group: oop
+# --
+class ${1:ClassName}:
+	$0

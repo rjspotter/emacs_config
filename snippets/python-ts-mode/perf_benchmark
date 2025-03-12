@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: benchmark performance
+# key: perf_benchmark
+# --
+import time
+
+#START BENCHMARK
+start = time.perf_counter()
+#test code here for timing
+end = time.perf_counter()
+print(f"\033[93mspent {end - start}  $0\033[0m")
+# END BENCHMARK

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: absolute value
+# key: abs
+# group: math
+# --
+abs(${1:number})

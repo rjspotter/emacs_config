@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: num -> binary version
+# key: bin
+# group: numeric
+# --
+bin(${1:number})

@@ -1,6 +1,5 @@
 # -*- mode: snippet -*-
-# name: #!
-# key: #!
-# contributor : @avelino
+# name: not bool
+# key: !
 # --
-#!/usr/bin/env python
+not bool($0)

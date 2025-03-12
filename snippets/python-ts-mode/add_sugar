@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: add to set
+# key: <<
+# description: Adds an element to the set
+# --
+`(backward-delete-char 1)`.add(${1:element})

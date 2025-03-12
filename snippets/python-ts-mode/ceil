@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ceil
+# key: ceil
+# group: math
+# --
+math.ceil(${1:number})}

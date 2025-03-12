@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: return a bytes object
+# key: byte
+# --
+bytes(${1:integer|bytes_or_buffer|iterable_of_ints})

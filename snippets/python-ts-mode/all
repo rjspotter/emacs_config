@@ -1,8 +1,6 @@
 # -*- mode: snippet -*-
 # name: all
 # key: all
-# expand-env: ((yas-indent-line 'fixed))
+# description: Return True if all items in an iterable object are true
 # --
-__all__ = [
-    $0
-]
+all(${1:iterable})
