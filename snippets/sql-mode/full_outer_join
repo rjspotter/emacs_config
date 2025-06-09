@@ -1,5 +1,6 @@
 # name: full outer join
 # key: full
+# expand-env: ((yas-indent-line 'fixed))
 # --
 FULL OUTER JOIN "$1" AS "$1"
     ON "$1"."$3" = "$2"."$4"

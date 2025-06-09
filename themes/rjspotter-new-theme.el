@@ -287,6 +287,10 @@
    `(web-mode-warning-face ((t (:inherit font-lock-warning-face))))
    `(web-mode-whitespaces-face ((t (:background ,*warning*))))
 
+;;;;;;; lsp-ui
+   `(lsp-ui-doc-background    ((t (:background ,zenburn-bg-1))))
+   `(lsp-ui-doc-header    ((t (:background ,zenburn-bg-1 :foreground ,zenburn-green))))
+
 ;;;;;;; eat mode
    `(eat-term-color-blue        ((t (:foreground ,zenburn-cyan))))
    `(eat-term-color-red        ((t (:foreground ,zenburn-magenta))))

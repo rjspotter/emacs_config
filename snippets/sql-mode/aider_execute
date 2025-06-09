@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: aider execute
+# key: ai
+# group: aider
+# description: Have Aider do something
+# --
+-- AI! $0

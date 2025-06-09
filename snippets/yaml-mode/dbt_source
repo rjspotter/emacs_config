@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: source
+# key: source
+# group: dbt
+# expand-env: ((yas-indent-line 'fixed))
+# --
+- source('$1', '$2')$0

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: count the number of elements == value
+# key: .count
+# group: iterable
+# --
+.count(${1:value})

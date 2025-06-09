@@ -5,3 +5,4 @@ eshell/history
 eshell/lastdir
 .lsp-session*
 history
+auto-save/*

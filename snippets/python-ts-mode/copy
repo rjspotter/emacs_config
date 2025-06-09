@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: .copy() method [dict, list, et al]
+# key: copy
+# group: iterable
+# --
+.copy()

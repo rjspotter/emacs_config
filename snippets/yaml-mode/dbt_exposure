@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: exposure
+# key: exposure
+# group: dbt
+# expand-env: ((yas-indent-line 'fixed))
+# --
+  - name: ${1: a unique exposure name written in snake case}
+    label: ${2: label}
+    type: ${3: $$(yas-choose-value '("dashboard" "notebook" "analysis" "ml" "application"))}
+    maturity: ${4: $$(yas-choose-value '("low" "medium" "high"))}
+    url: ${5: http://example.com/}
+    owner:
+      name: ${6: R. Potter }
+    description: >
+      ${7: Up and to the right. }
+    depends_on:
+      $0

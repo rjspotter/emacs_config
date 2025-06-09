@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: conditional comprehension
+# key: comprehension
+# group: iterables
+# --
+[ {$1:expression} for {$2:item} in {$3:list}  if {$4:conditional}]

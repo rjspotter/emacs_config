@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: aider context
+# key: ai
+# group: aider
+# description: Give Aider Additional context
+# expand-env: ((yas-indent-line 'fixed))
+# --
+-- AI $0

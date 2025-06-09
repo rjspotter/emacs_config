@@ -1,0 +1,13 @@
+# name: Config block for incremental
+# key: config
+# group: dbt.postgresql
+# expand-env: ((yas-indent-line 'fixed))
+# --
+{{ config(
+    materialized='incremental',
+    indexes=[
+      {'columns': ['_dbt_refreshed_at'], 'type': 'btree'},
+      {'columns': ['_dbt_row_id'], 'unique': True}
+    ],
+    unique_key=['_dbt_row_id']
+) }}

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: aider question
+# key: ai
+# group: aider
+# description: Ask Aider a question
+# --
+-- AI? $0

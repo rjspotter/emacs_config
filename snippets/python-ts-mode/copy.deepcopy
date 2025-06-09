@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: deep copy
+# key: copy
+# --
+deepcopy(${1:object}${2:, memo})

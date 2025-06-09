@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: copy with replacement
+# key: copy
+# description: New object replacing fields with values from changes.
+# --
+replace(${2:obj}, ${3:changes})

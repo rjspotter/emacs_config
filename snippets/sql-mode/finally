@@ -1,0 +1,15 @@
+# name: finally CTE for incremental
+# key: finally
+# expand-env: ((yas-indent-line 'fixed))
+# --
+, finally as (
+    select
+        $1.*
+        , current_timestamp as _dbt_refreshed_at
+        , {{ dbt_utils.generate_surrogate_key([${2:components}]) }} as _dbt_row_id
+    from
+        ${1:upstream}
+)
+
+select * from finally
+$0

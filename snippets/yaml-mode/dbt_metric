@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: metric
+# key: metric
+# group: dbt
+# expand-env: ((yas-indent-line 'fixed))
+# --
+- metric('$1')$0

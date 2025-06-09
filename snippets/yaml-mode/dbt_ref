@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ref
+# key: ref
+# group: dbt
+# expand-env: ((yas-indent-line 'fixed))
+# --
+- ref('$1')$0

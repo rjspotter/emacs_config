@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: shallow copy
+# key: copy
+# --
+copy(${1:object})

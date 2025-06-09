@@ -1,5 +1,6 @@
 # name: select...from...where...
 # key: select
+# expand-env: ((yas-indent-line 'fixed))
 # --
 select
     $4

@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: cte
 # key: cte
+# expand-env: ((yas-indent-line 'fixed))
 # --
 , $1 as (
     select

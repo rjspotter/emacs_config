@@ -1,5 +1,6 @@
 # name: inner join
 # key: inner
+# expand-env: ((yas-indent-line 'fixed))
 # --
 inner join $1 as $2
     on $3.$4 = $2.$4
