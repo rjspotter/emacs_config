@@ -608,10 +608,10 @@
 
 ;;; SQL start
 
-;; Capitalize keywords in SQL mode
-;; (add-hook 'sql-mode-hook 'sqlup-mode)
-;; Capitalize keywords in an interactive session (e.g. psql)
-;; (add-hook 'sql-interactive-mode-hook 'sqlup-mode)
+Capitalize keywords in SQL mode
+(add-hook 'sql-mode-hook 'sqlup-mode)
+Capitalize keywords in an interactive session (e.g. psql)
+(add-hook 'sql-interactive-mode-hook 'sqlup-mode)
 
 ;;(add-to-list 'sqlup-blacklist "public")
 ;;(add-to-list 'sqlup-blacklist "id")
@@ -620,7 +620,7 @@
 
 (require 'sqlformat)
 (setq sqlformat-command 'sqlfluff)
-(setq sqlformat-args '("-n" "--ignore=templating" "--config=/home/rjspotter/code/absinthe/setup.cfg"))
+(setq sqlformat-args '("-n" "--ignore=templating" "--config=/home/rjspotter/.config/sqlfluff/setup.cfg"))
 (add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
 
 ;;; [try later] add jinja mode for dbt
