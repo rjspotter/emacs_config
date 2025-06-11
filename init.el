@@ -608,9 +608,9 @@
 
 ;;; SQL start
 
-Capitalize keywords in SQL mode
+;; Capitalize keywords in SQL mode
 (add-hook 'sql-mode-hook 'sqlup-mode)
-Capitalize keywords in an interactive session (e.g. psql)
+;; Capitalize keywords in an interactive session (e.g. psql)
 (add-hook 'sql-interactive-mode-hook 'sqlup-mode)
 
 ;;(add-to-list 'sqlup-blacklist "public")
