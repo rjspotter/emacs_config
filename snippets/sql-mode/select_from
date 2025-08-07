@@ -2,7 +2,7 @@
 # key: select
 # expand-env: ((yas-indent-line 'fixed))
 # --
-select
-    $2
-from
-    $1
+SELECT
+  $2
+FROM
+  $1

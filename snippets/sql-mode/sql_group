@@ -1,4 +1,4 @@
 # name: group by n
 # key: group
 # --
-group by $1
+GROUP BY $1

@@ -3,9 +3,9 @@
 # key: cte
 # expand-env: ((yas-indent-line 'fixed))
 # --
-, $1 as (
-    select
-        $3
-    from
-        $2
+, $1 AS (
+  SELECT
+    $3
+  FROM
+    $2
 )
