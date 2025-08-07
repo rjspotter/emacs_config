@@ -1,8 +1,11 @@
 auto-save-list/*
 session.*
 projectile-bookmarks.eld
+projectile.cache
 eshell/history
 eshell/lastdir
 .lsp-session*
-history
 auto-save/*
+projects
+history
+transient
