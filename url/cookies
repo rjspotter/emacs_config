@@ -2,13 +2,20 @@
 ;; Automatically generated file!!! DO NOT EDIT!!!
 
 (setq url-cookie-storage
- '((".google.com"
-  [url-cookie "NID" "190=ABpnEZDjpJioU9eEda5zkojBvN-ihhNKsOXL46R7G9xDpxmw7T-TP0Ugq_z8vRutu3tlvGCnVPQx866Ia70K8TJwrsTgeLn82nZYUZDlNGnypaQOqlzFiGUKagaqxvbzBiTXUHF0Nja8qTSeSTWAD9ChPziT1VcHSYvikfyMGcA" "Sat, 25-Apr-2020 22:04:01 GMT" "/" ".google.com" nil]))
+ 'nil
 )
 (setq url-cookie-secure-storage
- 'nil)
-
+ '(("github.com"
+  [url-cookie "_octo" "GH1.1.1430192082.1754620347"
+              "Sat, 08 Aug 2026 02:32:27 GMT" "/" "github.com" t]
+  [url-cookie "logged_in" "no" "Sat, 08 Aug 2026 02:32:27 GMT" "/"
+              "github.com" t]))
+)
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
+;; coding: utf-8-emacs-unix
 ;; End:
+
+;;; cookies ends here

@@ -117,6 +117,7 @@
   :init
   (setq lsp-ui-doc-show-with-cursor t
         ;; lsp-ui-sideline-show-hover t
+        lsp-ui-doc-include-signature t
         lsp-ui-sideline-show-code-actions t))
 
 
@@ -182,6 +183,7 @@
 
 ;;; CSS
 (setq css-indent-offset 2)
+(add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
 
 ;;;  Python
 (use-package python
@@ -258,6 +260,40 @@
 ;;; SQL end
 
 ;;; Typescript start
+(use-package typescript
+  :hook (
+         ;; (typescript-ts-mode . flymake-eslint)
+         (typescript-ts-mode . prettier-js-mode))
+  :mode (
+         ("\\.ts\\'" . typescript-ts-mode)
+         ("\\.mts\\'" . typescript-ts-mode)
+         ("\\.js\\'" . typescript-ts-mode)
+         ("\\.mjs\\'" . typescript-ts-mode)
+         ("\\.cjs\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)
+         ("\\.jsx\\'" . tsx-ts-mode)
+         ))
+
+(add-hook 'typescript-ts-mode-hook
+  (lambda ()
+    (add-hook 'before-save-hook #'whitespace-cleanup)
+    (define-key typescript-ts-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key typescript-ts-mode-map (kbd "C-c a h e") 'eldoc)
+    (define-key typescript-ts-mode-map (kbd "C-c a i i") 'run-ts)
+    (define-key typescript-ts-mode-map (kbd "C-c a i r") 'ts-send-region)
+    (define-key typescript-ts-mode-map (kbd "C-c a i m") 'ts-send-region-and-go)
+    (define-key typescript-ts-mode-map (kbd "C-c a i b") 'ts-send-buffer-and-go)
+    (define-key typescript-ts-mode-map (kbd "C-c a f b") 'prettier-js-prettify)
+    (define-key typescript-ts-mode-map (kbd "C-c a f r") 'prettier-js-prettify-region)
+  )
+)
+(add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode))
+
+(use-package lsp-eslint
+  :demand t
+  :after lsp-mode)
+
+(add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode))
 
 ;;; Typescript end
 
@@ -375,15 +411,13 @@
    '("2664eff0633db73cbcd5ef35070fc5901f4067861ee7a3e9cb4a7421bbbb0ce5"
      default))
  '(package-selected-packages
-   '(auto-complete autopair clojure-snippets company company-ansible
+   '(auto-complete autopair company
                    company-ctags company-fuzzy company-lsp
                    company-nginx company-statistics company-terraform
                    company-try-hard dap-mode docker docker-cli
                    docker-compose-mode dockerfile-mode eat ein
-                   eslint-fix ess eval-sexp-fu exec-path-from-shell
-                   fish-mode flycheck flycheck-clojure flycheck-credo
-                   flycheck-dialyxir flycheck-elixir flycheck-haskell
-                   flycheck-mix flycheck-pycheckers flycheck-pyflakes
+                   ess eval-sexp-fu exec-path-from-shell
+                   fish-mode flycheck flycheck-pycheckers flycheck-pyflakes
                    flycheck-pyre flycheck-yamllint flymake-ruff
                    format-sql gnu-elpa-keyring-update graphql-mode
                    handlebars-mode highlight-indent-guides jinja2-mode
