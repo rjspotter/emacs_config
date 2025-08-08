@@ -375,18 +375,17 @@
    '("2664eff0633db73cbcd5ef35070fc5901f4067861ee7a3e9cb4a7421bbbb0ce5"
      default))
  '(package-selected-packages
-   '(auto-complete autopair cil-mode clojure-snippets company
-                   company-ansible company-ctags company-fuzzy
-                   company-lsp company-nginx company-statistics
-                   company-terraform company-try-hard dap-mode docker
-                   docker-cli docker-compose-mode dockerfile-mode eat
-                   ein eslint-fix ess eval-sexp-fu
-                   exec-path-from-shell fish-mode flycheck
-                   flycheck-clojure flycheck-credo flycheck-dialyxir
-                   flycheck-elixir flycheck-haskell flycheck-mix
-                   flycheck-pycheckers flycheck-pyflakes flycheck-pyre
-                   flycheck-yamllint flymake-ruff format-sql
-                   gnu-elpa-keyring-update graphql-mode
+   '(auto-complete autopair clojure-snippets company company-ansible
+                   company-ctags company-fuzzy company-lsp
+                   company-nginx company-statistics company-terraform
+                   company-try-hard dap-mode docker docker-cli
+                   docker-compose-mode dockerfile-mode eat ein
+                   eslint-fix ess eval-sexp-fu exec-path-from-shell
+                   fish-mode flycheck flycheck-clojure flycheck-credo
+                   flycheck-dialyxir flycheck-elixir flycheck-haskell
+                   flycheck-mix flycheck-pycheckers flycheck-pyflakes
+                   flycheck-pyre flycheck-yamllint flymake-ruff
+                   format-sql gnu-elpa-keyring-update graphql-mode
                    handlebars-mode highlight-indent-guides jinja2-mode
                    json-mode lsp-ui magit marginalia markdown-mode+
                    mise mmm-jinja2 mmm-mode mustache-mode orderless
