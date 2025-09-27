@@ -163,6 +163,13 @@
    "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-hook 'markdown-mode-hook
+  (lambda ()
+    (add-hook 'before-save-hook #'whitespace-cleanup)
+    (auto-fill-mode)
+    (setq fill-column 100)
+  )
+)
 
 ;;; HTML web-mode
 (defun my-web-mode-hook ()
@@ -174,7 +181,7 @@
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-;;Mustache
+;; Mustache
 (add-to-list 'auto-mode-alist '("\\.mustache$" . tpl-mode))
 (add-hook 'mustache-mode-hook 'rainbow-delimiters-mode)
 
@@ -227,26 +234,22 @@
 
 ;;; SQL start
 
-;; Capitalize keywords in SQL mode
-(add-hook 'sql-mode-hook 'sqlup-mode)
-;; Capitalize keywords in an interactive session (e.g. psql)
-(add-hook 'sql-interactive-mode-hook 'sqlup-mode)
-
-;; sqlformat
-(require 'sqlformat)
-(setq sqlformat-command 'sqlfluff)
-(setq sqlformat-args '("-n" "--ignore=templating" "--config=~/.config/sqlfluff/setup.cfg"))
-(add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
-
 ;; I haven't really found that LSP makes doing SQL better
 ;; (add-hook 'sql-mode-hook 'lsp)
 ;; (setq lsp-sql-server-path "/usr/bin/sql-language-server")
 ;; (setq lsp-sqls-server "/home/rjspotter/go/bin/sqls")
 ;; (setq lsp-sqls-workspace-config-path nil)
 
+;; sqlformat
+(require 'sqlformat)
+(setq sqlformat-command 'sqlfluff)
+(setq sqlformat-args '("-n" "--ignore=templating" "--config=~/.config/sqlfluff/setup.cfg"))
+
 (add-hook 'sql-mode-hook
   (lambda ()
     (add-hook 'before-save-hook #'whitespace-cleanup)
+    (sqlup-mode)
+    (sqlformat-on-save-mode)
     (define-key sql-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
     (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)
     (define-key sql-mode-map (kbd "C-c a i m") 'sql-send-region-and-go)
@@ -254,6 +257,13 @@
     (define-key sql-mode-map (kbd "C-c a f b") 'sqlformat-buffer)
     (define-key sql-mode-map (kbd "C-c a f r") 'sqlformat-region)
     (define-key sql-mode-map (kbd "C-c a f s") 'sqlformat-on-save-mode)
+  )
+)
+
+(add-hook 'sql-interactive-mode-hook
+  (lambda ()
+    (sqlup-mode)
+    (display-line-numbers-mode)
   )
 )
 
@@ -316,7 +326,7 @@
 
 (defvar skeletons-alist
       '((?\( . ?\))
-        (?\' . ?\')
+        ;; (?\' . ?\')
         (?\" . ?\")
         (?[  . ?])
         (?{  . ?})))
@@ -331,7 +341,7 @@
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
 (global-set-key "\"" 'skeleton-pair-insert-maybe)
-(global-set-key "'" 'skeleton-pair-insert-maybe)
+;; (global-set-key "'" 'skeleton-pair-insert-maybe)
 
 ;; Terminals
 
@@ -357,6 +367,7 @@
 (add-hook 'eat-mode-hook
   (lambda ()
     (rainbow-delimiters-mode)
+    (display-line-numbers-mode)
     (define-key eat-line-mode-map (kbd "C-o") 'other-window)
     (define-key eat-semi-char-mode-map (kbd "C-o") 'other-window)
     (define-key eat-char-mode-map (kbd "C-o") 'other-window)
