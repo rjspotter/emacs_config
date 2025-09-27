@@ -419,16 +419,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("2664eff0633db73cbcd5ef35070fc5901f4067861ee7a3e9cb4a7421bbbb0ce5"
+   '("a627866aec24c6463384d9089d8fe7ef7223d5653fddd0bc61bf03b3d21b21c3"
+     "2664eff0633db73cbcd5ef35070fc5901f4067861ee7a3e9cb4a7421bbbb0ce5"
      default))
  '(package-selected-packages
-   '(auto-complete autopair company
-                   company-ctags company-fuzzy company-lsp
-                   company-nginx company-statistics company-terraform
-                   company-try-hard dap-mode docker docker-cli
-                   docker-compose-mode dockerfile-mode eat ein
-                   ess eval-sexp-fu exec-path-from-shell
-                   fish-mode flycheck flycheck-pycheckers flycheck-pyflakes
+   '(auto-complete autopair company company-ctags company-fuzzy
+                   company-lsp company-nginx company-statistics
+                   company-terraform company-try-hard dap-mode docker
+                   docker-cli docker-compose-mode dockerfile-mode eat
+                   ein ess eval-sexp-fu exec-path-from-shell fish-mode
+                   flycheck flycheck-pycheckers flycheck-pyflakes
                    flycheck-pyre flycheck-yamllint flymake-ruff
                    format-sql gnu-elpa-keyring-update graphql-mode
                    handlebars-mode highlight-indent-guides jinja2-mode
@@ -449,4 +449,4 @@
  )
 
 ;; Auto load rjspotter-new theme in terminal mode
-(add-hook 'after-init-hook (lambda () (load-theme 'rjspotter-new)))
+(add-hook 'after-init-hook (lambda () (load-theme 'rjspotter-matrix)))
