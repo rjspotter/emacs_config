@@ -326,7 +326,6 @@
 
 (defvar skeletons-alist
       '((?\( . ?\))
-        ;; (?\' . ?\')
         (?\" . ?\")
         (?[  . ?])
         (?{  . ?})))
@@ -341,11 +340,10 @@
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
 (global-set-key "\"" 'skeleton-pair-insert-maybe)
-;; (global-set-key "'" 'skeleton-pair-insert-maybe)
 
 ;; Terminals
 
-(setq explicit-shell-file-name "~/.cargo/bin/fish")
+(setq explicit-shell-file-name "/usr/bin/fish")
 
 (use-package eat
   :pin nongnu
@@ -377,8 +375,6 @@
 ;;stylin
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-
-(require 'color-theme)
 
 ;; indentation
 (setq-default c-basic-offset 4)
@@ -419,7 +415,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("a627866aec24c6463384d9089d8fe7ef7223d5653fddd0bc61bf03b3d21b21c3"
+   '("620701aa8cacf5791f0c7a9e0347158aa91d660a1f7beae2290bfeb1fd8fd645"
+     "a627866aec24c6463384d9089d8fe7ef7223d5653fddd0bc61bf03b3d21b21c3"
      "2664eff0633db73cbcd5ef35070fc5901f4067861ee7a3e9cb4a7421bbbb0ce5"
      default))
  '(package-selected-packages
