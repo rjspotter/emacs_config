@@ -101,7 +101,7 @@
   :ensure t
   :diminish lsp-mode
   :hook
-  (elixir-ts-mode . lsp)
+    (sh-mode . lsp)
   :init
   (setq lsp-keymap-prefix "C-c l"
         lsp-before-save-edits nil
@@ -115,10 +115,15 @@
 (use-package lsp-ui
   :ensure t
   :init
-  (setq lsp-ui-doc-show-with-cursor t
-        ;; lsp-ui-sideline-show-hover t
+  (setq
+        lsp-ui-doc-enable t
+        lsp-ui-doc-show-with-cursor t
         lsp-ui-doc-include-signature t
-        lsp-ui-sideline-show-code-actions t))
+        ;; lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-show-hover t
+        ;; lsp-ui-sideline-delay 3
+        ;; lsp-ui-sideline-diagnostic-max-lines 1
+        lsp-ui-sideline-show-code-actions nil))
 
 
 ;; Snippets
@@ -157,6 +162,7 @@
 
 ;;;;; Languages [Start]
 
+;;;; Markup Lang
 
 ;;; Markdown
 (autoload 'markdown-mode "markdown-mode"
@@ -167,7 +173,11 @@
   (lambda ()
     (add-hook 'before-save-hook #'whitespace-cleanup)
     (auto-fill-mode)
+    (require 'lsp-marksman)
+    (lsp)
     (setq fill-column 100)
+    (setq company-backends '((company-capf company-dabbrev-code company-dabbrev company-ispell)))
+    (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic)
   )
 )
 
@@ -177,6 +187,7 @@
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
+  (add-to-list 'flycheck-checkers 'html-aspell-dynamic)
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
@@ -192,7 +203,30 @@
 (setq css-indent-offset 2)
 (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
 
-;;;  Python
+;;;; Programming Lang
+
+;;; Gleam Start
+
+(use-package gleam-ts-mode
+  :mode (rx ".gleam" eos))
+
+;;; Gleam End
+
+;;; Go Start
+
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+(add-hook 'go-mode-hook
+  (lambda ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t)
+  )
+)
+
+;;; Go End
+
+;;;  Python Start
+
 (use-package python
   :hook ((python-ts-mode . lsp-deferred)
          (python-ts-mode . ruff-format-on-save-mode)
@@ -218,6 +252,11 @@
     (define-key python-ts-mode-map (kbd "C-c a m t b") 'python-pytest-file)
     (define-key python-ts-mode-map (kbd "C-c a m t r") 'python-pytest-repeat)
     (define-key python-ts-mode-map (kbd "C-c a h e") 'eldoc)
+    (setq
+      lsp-pylsp-plugins-black-enabled t
+      lsp-pylsp-plugins-ruff-enabled t
+      lsp-pylsp-plugins-pyflakes-enabled t
+    )
   )
 )
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
@@ -230,9 +269,9 @@
   (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
   (setq highlight-indent-guides-method 'character))
 
-;;; Python-end
+;;; Python End
 
-;;; SQL start
+;;; SQL Start
 
 ;; I haven't really found that LSP makes doing SQL better
 ;; (add-hook 'sql-mode-hook 'lsp)
@@ -251,6 +290,7 @@
     (sqlup-mode)
     (sqlformat-on-save-mode)
     (define-key sql-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key sql-mode-map (kbd "C-c a i i") 'sql-connect)
     (define-key sql-mode-map (kbd "C-c a i r") 'sql-send-region)
     (define-key sql-mode-map (kbd "C-c a i m") 'sql-send-region-and-go)
     (define-key sql-mode-map (kbd "C-c a i b") 'sql-send-buffer)
@@ -267,9 +307,15 @@
   )
 )
 
-;;; SQL end
+(setq sql-postgres-login-params nil)
+(setq sql-connection-alist
+  '((pg-local (sql-product 'postgres) (sql-server "localhost")))
+)
 
-;;; Typescript start
+;;; SQL End
+
+;;; Typescript Start
+
 (use-package typescript
   :hook (
          ;; (typescript-ts-mode . flymake-eslint)
@@ -305,7 +351,7 @@
 
 (add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode))
 
-;;; Typescript end
+;;; Typescript End
 
 ;;;;; Languages [End]
 
@@ -425,9 +471,14 @@
                    company-terraform company-try-hard dap-mode docker
                    docker-cli docker-compose-mode dockerfile-mode eat
                    ein ess eval-sexp-fu exec-path-from-shell fish-mode
-                   flycheck flycheck-pycheckers flycheck-pyflakes
-                   flycheck-pyre flycheck-yamllint flymake-ruff
-                   format-sql gnu-elpa-keyring-update graphql-mode
+                   flycheck flycheck-aspell flycheck-elixir
+                   flycheck-golangci-lint flycheck-indent
+                   flycheck-julia flycheck-mypy flycheck-ocaml
+                   flycheck-projectile flycheck-pycheckers
+                   flycheck-pyflakes flycheck-pyre flycheck-rust
+                   flycheck-vale flycheck-yamllint flymake-ruff
+                   format-sql gleam-ts-mode gnu-elpa-keyring-update
+                   go-mode go-projectile go-snippets graphql-mode
                    handlebars-mode highlight-indent-guides jinja2-mode
                    json-mode lsp-ui magit marginalia markdown-mode+
                    mise mmm-jinja2 mmm-mode mustache-mode orderless

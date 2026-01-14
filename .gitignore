@@ -10,3 +10,5 @@ projects
 history
 transient
 tramp
+.dap-breakpoints
+.cache/*
