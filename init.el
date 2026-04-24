@@ -196,12 +196,12 @@
 (add-to-list 'auto-mode-alist '("\\.mustache$" . tpl-mode))
 (add-hook 'mustache-mode-hook 'rainbow-delimiters-mode)
 
-;;; Sass
-(require 'sass-mode)
-
 ;;; CSS
 (setq css-indent-offset 2)
 (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+
+;;; Sass
+(require 'sass-mode)
 
 ;;;; Programming Lang
 
@@ -247,10 +247,10 @@
     (define-key python-ts-mode-map (kbd "C-c a i r") 'python-shell-send-region)
     (define-key python-ts-mode-map (kbd "C-c a i i") 'run-python)
     (define-key python-ts-mode-map (kbd "C-c a i p") 'python-shell)
-    (define-key python-ts-mode-map (kbd "C-c a m t t") 'python-pytest)
-    (define-key python-ts-mode-map (kbd "C-c a m t .") 'python-pytest-function)
-    (define-key python-ts-mode-map (kbd "C-c a m t b") 'python-pytest-file)
-    (define-key python-ts-mode-map (kbd "C-c a m t r") 'python-pytest-repeat)
+    (define-key python-ts-mode-map (kbd "C-c a t t") 'python-pytest)
+    (define-key python-ts-mode-map (kbd "C-c a t .") 'python-pytest-function)
+    (define-key python-ts-mode-map (kbd "C-c a t b") 'python-pytest-file)
+    (define-key python-ts-mode-map (kbd "C-c a t r") 'python-pytest-repeat)
     (define-key python-ts-mode-map (kbd "C-c a h e") 'eldoc)
     (setq
       lsp-pylsp-plugins-black-enabled t
@@ -270,6 +270,77 @@
   (setq highlight-indent-guides-method 'character))
 
 ;;; Python End
+
+;;; Rust Start
+
+(use-package rust-mode
+  :init
+  (setq rust-mode-treesitter-derive t))
+
+(use-package rustic
+  :ensure t
+  :after (rust-mode)
+  :config (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer")))
+
+(defun rustic-mode-auto-save-hook ()
+  "Enable auto-saving in rustic-mode buffers."
+  (when buffer-file-name
+    (setq-local compilation-ask-about-save nil)))
+
+(add-hook 'rustic-mode-hook 'rustic-mode-auto-save-hook)
+
+(add-hook 'rustic-mode-hook
+  (lambda ()
+    (rainbow-delimiters-mode)
+    (define-key rustic-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key rustic-mode-map (kbd "C-c a f b") 'rustic-format-buffer)
+    (define-key rustic-mode-map (kbd "C-c a f r") 'rustic-format-region)
+    (define-key rustic-mode-map (kbd "C-c a f p") 'rustic-cargo-fmt)
+    (define-key rustic-mode-map (kbd "C-c a c r") 'rustic-cargo-run)
+    (define-key rustic-mode-map (kbd "C-c a c b") 'rustic-cargo-build)
+    (define-key rustic-mode-map (kbd "C-c a c c") 'rustic-cargo-check)
+    (define-key rustic-mode-map (kbd "C-c a c C") 'rustic-cargo-clean)
+    (define-key rustic-mode-map (kbd "C-c a c f") 'rustic-cargo-fmt)
+    (define-key rustic-mode-map (kbd "C-c a c l l") 'rustic-cargo-clippy)
+    (define-key rustic-mode-map (kbd "C-c a c l f") 'rustic-cargo-clippy-fix)
+    (define-key rustic-mode-map (kbd "C-c a c B") 'rustic-cargo-bench)
+    (define-key rustic-mode-map (kbd "C-c a t t") 'rustic-cargo-test)
+    (define-key rustic-mode-map (kbd "C-c a t .") 'rustic-cargo-current-test)
+    (define-key rustic-mode-map (kbd "C-c a t r") 'rustic-cargo-test-rerun)
+    (define-key rustic-mode-map (kbd "C-c a t f") 'lsp-rust-analyzer-related-tests)
+    (define-key rustic-mode-map (kbd "C-c a p O") 'lsp-rust-analyzer-open-cargo-toml)
+    (define-key rustic-mode-map (kbd "C-c a p n") 'rustic-cargo-new)
+    (define-key rustic-mode-map (kbd "C-c a p o") 'rustic-cargo-outdated)
+    (define-key rustic-mode-map (kbd "C-c a p u") 'rustic-cargo-upgrade)
+    (define-key rustic-mode-map (kbd "C-c a p a") 'rustic-cargo-add)
+    (define-key rustic-mode-map (kbd "C-c a p m") 'rustic-cargo-add-missing-dependencies)
+    (define-key rustic-mode-map (kbd "C-c a p r") 'rustic-cargo-rm)
+    (define-key rustic-mode-map (kbd "C-c a p d") 'rustic-cargo-doc)
+    (define-key rustic-mode-map (kbd "C-c a p c") 'rustic-cargo-clean)
+    (define-key rustic-mode-map (kbd "C-c a p i") 'rustic-cargo-init)
+    (define-key rustic-mode-map (kbd "C-c a p T") 'rustic-cargo-tree)
+    (define-key rustic-mode-map (kbd "C-c a e .") 'lsp-execute-code-action)
+    (define-key rustic-mode-map (kbd "C-c a e r") 'lsp-rename)
+    (define-key rustic-mode-map (kbd "C-c a h .") 'lsp-describe-thing-at-point)
+    (define-key rustic-mode-map (kbd "C-c a h D") 'lsp-find-definition)
+    (define-key rustic-mode-map (kbd "C-c a h T") 'lsp-find-type-definition)
+    (define-key rustic-mode-map (kbd "C-c a h m") 'lsp-rust-analyzer-expand-macro)
+    (define-key rustic-mode-map (kbd "C-c a h g") 'lsp-ui-doc-glance)
+    (define-key rustic-mode-map (kbd "C-c a h s") 'lsp-ui-doc-show)
+    (define-key rustic-mode-map (kbd "C-c a h x") 'lsp-ui-doc-hide)
+    (define-key rustic-mode-map (kbd "C-c a h d") 'lsp-ui-peek-find-definitions)
+    (define-key rustic-mode-map (kbd "C-c a h r") 'lsp-ui-peek-find-reference)
+  )
+)
+
+(add-hook 'rustic-compilation-mode-hook
+  (lambda ()
+    (define-key rustic-compilation-mode-map (kbd "C-d") 'compilation-display-error)
+    (define-key rustic-compilation-mode-map (kbd "C-o") 'other-window)
+  )
+)
+
+;;; Rust End
 
 ;;; SQL Start
 
@@ -300,16 +371,17 @@
   )
 )
 
+;; sql console
+(setq sql-postgres-login-params nil)
+(setq sql-connection-alist
+  '((pg-local (sql-product 'postgres) (sql-server "localhost")))
+)
+
 (add-hook 'sql-interactive-mode-hook
   (lambda ()
     (sqlup-mode)
     (display-line-numbers-mode)
   )
-)
-
-(setq sql-postgres-login-params nil)
-(setq sql-connection-alist
-  '((pg-local (sql-product 'postgres) (sql-server "localhost")))
 )
 
 ;;; SQL End
@@ -339,7 +411,7 @@
     (define-key typescript-ts-mode-map (kbd "C-c a i r") 'ts-send-region)
     (define-key typescript-ts-mode-map (kbd "C-c a i m") 'ts-send-region-and-go)
     (define-key typescript-ts-mode-map (kbd "C-c a i b") 'ts-send-buffer-and-go)
-    (define-key typescript-ts-mode-map (kbd "C-c a f b") 'prettier-js-prettify)
+p    (define-key typescript-ts-mode-map (kbd "C-c a f b") 'prettier-js-prettify)
     (define-key typescript-ts-mode-map (kbd "C-c a f r") 'prettier-js-prettify-region)
   )
 )
@@ -485,10 +557,11 @@
                    prettier-js projectile projectile-ripgrep
                    py-autopep8 py-snippets python-black python-pytest
                    rainbow-delimiters react-snippets rg ripgrep
-                   ruff-format sass-mode smartparens sql-indent
-                   sqlformat sqlup-mode string-inflection ts-comint
-                   typescript-mode vertico web-mode yaml-mode
-                   yasnippet yasnippet-capf yasnippet-snippets)))
+                   ruff-format rust-mode rustic sass-mode smartparens
+                   sql-indent sqlformat sqlup-mode string-inflection
+                   ts-comint typescript-mode vertico web-mode
+                   yaml-mode yasnippet yasnippet-capf
+                   yasnippet-snippets)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
