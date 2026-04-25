@@ -205,6 +205,33 @@
 
 ;;;; Programming Lang
 
+;;; C et al Start
+
+;; (require 'eglot)
+;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+
+;; (add-hook 'c-mode-hook 'eglot-ensure)
+;; (add-hook 'c++-mode-hook 'eglot-ensure)
+
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'c++-mode-hook 'irony-mode)
+
+(add-hook 'c++-mode-hook
+  (lambda ()
+    (setq company-backends '((company-capf company-yasnippet company-dabbrev-code company-irony) (company-dabbrev company-files) (company-ispell))
+          lsp-clangd-binary-path "/usr/bin/clangd"
+          lsp-idle-delay 0.1
+          dap-lldb-debug-program '("/usr/bin/lldb-dap"))
+    (require 'dap-lldb)))
+
+(add-hook 'c++-mode-hook 'lsp)
+
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+;;; C et al End
+
 ;;; Gleam Start
 
 (use-package gleam-ts-mode
@@ -538,30 +565,32 @@ p    (define-key typescript-ts-mode-map (kbd "C-c a f b") 'prettier-js-prettify)
      "2664eff0633db73cbcd5ef35070fc5901f4067861ee7a3e9cb4a7421bbbb0ce5"
      default))
  '(package-selected-packages
-   '(auto-complete autopair company company-ctags company-fuzzy
-                   company-lsp company-nginx company-statistics
-                   company-terraform company-try-hard dap-mode docker
-                   docker-cli docker-compose-mode dockerfile-mode eat
-                   ein ess eval-sexp-fu exec-path-from-shell fish-mode
+   '(auto-complete autopair ccls company company-ctags company-fuzzy
+                   company-irony company-irony-c-headers company-lsp
+                   company-nginx company-statistics company-terraform
+                   company-try-hard dap-mode docker docker-cli
+                   docker-compose-mode dockerfile-mode eat ein ess
+                   eval-sexp-fu exec-path-from-shell fish-mode
                    flycheck flycheck-aspell flycheck-elixir
                    flycheck-golangci-lint flycheck-indent
-                   flycheck-julia flycheck-mypy flycheck-ocaml
-                   flycheck-projectile flycheck-pycheckers
-                   flycheck-pyflakes flycheck-pyre flycheck-rust
-                   flycheck-vale flycheck-yamllint flymake-ruff
-                   format-sql gleam-ts-mode gnu-elpa-keyring-update
-                   go-mode go-projectile go-snippets graphql-mode
-                   handlebars-mode highlight-indent-guides jinja2-mode
-                   json-mode lsp-ui magit marginalia markdown-mode+
-                   mise mmm-jinja2 mmm-mode mustache-mode orderless
-                   prettier-js projectile projectile-ripgrep
-                   py-autopep8 py-snippets python-black python-pytest
-                   rainbow-delimiters react-snippets rg ripgrep
-                   ruff-format rust-mode rustic sass-mode smartparens
-                   sql-indent sqlformat sqlup-mode string-inflection
-                   ts-comint typescript-mode vertico web-mode
-                   yaml-mode yasnippet yasnippet-capf
-                   yasnippet-snippets)))
+                   flycheck-irony flycheck-julia flycheck-mypy
+                   flycheck-ocaml flycheck-projectile
+                   flycheck-pycheckers flycheck-pyflakes flycheck-pyre
+                   flycheck-rust flycheck-vale flycheck-yamllint
+                   flymake-ruff format-sql gleam-ts-mode
+                   gnu-elpa-keyring-update go-mode go-projectile
+                   go-snippets graphql-mode handlebars-mode
+                   highlight-indent-guides irony irony-eldoc
+                   jinja2-mode json-mode lsp-ui magit marginalia
+                   markdown-mode+ mise mmm-jinja2 mmm-mode
+                   mustache-mode orderless prettier-js projectile
+                   projectile-ripgrep py-autopep8 py-snippets
+                   python-black python-pytest rainbow-delimiters
+                   react-snippets rg ripgrep ruff-format rust-mode
+                   rustic sass-mode smartparens sql-indent sqlformat
+                   sqlup-mode string-inflection ts-comint
+                   typescript-mode vertico web-mode yaml-mode
+                   yasnippet yasnippet-capf yasnippet-snippets)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
