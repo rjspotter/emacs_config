@@ -207,26 +207,29 @@
 
 ;;; C et al Start
 
-;; (require 'eglot)
-;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-
-;; (add-hook 'c-mode-hook 'eglot-ensure)
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
-
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'c++-mode-hook 'irony-mode)
-
 (add-hook 'c++-mode-hook
   (lambda ()
-    (setq company-backends '((company-capf company-yasnippet company-dabbrev-code company-irony) (company-dabbrev company-files) (company-ispell))
-          lsp-clangd-binary-path "/usr/bin/clangd"
+    (lsp)
+    (add-hook 'before-save-hook #'whitespace-cleanup)
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (setq lsp-clangd-binary-path "/usr/bin/clangd"
           lsp-idle-delay 0.1
           dap-lldb-debug-program '("/usr/bin/lldb-dap"))
-    (require 'dap-lldb)))
-
-(add-hook 'c++-mode-hook 'lsp)
-
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+    (require 'dap-lldb)
+    (rainbow-delimiters-mode)
+    (define-key c++-mode-map (kbd "C-c C-c") 'comment-or-uncomment-region)
+    (define-key c++-mode-map (kbd "C-c a f b") 'lsp-format-buffer)
+    (define-key c++-mode-map (kbd "C-c a f r") 'lsp-format-region)
+    (define-key c++-mode-map (kbd "C-c a e .") 'lsp-execute-code-action)
+    (define-key c++-mode-map (kbd "C-c a e r") 'lsp-rename)
+    (define-key c++-mode-map (kbd "C-c a h .") 'lsp-describe-thing-at-point)
+    (define-key c++-mode-map (kbd "C-c a h D") 'lsp-find-definition)
+    (define-key c++-mode-map (kbd "C-c a h T") 'lsp-find-type-definition)
+    (define-key c++-mode-map (kbd "C-c a h g") 'lsp-ui-doc-glance)
+    (define-key c++-mode-map (kbd "C-c a h s") 'lsp-ui-doc-show)
+    (define-key c++-mode-map (kbd "C-c a h x") 'lsp-ui-doc-hide)
+    (define-key c++-mode-map (kbd "C-c a h d") 'lsp-ui-peek-find-definitions)
+    (define-key c++-mode-map (kbd "C-c a h r") 'lsp-ui-peek-find-reference)))
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
