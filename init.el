@@ -30,6 +30,7 @@
 
 (exec-path-from-shell-initialize)
 
+(xterm-mouse-mode -1)
 
 ;;;;; Finding Things [Start]
 
@@ -123,7 +124,8 @@
         lsp-ui-sideline-show-hover t
         ;; lsp-ui-sideline-delay 3
         ;; lsp-ui-sideline-diagnostic-max-lines 1
-        lsp-ui-sideline-show-code-actions nil))
+        lsp-ui-sideline-show-code-actions nil
+        lsp-ui-flycheck-enable t))
 
 
 ;; Snippets
@@ -173,13 +175,16 @@
   (lambda ()
     (add-hook 'before-save-hook #'whitespace-cleanup)
     (auto-fill-mode)
-    (require 'lsp-marksman)
     (lsp)
     (setq fill-column 100)
     (setq company-backends '((company-capf company-dabbrev-code company-dabbrev company-ispell)))
     (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic)
   )
 )
+
+; (require 'lsp-marksman)
+(require 'lsp-vale)
+(setq lsp-vale-config-path "/home/rjspotter/.config/vale/.vale.ini")
 
 ;;; HTML web-mode
 (defun my-web-mode-hook ()
@@ -579,13 +584,12 @@ p    (define-key typescript-ts-mode-map (kbd "C-c a f b") 'prettier-js-prettify)
                    flycheck-irony flycheck-julia flycheck-mypy
                    flycheck-ocaml flycheck-projectile
                    flycheck-pycheckers flycheck-pyflakes flycheck-pyre
-                   flycheck-rust flycheck-vale flycheck-yamllint
-                   flymake-ruff format-sql gleam-ts-mode
-                   gnu-elpa-keyring-update go-mode go-projectile
-                   go-snippets graphql-mode handlebars-mode
-                   highlight-indent-guides irony irony-eldoc
-                   jinja2-mode json-mode lsp-ui magit marginalia
-                   markdown-mode+ mise mmm-jinja2 mmm-mode
+                   flycheck-rust flycheck-yamllint flymake-ruff
+                   format-sql gleam-ts-mode gnu-elpa-keyring-update
+                   go-mode go-projectile go-snippets graphql-mode
+                   handlebars-mode highlight-indent-guides irony
+                   irony-eldoc jinja2-mode json-mode lsp-ui magit
+                   marginalia markdown-mode+ mise mmm-jinja2 mmm-mode
                    mustache-mode orderless prettier-js projectile
                    projectile-ripgrep py-autopep8 py-snippets
                    python-black python-pytest rainbow-delimiters
